@@ -1,0 +1,5 @@
+*.o
+*.d
+minishell
+libft/libft.a
+test
