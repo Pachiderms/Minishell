@@ -7,7 +7,7 @@ SRC = main.c \
 OBJS = ${SRC:.c=.o}
 DEPS = ${SRC:.c=.d}
 
-CC = gcc
+CC = clang
 
 CFLAGS = -lreadline -Wall -Wextra -Werror
 

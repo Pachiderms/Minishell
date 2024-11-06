@@ -11,12 +11,13 @@ int	main(int argc, char **argv)
 	{
 		char *cmd = readline("Waiting for command: ");
 		char **split = ft_split(cmd, ' ');
-		if (access(split[1], X_OK) != 0)
-			break ;
-		fork_id = fork();
-		if (fork_id == 0)
-			execve(ft_strjoin(ft_strdup("/bin/"), split[0]), split, NULL);
-		else
-			waitpid(fork_id, &status, 0);
+		if (access(split[1], X_OK) == 0)
+		{
+			fork_id = fork();
+			if (fork_id == 0)
+				execve(ft_strjoin(ft_strdup("/bin/"), split[0]), split, NULL);
+			else
+				waitpid(fork_id, &status, 0);
+		}
 	}
 }
