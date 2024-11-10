@@ -1,4 +1,4 @@
-NAME = minishell_test
+NAME = minishell
 
 LIBFT_DIR = libft/
 LIBFT = ${LIBFT_DIR}libft.a
