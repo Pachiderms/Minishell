@@ -1,11 +1,13 @@
 NAME = minishell
 
+INCLUDES = includes/
 LIBFT_DIR = libft/
 LIBFT = ${LIBFT_DIR}libft.a
+SRC_DIR = src/
 SRC = main.c \
 
-OBJS = ${SRC:.c=.o}
-DEPS = ${SRC:.c=.d}
+OBJS = ${addprefix ${SRC_DIR}, ${SRC:.c=.o}}
+DEPS = ${addprefix ${SRC_DIR},${SRC:.c=.d}}
 
 CC = clang
 
@@ -18,7 +20,7 @@ all: ${NAME}
 
 ${NAME}: ${OBJS}
 	make -C ${LIBFT_DIR}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME}
+	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -I ${INCLUDES} -o ${NAME}
 
 clean:
 	make clean -C ${LIBFT_DIR}

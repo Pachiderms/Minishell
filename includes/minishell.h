@@ -1,7 +1,7 @@
 
 
-#ifndef TEST_H
-#define TEST_H
+#ifndef MINISHELL_H
+#define MINISHELL_H
 
 # define _X_OPEN_SOURCE 700
 
