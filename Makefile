@@ -11,7 +11,7 @@ DEPS = ${addprefix ${SRC_DIR},${SRC:.c=.d}}
 
 CC = clang
 
-CFLAGS = -lreadline -Wall -Wextra -Werror
+CFLAGS = -lreadline -Wall -Wextra -Werror -g3
 
 .c.o:
 	${CC} ${C_FLAGS} -c $< -o ${<:.c=.o}

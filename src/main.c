@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:16:29 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/12 17:12:36 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/12 18:59:11 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ t_token	*init_tokens(char **split)
 	}
 	return (tokens);
 }
+void	ft_handle_quotes(char **res_i, char *split_i, int quotes)
+{
+	if (split_i[ft_strlen(split_i) - 1] != quotes)
+	{
+		printf(RED"unclosed quotes\n"RESET);
+	}
+	else
+		*res_i = ft_substr(split_i, 1, ft_strlen(split_i) - 2);
+}
 
 char	**ft_clean_split(char **split)
 {
@@ -57,14 +66,13 @@ char	**ft_clean_split(char **split)
 	i = 0;
 	while (split[i])
 	{
-		len = ft_strlen(split[i]);
-		if ((split[i][0] == '"' && split[i][len - 1] == 34)
-			|| (split[i][0] == 39 && split[i][len - 1] == 39))
-			res[i] = ft_substr(split[i],
-					1, len - 2);
+		if (split[i][0] == 34)
+			ft_handle_quotes(&res[i], split[i], 34);
+		else if (split[i][0] == 39)
+			ft_handle_quotes(&res[i], split[i], 39);
 		else
 			res[i] = ft_substr(split[i],
-					0, len);
+					0, ft_strlen(split[i]));
 		i++;
 	}
 	res[i] = NULL;
@@ -80,14 +88,18 @@ int	main(int argc, char **argv)
 
 	while (1)
 	{
-		char *cmd = readline("Waiting for command: ");
-		char **split = ft_split(cmd, ' ');
-		char **c_split = ft_clean_split(split);
-		t_token	*tokens = init_tokens(c_split);
-		for (int i=0;c_split[i]!=NULL;i++)
+		char *cmd = readline(GREEN"minishell: "RESET);
+		if (cmd)
 		{
-			printf("token: %d\n\ttype: %d\nvalue: %s\n"
-				, i, (int)tokens[i].type, tokens[i].value);
+			add_history(cmd);
+			char **split = ft_split(cmd, ' ');
+			char **c_split = ft_clean_split(split);
+			t_token	*tokens = init_tokens(c_split);
+			for (int i=0;c_split[i]!=NULL;i++)
+			{
+				printf("token: %d\n\ttype: %d\nvalue: %s\n"
+					, i, (int)tokens[i].type, tokens[i].value);
+			}
 		}
 		// fork_id = fork();
 		// if (fork_id == 0)
