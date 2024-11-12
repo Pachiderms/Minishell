@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:16:29 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/12 16:16:55 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/12 17:12:36 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,36 @@ t_token	*init_tokens(char **split)
 	return (tokens);
 }
 
+char	**ft_clean_split(char **split)
+{
+	char	**res;
+	int		i;
+	int		j;
+	int		len;
+
+	i = 0;
+	while (split[i])
+		i++;
+	res = malloc((i + 1) * sizeof(char *));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (split[i])
+	{
+		len = ft_strlen(split[i]);
+		if ((split[i][0] == '"' && split[i][len - 1] == 34)
+			|| (split[i][0] == 39 && split[i][len - 1] == 39))
+			res[i] = ft_substr(split[i],
+					1, len - 2);
+		else
+			res[i] = ft_substr(split[i],
+					0, len);
+		i++;
+	}
+	res[i] = NULL;
+	return (res);
+}
+
 int	main(int argc, char **argv)
 {
 	(void)argc;
@@ -52,8 +82,9 @@ int	main(int argc, char **argv)
 	{
 		char *cmd = readline("Waiting for command: ");
 		char **split = ft_split(cmd, ' ');
-		t_token	*tokens = init_tokens(split);
-		for (int i=0;split[i]!=NULL;i++)
+		char **c_split = ft_clean_split(split);
+		t_token	*tokens = init_tokens(c_split);
+		for (int i=0;c_split[i]!=NULL;i++)
 		{
 			printf("token: %d\n\ttype: %d\nvalue: %s\n"
 				, i, (int)tokens[i].type, tokens[i].value);

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 19:01:55 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/12 15:28:04 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/12 16:40:04 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ long	ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+size_t	ft_strlcpy(char *dst, const char *src, size_t siz);
 
 // additional functions
 char	*ft_strjoin(char const *s1, char const *s2);
