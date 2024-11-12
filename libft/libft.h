@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 19:01:55 by tzizi             #+#    #+#             */
-/*   Updated: 2024/08/19 12:38:52 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/12 15:28:04 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 void	ft_bzero(void *s, size_t n);
 size_t	ft_strlen(const char *s);
 int		ft_isdigit(int c);
+int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 long	ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);

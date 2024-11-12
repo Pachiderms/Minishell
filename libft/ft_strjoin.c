@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:33:23 by tzizi             #+#    #+#             */
-/*   Updated: 2024/06/03 13:37:51 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/12 16:03:17 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,27 @@ int	ft_sizeup(char const *s1, char const *s2)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		x;
-	int		c;
+	int		i;
+	int		j;
 	int		size;
 	char	*conc;
 
 	size = ft_sizeup(s1, s2);
-	x = 0;
-	c = 0;
+	i = 0;
+	j = 0;
 	conc = malloc(size * sizeof(char) + 1);
 	if (conc == NULL)
 		return (0);
-	while (s1[c] && c + x < size)
+	while (s1[i] && i + j < size)
 	{
-		conc[c] = s1[c];
-		c++;
+		conc[i] = s1[i];
+		i++;
 	}
-	while (s2[x] && c + x < size)
+	while (s2[j] && i + j < size)
 	{
-		conc[x + c] = s2[x];
-		x++;
+		conc[j + i] = s2[j];
+		j++;
 	}
-	conc[x + c] = '\0';
+	conc[j + i] = '\0';
 	return (conc);
 }

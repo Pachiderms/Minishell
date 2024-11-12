@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 16:19:36 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/12 16:21:25 by tzizi            ###   ########.fr       */
+/*   Created: 2024/11/12 14:57:07 by tzizi             #+#    #+#             */
+/*   Updated: 2024/11/12 14:57:25 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# define _X_OPEN_SOURCE 700
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <strings.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include "../libft/libft.h"
-
-#endif
+	i = 0;
+	while (s1[i] || s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (s1[i] - s2[i]);
+}

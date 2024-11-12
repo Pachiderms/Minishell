@@ -1,6 +1,7 @@
 LIBC = ft_isdigit.c ft_strlen.c \
 	ft_bzero.c ft_strncmp.c ft_atoi.c \
 	ft_calloc.c ft_strdup.c	ft_substr.c \
+	ft_strcmp.c \
 
 ADD = ft_strjoin.c \
 	ft_split.c ft_itoa.c \
