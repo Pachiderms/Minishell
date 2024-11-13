@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 16:07:03 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/13 17:18:32 by tzizi            ###   ########.fr       */
+/*   Created: 2024/11/13 14:44:11 by tzizi             #+#    #+#             */
+/*   Updated: 2024/11/13 14:45:15 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-size_t	ft_strlen(const char *s)
-{
-	int	i;
+#include "token.h"
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
+int    ft_echo(t_token *tokens, int fd);
+
+#endif

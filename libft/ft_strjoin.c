@@ -6,49 +6,37 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:33:23 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/12 16:03:17 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/13 17:20:02 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int	ft_sizeup(char const *s1, char const *s2)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (s1[i])
-		i++;
-	while (s2[j])
-		j++;
-	return (j + i);
-}
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;
 	int		j;
 	int		size;
-	char	*conc;
+	char	*res;
 
-	size = ft_sizeup(s1, s2);
+	if (!s1 || !s2)
+		return (0);
+	size = ft_strlen(s1) + ft_strlen(s2);
 	i = 0;
 	j = 0;
-	conc = malloc(size * sizeof(char) + 1);
-	if (conc == NULL)
+	res = malloc(size * sizeof(char) + 1);
+	if (!res)
 		return (0);
 	while (s1[i] && i + j < size)
 	{
-		conc[i] = s1[i];
+		res[i] = s1[i];
 		i++;
 	}
 	while (s2[j] && i + j < size)
 	{
-		conc[j + i] = s2[j];
+		res[j + i] = s2[j];
 		j++;
 	}
-	conc[j + i] = '\0';
-	return (conc);
+	res[j + i] = '\0';
+	return (res);
 }

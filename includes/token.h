@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 
-enum e_type {command, argument, sc};
+enum e_type {command, argument, sc, end};
 
 typedef struct token_t
 {
@@ -26,5 +26,6 @@ typedef struct token_t
 int	is_cmd(char *s, char *path);
 int	is_sc(char *s);
 int	ft_findmltpchar(char *s1, char *s2);
+int	check_builtin(char *s);
 
 #endif

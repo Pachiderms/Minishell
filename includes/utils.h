@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 16:07:03 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/13 17:18:32 by tzizi            ###   ########.fr       */
+/*   Created: 2024/11/13 16:39:56 by tzizi             #+#    #+#             */
+/*   Updated: 2024/11/13 16:47:44 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-size_t	ft_strlen(const char *s)
-{
-	int	i;
+#include "token.h"
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
+char    *get_rid_of(char *s, char supr);
+
+#endif

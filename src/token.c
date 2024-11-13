@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 15:14:34 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/12 17:09:46 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/13 14:29:40 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ int	ft_findmltpchar(char *s1, char *s2)
 	return (0);
 }
 
+int	check_builtin(char *s)
+{
+	if (!ft_strcmp(s, "echo") || !ft_strcmp(s, "cd")
+		|| !ft_strcmp(s, "pwd") || !ft_strcmp(s, "export")
+		|| !ft_strcmp(s, "unset") || !ft_strcmp(s, "env")
+		|| !ft_strcmp(s, "exit"))
+		return (1);
+	return (0);
+}
+
 int	is_cmd(char *s, char *path)
 {
 	int		i;
@@ -43,7 +53,9 @@ int	is_cmd(char *s, char *path)
 	split = ft_split(path, ':');
 	while (split[i])
 	{
-		if (access(ft_strjoin(split[i], s1), R_OK) == 0)
+		if (check_builtin(s))
+			return (free(split), free(s1), 1);
+		else if (access(ft_strjoin(split[i], s1), R_OK) == 0)
 		{
 			return (free(split), free(s1), 1);
 		}
