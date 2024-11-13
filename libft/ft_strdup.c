@@ -3,34 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 15:55:45 by tzizi             #+#    #+#             */
-/*   Updated: 2024/05/22 16:09:19 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/22 16:03:22 by zamgar            #+#    #+#             */
+/*   Updated: 2024/05/30 17:17:00 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
+//#include <stdio.h>
 
 char	*ft_strdup(const char *s)
 {
 	int		i;
+	char	*ss;
 	char	*dest;
 
 	i = 0;
-	if (s == NULL)
-		return (NULL);
-	while (s[i])
+	ss = (char *)s;
+	while (ss[i] != '\0')
 		i++;
-	dest = malloc(i * sizeof(char) + 1);
+	dest = (char *)malloc(sizeof(char) * i + 1);
 	if (dest == NULL)
-		return (0);
+		return (NULL);
 	i = 0;
-	while (s[i])
+	while (ss[i] != '\0')
 	{
-		dest[i] = s[i];
+		dest[i] = ss[i];
 		i++;
 	}
 	dest[i] = '\0';
 	return (dest);
 }
+
+/*int	main()
+{
+	const char s[50] = "lorem ipsum dolor sit amet";
+	printf("%s", ft_strdup(s));
+	return (0);
+}*/

@@ -3,52 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 16:33:23 by tzizi             #+#    #+#             */
-/*   Updated: 2024/06/03 13:37:51 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/23 12:02:06 by zamgar            #+#    #+#             */
+/*   Updated: 2024/05/28 16:40:10 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
+//#include <stdio.h>
 
-int	ft_sizeup(char const *s1, char const *s2)
+static char	*ft_strcat(char *dest, char *src)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	while (s1[i])
+	while (dest[i] != '\0')
 		i++;
-	while (s2[j])
+	while (src[j] != '\0')
+	{
+		dest[i] = src[j];
+		i++;
 		j++;
-	return (j + i);
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		x;
-	int		c;
-	int		size;
-	char	*conc;
+	int		i;
+	int		s1len;
+	int		s2len;
+	int		totalen;
+	char	*newstr;
 
-	size = ft_sizeup(s1, s2);
-	x = 0;
-	c = 0;
-	conc = malloc(size * sizeof(char) + 1);
-	if (conc == NULL)
-		return (0);
-	while (s1[c] && c + x < size)
-	{
-		conc[c] = s1[c];
-		c++;
-	}
-	while (s2[x] && c + x < size)
-	{
-		conc[x + c] = s2[x];
-		x++;
-	}
-	conc[x + c] = '\0';
-	return (conc);
+	i = 0;
+	s1len = ft_strlen((char *)s1);
+	s2len = ft_strlen((char *)s2);
+	totalen = s1len + s2len;
+	newstr = (char *)malloc(sizeof(char) * totalen + 1);
+	if (newstr == NULL)
+		return (NULL);
+	i = 0;
+	newstr[i] = '\0';
+	ft_strcat(newstr, (char *)s1);
+	ft_strcat(newstr, (char *)s2);
+	i = 0;
+	while (newstr[i] != '\0')
+		i++;
+	newstr[i] = '\0';
+	return (newstr);
 }
+
+/*int	main()
+{
+	char	s1[20] = "Bonjour";
+	char	s2[20] = "Aurevoir";
+
+	printf("%s", ft_strjoin(s1, s2));
+
+	return (0);
+}*/

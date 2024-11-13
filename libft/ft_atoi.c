@@ -3,38 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 12:25:37 by tzizi             #+#    #+#             */
-/*   Updated: 2024/08/19 12:38:32 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/22 15:08:33 by zamgar            #+#    #+#             */
+/*   Updated: 2024/05/31 15:13:53 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
+//#include <stdio.h>
 
-long	ft_atoi(const char *nptr)
+size_t	ft_atoi(const char *str)
 {
 	int		i;
-	int		sign;
-	long	res;
+	size_t	nbr;
+	size_t	sign;
 
 	i = 0;
-	res = 0;
+	nbr = 0;
 	sign = 1;
-	while ((nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
-		&& nptr[i] != '\0')
+	while (ft_isspace(str[i]))
 		i++;
-	if (nptr[i] == 45 || nptr[i] == 43)
+	if (str[i] == '-')
 	{
-		if (nptr[i] == 45)
-			sign *= -1;
+		sign *= -1;
 		i++;
 	}
-	while (nptr[i] && (nptr[i] >= 48 && nptr[i] <= 57))
+	else if (str[i] == '+')
+		i++;
+	if (!(str[i] >= '0' && str[i] <= '9'))
+		return (0);
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		res *= 10;
-		res += nptr[i] - 48;
+		nbr = nbr * 10 + str[i] - '0';
 		i++;
 	}
-	return (res *= sign);
+	return (nbr * sign);
 }
+
+/*int	main() 
+{
+	const char	str[30] = "-+48";
+	printf("%d\n", ft_atoi(str));
+	printf("%d\n", atoi(str));
+	return (0);
+}*/
