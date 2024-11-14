@@ -17,7 +17,8 @@ SRC =	ft_atoi.c \
 	ft_strdup.c \
 	ft_strncmp.c \
 	ft_strchr.c \
-	ft_substr.c
+	ft_substr.c \
+	ft_strlen.c
 
 BFILES =	ft_atoi.o \
 		ft_isspace.o \
@@ -26,7 +27,8 @@ BFILES =	ft_atoi.o \
 		ft_strdup.o \
 		ft_strncmp.o \
 		ft_strchr.o \
-		ft_substr.o
+		ft_substr.o \
+		ft_strlen.o
 
 OBJS = ${SRC:.c=.o}
 
