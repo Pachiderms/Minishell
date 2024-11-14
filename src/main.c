@@ -108,7 +108,9 @@ int	main(int argc, char **argv, char **env)
             update_env(&main, cmd, 1);
         if (cmd[0] == 'u' && cmd[1] == 'n' && cmd[2] == 's' && cmd[3] == 'e' && cmd[4] == 't')
             update_env(&main, cmd, 2);
+        /* if (cmd[0] == 'c' && cmd[1] == 'd')
+            update_env(&main, cmd, 3) */
 	}
-    free_old_env(main.env, main.env_len);
+    free_all_data(&main);
     return (0);
 }

@@ -34,5 +34,7 @@ void    update_env(t_main *main, char *cmd, int update_type)
         export(main, cmd);
     if (update_type == 2)
         unset(main, cmd);
+    /* if (update_type == 3)
+        cd(main, cmd); */
     return ;
 }
