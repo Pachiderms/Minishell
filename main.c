@@ -87,10 +87,9 @@ void    print_ascii_order(t_main *main) // a voir
     i = 0;
     while (i < main->env_len)
     {
-        if (!(sort_env[i][0] == '_' && sort_env[i][0] == '=')) // faire en sorte de ne pas afficher le _= et de trouver cmment bouger le SSH_AUTH_SOCK en haut
+        if (!(sort_env[i][0] == '_' && sort_env[i][0] == '=')) // faire en sorte de ne pas afficher le _= et de trouver comment bouger le SSH_AUTH_SOCK en haut
             printf("%s\n", sort_env[i]);
         i++;
-        
     }
     free_old_env(sort_env, main->env_len);
 }
@@ -278,7 +277,7 @@ int	main(int argc, char **argv, char **env)
     init_env(env, &main);
 	while (1)
 	{
-		rl = readline("Prompt >");
+		rl = readline("\n\nPrompt >");
         cmd = ft_strdup(rl);
         if (cmd[0] == 'e' && cmd[1] == 'n' && cmd[2] == 'v' && cmd[3] == '\0')
             print_env(&main);
