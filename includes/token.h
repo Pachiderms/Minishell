@@ -28,4 +28,9 @@ int	is_sc(char *s);
 int	ft_findmltpchar(char *s1, char *s2);
 int	check_builtin(char *s);
 
+//utils
+char    *get_rid_of(char *s, char supr);
+char    **ft_double_array_clean(char **split);
+void    ft_free_split(char **split);
+
 #endif

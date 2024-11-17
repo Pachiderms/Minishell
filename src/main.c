@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:16:29 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/13 18:41:45 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/17 18:43:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/token.h"
 #include "../includes/builtins.h"
-#include "../includes/utils.h"
 
 char	*PATH="/home/tzizi/.local/funcheck/host:/home/tzizi/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin";
 
@@ -23,7 +22,8 @@ int	ft_quote(char **s, char **split, int q)
 	char	*tmp;
 	
 	i = 1;
-	*s = get_rid_of(*split, q);
+	*s = get_rid_of(split[0], q);
+	tmp = NULL;
 	while (split[i])
 	{
 		if (ft_strchr(split[i], q))
@@ -32,11 +32,12 @@ int	ft_quote(char **s, char **split, int q)
 			*s = ft_strjoin(*s, tmp);
 			break ;
 		}
-		tmp = ft_strjoin(" ", get_rid_of(split[i], q));
+		else
+			tmp = ft_strjoin(" ", get_rid_of(split[i], q));
 		*s = ft_strjoin(*s, tmp);
 		i++;
 	}
-	return (i);
+	return (i + 1);
 }
 
 char	**clean_split(char **split)
@@ -44,17 +45,12 @@ char	**clean_split(char **split)
 	int		i;
 	int		len;
 	char	**res;
-	i = 0;
-	while (split[++i])
-    {
-        if (!ft_strchr(split[i], 34) && !ft_strchr(split[i], 39))
-            len++;
-    }
-	res = malloc ((len + 1) * sizeof(char *));
-	if (!res)
-		return (NULL);
+
 	i = 0;
 	len = 0;
+	res = ft_double_array_clean(split);
+	if (!res)
+		return (NULL);
 	while (split[i])
 	{
 		if (ft_strchr(split[i], 34))
@@ -62,8 +58,11 @@ char	**clean_split(char **split)
 		else if (ft_strchr(split[i], 39))
 			i += ft_quote(&res[len++], &split[i], 39);
 		else
-			res[len++] = split[i];
-		i++;
+		{
+			res[len] = split[i];
+			len++;
+			i++;
+		}
 	}
 	res[len] = NULL;
 	return (res);
@@ -101,21 +100,29 @@ int	main(int argc, char **argv)
 	(void)argv;
 	int		status;
 	pid_t	fork_id;
-
+	char	*cmd;
+	char	**split;
+	char	**c_split;
+	t_token	*tokens;
+	
+	tokens = NULL;
+	cmd = NULL;
+	split = NULL;
+	c_split = NULL;
 	while (1)
 	{
-		char *cmd = readline(GREEN"minishell: "RESET);
+		cmd = readline(GREEN"minishell: "RESET);
 		if (cmd)
 		{
 			add_history(cmd);
-			char **split = ft_split(cmd, ' ');
-			char **c_split = clean_split(split);
-			// for (int i=0;c_split[i]!=NULL;i++)
-			// {
-			// 	printf("i: %d\tsplit: %s\n"
-			// 		, i, c_split[i]);
-			// }
-			t_token	*tokens = init_tokens(c_split);
+			split = ft_split(cmd, ' ');
+			c_split = clean_split(split);
+			for (int i=0;c_split[i]!=NULL;i++)
+			{
+				printf("i: %d\tsplit: %s\n"
+					, i, c_split[i]);
+			}
+			tokens = init_tokens(c_split);
 			for (int i=0;c_split[i]!=NULL;i++)
 			{
 				printf("token: %d\n\ttype: %d\nvalue: %s\n"
@@ -130,4 +137,7 @@ int	main(int argc, char **argv)
 		// else
 		// 	waitpid(fork_id, &status, 0);
 	}
+	ft_free_split(split);
+	ft_free_split(c_split);
+	free(tokens);
 }
