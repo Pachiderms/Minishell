@@ -35,28 +35,44 @@ void    print_ascii_order(t_main *main) // a voir
     free_old_env(sort_env, main->env_len);
 }
 
-int check_syntax_export(t_main *main, char *cmd)
+int check_syntax_export(t_main *main, char **cmd)
 {
     int i;
-    char *arg;
+    int j;
+    int r;
 
     i = 0;
-    if (ft_strlen(cmd) == 6 && ft_strncmp(cmd, "export", -1) == 0)
+    r = 0;
+    j = 0;
+    if (cmd[0] && !cmd[1] && ft_strncmp(cmd[0], "export", -1) == 0)
         return (print_ascii_order(main), 0);
-    if (ft_strncmp(cmd, "export ", 7) != 0)
+    main->cmd_highlights = (char **)malloc(sizeof(char *) * main->tokens_len - 1); // - 1 parce qu'on a déjà géré le export
+    if (!main->cmd_highlights)
         return (0);
-    arg = ft_strdup(ft_strchr(cmd, ' '));
-    if (arg[0] == '_' && arg[1] == '=')
-        return(free(arg), 0);
-    while (arg[i] != '=' && arg[i])
-        i++;
-    if (arg[i - 1] == ' ' || i == 0 || arg[i] == '\0')
-        return (free(arg), 0);
-    free(arg);
+    i = 1;
+    if (cmd[0] && cmd[1])
+    {
+        while (cmd[i] != NULL)
+        {
+            if (cmd[i][0] == '_' && cmd[i][1] == '=')
+                main->cmd_highlights[r] = ft_strdup("0");
+            else
+            {
+                while (cmd[i][j] != '=' && cmd[i][j])
+                    j++;
+                if (cmd[i][j - 1] == ' ' || j == 0 || cmd[i][j] == '\0')
+                    main->cmd_highlights[r] = ft_strdup("0");
+                else
+                    main->cmd_highlights[r] = ft_strdup("1");
+            }
+            j = 0;
+            i++;
+        }
+    }
     return (1);
 }
 
-void    export(t_main *main, char *cmd)
+void    export(t_main *main, char **cmd)
 {
     int i = 0;
     char **tmp;

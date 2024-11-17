@@ -40,17 +40,11 @@ int check_syntax_unset(char *cmd)
         return (0);
     arg = ft_strdup(ft_strchr(cmd, ' '));
     if (ft_strncmp(arg, "_", -1) == 0)
-    {
-        free(arg);
-        return (0);
-    }
+        return(free(arg), 0);
     while (arg[i])
     {
         if (arg[i] == '=')
-        {
-            free(arg);
-            return (0);
-        }
+            return(free(arg), 0);
         i++;
     }
     free(arg);

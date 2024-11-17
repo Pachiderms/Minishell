@@ -13,6 +13,7 @@ void    init_main(t_main *main)
     main->env = NULL;
     main->env_len = 0;
     main->tokens = NULL;
+    main->tokens_len = 0;
 }
 
 int    init_env(char **env, t_main *main)
@@ -56,6 +57,7 @@ int init_tokens(char **split, t_main *main)
 	while (split[i] != NULL)
 		i++;
 	main->tokens = malloc(i * sizeof(t_token));
+    main->tokens_len = i;
 	if (!main->tokens)
 		return (0);
 	i = 0;
@@ -72,7 +74,7 @@ int init_tokens(char **split, t_main *main)
 	}
     for (int i=0;split[i]!=NULL;i++)
 	{
-		printf("token: %d\n\ttype: %d\nvalue: %s\n\n\n"
+		printf("token: %d\n\ttype: %d\nvalue: '%s'\n\n\n"
 			, i, (int)main->tokens[i].type, main->tokens[i].value);
 	}
 	return (1);
