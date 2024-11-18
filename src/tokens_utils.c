@@ -132,7 +132,10 @@ int	init_tokens(char **split, t_main *main)
 	while (split[i] != NULL)
 	{
 		if (is_cmd(split[i], main->path))
+		{
 			main->tokens[i].type = command;
+			main->nb_cmd++;
+		}
 		else if (is_sc(split[i]))
 			main->tokens[i].type = sc;
 		else

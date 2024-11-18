@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 20:45:14 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/18 21:19:54 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_main {
     int env_len;
     t_token	*tokens;
     int tokens_len;
+    int nb_cmd;
     char *path;
 }   t_main;
 
@@ -96,5 +97,8 @@ char	**clean_split(char **split);
 
 //EXEC
 void    ft_exec(t_main *main, char **split, char *cmd);
+
+//PIPEX
+void    pipex(t_main *main, char **split);
 
 #endif

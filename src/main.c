@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 20:39:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/18 21:34:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_main(t_main *main)
 	main->env_len = 0;
 	main->tokens = NULL;
 	main->tokens_len = 0;
+	main->nb_cmd = 0;
 	main->path = NULL;
 }
 
@@ -65,7 +66,7 @@ int	only_space_line(char *cmd)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_main	main;
+	static t_main	main;
 	char	*cmd;
 	char	**split;
 

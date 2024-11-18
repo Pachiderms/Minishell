@@ -46,8 +46,14 @@ void    ft_exec(t_main *main, char **split, char *cmd)
 			    update_env(main, prep_cmd(cmd), 2);
 		    if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 			    ft_echo(split);
+            if (ft_strcmp(main->tokens[0].value, "cmd") == 0)
+			    ft_echo(split);
         }
+        else
+            pipex(main, split);
     }
     else
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
+    main->tokens = NULL;
+    split = NULL;
 }
