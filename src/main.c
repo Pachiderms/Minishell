@@ -63,9 +63,9 @@ int	main(int argc, char **argv, char **env)
     init_main(&main);
     if (init_env(env, &main) == 0)
             return (free_all_data(&main), 1);
-    if (check_var_exists(main, "PATH") != -1)
-           main->path = env[check_var_exists(main, "PATH")];
-        else
+    if (check_var_exists(&main, "export PATH=") != -1)
+            main.path = env[check_var_exists(&main, "export PATH=")];
+    else
             return (free_all_data(&main), 1);
 	while (1)
 	{
