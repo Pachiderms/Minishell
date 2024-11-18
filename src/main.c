@@ -14,6 +14,7 @@ void    init_main(t_main *main)
     main->env_len = 0;
     main->tokens = NULL;
     main->tokens_len = 0;
+    main->path = 0;
 }
 
 int    init_env(char **env, t_main *main)
@@ -48,7 +49,6 @@ int only_space_line(char *cmd)
     return (0);
 }
 
-char	*PATH="/home/tzizi/.local/funcheck/host:/home/tzizi/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin";
 int init_tokens(char **split, t_main *main)
 {
 	int		i;
@@ -93,6 +93,10 @@ int	main(int argc, char **argv, char **env)
 
     init_main(&main);
     if (init_env(env, &main) == 0)
+            return (free_all_data(&main), 1);
+    if (check_var_exists(main, "PATH") != -1)
+           main->path = env[check_var_exists(main, "PATH")];
+        else
             return (free_all_data(&main), 1);
 	while (1)
 	{
