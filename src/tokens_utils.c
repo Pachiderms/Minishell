@@ -141,6 +141,7 @@ int	init_tokens(char **split, t_main *main)
 		else
 			main->tokens[i].type = argument;
 		main->tokens[i].value = split[i];
+		main->tokens_len++;
 		i++;
 	}
 	return (1);

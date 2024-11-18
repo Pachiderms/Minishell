@@ -1,1 +1,1 @@
-truncate 
+erase_test 1 
