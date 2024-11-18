@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 15:42:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/18 16:13:34 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void    export(t_main *main, char *cmd);
 int     check_syntax_export(t_main *main, char *cmd);
 void    print_ascii_order(t_main *main);
 /// Echo
-//int    ft_echo(t_token *tokens, int fd);
+void    ft_echo(char **cmd);
+int get_fd(char **cmd);
 /// Utils BuiltIns
 int     check_var_exists(t_main *main, char *cmd);
 void    free_old_env(char **tab, int tablen);

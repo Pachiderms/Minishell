@@ -1,24 +1,28 @@
 #include "../includes/minishell.h"
 
-/* int    ft_echo(t_token *tokens, int fd)
+void    ft_echo(char **cmd)
 {
     int i;
+    int fd;
     int nl;
 
     i = 1;
-    if (ft_strcmp(tokens[0].value, "echo") != 0)
-        return (-1);
-    tokens++;
-    while (tokens[0].type == argument)
+    fd = get_fd(cmd);
+    if (fd < 0)
+        return ;
+    if (ft_strcmp(cmd[0], "echo") != 0)
+        return ;
+    while (cmd[i])
     {
-        if (!ft_strcmp(tokens[0].value, "-n"))
+        if (!ft_strcmp(cmd[i], "-n"))
         {
             nl = 1;
-            tokens++;
+            i++;
         }
-        if (fd == 1)
-            ft_putstr_fd(tokens[0].value, fd);
-        tokens++;
+        ft_putstr_fd(cmd[i], fd);
+        i++;
     }
-    return (1);
-} */
+    if (nl)
+        ft_putsr_fd("\n", fd);
+    return ;
+}
