@@ -3,33 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 10:59:43 by tzizi             #+#    #+#             */
-/*   Updated: 2024/05/27 15:55:37 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/22 16:14:40 by zamgar            #+#    #+#             */
+/*   Updated: 2024/06/04 18:35:14 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
+//#include <stdio.h>
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+static size_t	ft_calc(char const *str, unsigned int start, size_t len)
 {
 	size_t	i;
-	char	*dest;
 
-	if (start > ft_strlen(s))
-		len = 0;
-	else if (len > ft_strlen(s) - start)
-		len = ft_strlen(s) - start;
-	dest = malloc((len + 1) * sizeof(char));
-	if (dest == NULL)
-		return (0);
 	i = 0;
-	while (i < len && s[i + start])
+	if (len == 1)
+		return (1);
+	while (str[start] != '\0' && i < len)
 	{
-		dest[i] = s[i + start];
 		i++;
+		start ++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	return (i);
 }
+
+static char	*ft_gen(char *newstr, char const *str, unsigned int s, size_t len)
+{
+	size_t	i;
+	size_t	strlen;
+
+	i = 0;
+	strlen = ft_strlen(str);
+	while (s < strlen && i < len)
+	{
+		newstr[i] = str[s];
+		i++;
+		s++;
+	}
+	newstr[i] = '\0';
+	return (newstr);
+}
+
+char	*ft_substr(char const *str, unsigned int start, size_t len)
+{
+	size_t		strlen;
+	char		*n;
+
+	strlen = ft_strlen(str);
+	if (!str)
+		return (NULL);
+	if (start > strlen || len <= 0)
+	{
+		n = (char *)malloc(sizeof(char) * 1);
+		if (n == NULL)
+			return (NULL);
+		n[0] = '\0';
+		return (n);
+	}
+	else
+	{
+		if (len > strlen)
+			n = (char *)malloc(sizeof(char) * strlen + 1);
+		if (len <= strlen)
+			n = (char *)malloc(sizeof(char) * (ft_calc(str, start, len)) + 1);
+		if (n == NULL)
+			return (NULL);
+	}
+	return (ft_gen(n, str, start, len));
+}
+
+/* int     main(void)
+{
+        char    *str = "lorem ipsum dolor sit amet";
+        printf("%s", ft_substr(str, 7, 10));
+        return (0);
+} */

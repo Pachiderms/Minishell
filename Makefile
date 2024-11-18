@@ -1,35 +1,49 @@
-NAME = minishell_test
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: zamgar <marvin@42.fr>                      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
+#    Updated: 2024/06/04 18:03:23 by zamgar           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-LIBFT_DIR = libft/
-LIBFT = ${LIBFT_DIR}libft.a
-SRC = main.c \
+NAME = minishell
 
-OBJS = ${SRC:.c=.o}
-DEPS = ${SRC:.c=.d}
+LIBFT_PATH = ./libft/
+
+LIBFT_NAME = libft.a
+
+LIBFT_LIB = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
+
+SRC = src/main.c src/env.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c
+
+OBJS := $(SRC:%.c=%.o)
 
 CC = gcc
-
-CFLAGS = -lreadline -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -I ./includes
 
 .c.o:
-	${CC} ${C_FLAGS} -c $< -o ${<:.c=.o}
+	$(CC) $(FLAGS) -c $< -o $@
 
-all: ${NAME}
+all: $(NAME)
 
-${NAME}: ${OBJS}
-	make -C ${LIBFT_DIR}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME}
+$(LIBFT_LIB):
+	make -sC $(LIBFT_PATH)
+
+$(NAME): $(LIBFT_LIB) $(OBJS)
+	$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
 
 clean:
-	make clean -C ${LIBFT_DIR}
-	rm -f ${DEPS} ${OBJS}
+	make clean -sC $(LIBFT_PATH)
+	rm -rf $(OBJS)
 
 fclean: clean
-	make fclean -C ${LIBFT_DIR}
-	rm -f $(NAME)
+	make fclean -sC $(LIBFT_PATH)
+	rm -rf $(NAME)
 
 re: fclean all
 
 .PHONY: all clean fclean re
-
--include ${DEPS}

@@ -1,40 +1,55 @@
-LIBC = ft_isdigit.c ft_strlen.c \
-	ft_bzero.c ft_strncmp.c ft_atoi.c \
-	ft_calloc.c ft_strdup.c	ft_substr.c \
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: zamgar <marvin@42.fr>                      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
+#    Updated: 2024/06/04 18:03:23 by zamgar           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-ADD = ft_strjoin.c \
-	ft_split.c ft_itoa.c \
-	ft_putchar_fd.c ft_putstr_fd.c \
-	ft_putendl_fd.c ft_putnbr_fd.c \
-	
+SRC =	ft_atoi.c \
+	ft_isspace.c \
+	ft_split.c \
+	ft_strjoin.c \
+	ft_strdup.c \
+	ft_strncmp.c \
+	ft_strchr.c \
+	ft_substr.c \
+	ft_strlen.c
 
-SRCS = ${LIBC}${ADD}
+BFILES =	ft_atoi.o \
+		ft_isspace.o \
+		ft_split.o \
+		ft_strjoin.o \
+		ft_strdup.o \
+		ft_strncmp.o \
+		ft_strchr.o \
+		ft_substr.o \
+		ft_strlen.o
 
-OBJS = ${SRCS:.c=.o}
-DEPS = ${SRCS:.c=.d}
+OBJS = ${SRC:.c=.o}
 
 NAME = libft.a
 
-CC = cc
+CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD -I ./
+FLAGS = -Wall -Wextra -Werror -I ./includes
 
 .c.o:
-	${CC} $(CFLAGS) -c $< -o ${<:.c=.o}
+	$(CC) $(FLAGS) -c $< -o ${<:.c=.o}
 
-${NAME}: ${OBJS}
-	ar -rcs ${NAME} ${OBJS}
+all: $(NAME)
 
-all: ${NAME}
+$(NAME) : $(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
 clean:
-	/bin/rm -f ${DEPS} ${OBJS}
+	rm -f $(OBJS)
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
-
-.PHONY: all clean fclean re
-
--include ${DEPS}

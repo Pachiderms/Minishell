@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 16:07:03 by tzizi             #+#    #+#             */
-/*   Updated: 2024/05/30 14:40:20 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/27 16:17:38 by zamgar            #+#    #+#             */
+/*   Updated: 2024/05/27 19:14:22 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
 size_t	ft_strlen(const char *s)
 {
 	int	i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] != '\0')
 		i++;
 	return (i);
 }
