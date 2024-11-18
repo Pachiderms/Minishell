@@ -51,6 +51,7 @@ void    ft_exec(t_main *main, char **split, char *cmd)
         }
         else
             pipex(main, split);
+        main->nb_cmd--;;
     }
     else
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
