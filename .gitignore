@@ -3,9 +3,4 @@
 *.a
 minishell
 test.txt
-<<<<<<< HEAD
-libft/libft.a
-test
-=======
->>>>>>> main
 .vscode/
