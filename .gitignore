@@ -1,6 +1,10 @@
 *.o
 *.d
+*.a
 minishell
+<<<<<<< HEAD
 libft/libft.a
 test
+=======
+>>>>>>> main
 .vscode/
