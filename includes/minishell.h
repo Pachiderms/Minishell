@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 17:10:56 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/18 20:45:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,8 @@ char    *get_rid_of(char *s, char supr);
 /// Utils Tokens
 int	    ft_quote(char **s, char **split, int q);
 char	**clean_split(char **split);
+
+//EXEC
+void    ft_exec(t_main *main, char **split, char *cmd);
 
 #endif

@@ -121,6 +121,8 @@ int	init_tokens(char **split, t_main *main)
 {
 	int		i;
 	i = 0;
+	if (!split)
+		return (0);
 	while (split[i] != NULL)
 		i++;
 	main->tokens = malloc(i * sizeof(t_token));
