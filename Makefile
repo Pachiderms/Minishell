@@ -4,7 +4,7 @@ INCLUDES = includes/
 LIBFT_DIR = libft/
 LIBFT = ${LIBFT_DIR}libft.a
 SRC_DIR = src/
-SRC = main.c token.c builtins.c utils.c \
+SRC = main.c token.c utils.c \
 
 OBJS = ${addprefix ${SRC_DIR}, ${SRC:.c=.o}}
 DEPS = ${addprefix ${SRC_DIR},${SRC:.c=.d}}

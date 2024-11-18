@@ -20,7 +20,7 @@ int	ft_quote(char **s, char **split, int q)
 {
 	int		i;
 	char	*tmp;
-	
+
 	i = 1;
 	*s = get_rid_of(split[0], q);
 	tmp = NULL;
@@ -96,15 +96,15 @@ t_token	*init_tokens(char **split)
 
 int	main(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
 	int		status;
 	pid_t	fork_id;
 	char	*cmd;
 	char	**split;
 	char	**c_split;
 	t_token	*tokens;
-	
+
+	(void)argc;
+	(void)argv;
 	tokens = NULL;
 	cmd = NULL;
 	split = NULL;
