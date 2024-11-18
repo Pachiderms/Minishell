@@ -49,37 +49,6 @@ int only_space_line(char *cmd)
     return (0);
 }
 
-int init_tokens(char **split, t_main *main)
-{
-	int		i;
-
-	i = 0;
-	while (split[i] != NULL)
-		i++;
-	main->tokens = malloc(i * sizeof(t_token));
-    main->tokens_len = i;
-	if (!main->tokens)
-		return (0);
-	i = 0;
-	while (split[i] != NULL)
-	{
-		if (is_cmd(split[i], PATH))
-			main->tokens[i].type = command;
-		else if (is_sc(split[i]))
-			main->tokens[i].type = sc;
-		else
-			main->tokens[i].type = argument;
-		main->tokens[i].value = split[i];
-		i++;
-	}
-    for (int i=0;split[i]!=NULL;i++)
-	{
-		printf("token: %d\n\ttype: %d\nvalue: '%s'\n\n\n"
-			, i, (int)main->tokens[i].type, main->tokens[i].value);
-	}
-	return (1);
-}
-
 ////////////////////////////////////////////////////////////
 
 int	main(int argc, char **argv, char **env)
@@ -94,9 +63,9 @@ int	main(int argc, char **argv, char **env)
     init_main(&main);
     if (init_env(env, &main) == 0)
             return (free_all_data(&main), 1);
-    if (check_var_exists(main, "PATH") != -1)
-           main->path = env[check_var_exists(main, "PATH")];
-        else
+    if (check_var_exists(&main, "export PATH=") != -1)
+            main.path = env[check_var_exists(&main, "export PATH=")];
+    else
             return (free_all_data(&main), 1);
 	while (1)
 	{

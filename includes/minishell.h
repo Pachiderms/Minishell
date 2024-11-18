@@ -45,6 +45,7 @@ typedef struct s_main {
     int env_len;
     t_token	*tokens;
     int tokens_len;
+    char *path;
 }   t_main;
 
 // LIBFT
