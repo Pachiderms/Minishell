@@ -1,42 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_redirect.c                                     :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 17:06:10 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/23 18:21:55 by tzizi             #+#    #+#             */
+/*   Updated: 2024/11/18 16:29:00 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	get_fd(char **cmd)
+void	ft_putendl_fd(char *s, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (cmd[++i])
-	{
-		if (ft_strcmp(cmd[i], ">>") == 0)
-		{
-			if (cmd[i + 1])
-			{
-				if (access(cmd[i + 1], W_OK) == 0)
-					return (open(cmd[i + 1], O_WRONLY | O_APPEND));
-			}
-			return (-1);
-		}
-		if (ft_strcmp(cmd[i], ">") == 0)
-		{
-			if (cmd[i + 1])
-			{
-				if (access(cmd[i + 1], W_OK) == 0)
-					return (open(cmd[i + 1], O_WRONLY | O_TRUNC));
-			}
-			return (-1);
-		}
-	}
-	return (1);
+	if (!s)
+		return ;
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
 }

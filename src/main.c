@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 15:42:33 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/18 16:34:59 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ int	main(int argc, char **argv, char **env)
 			update_env(&main, cmd, 1);
 		if (cmd[0] == 'u' && cmd[1] == 'n' && cmd[2] == 's' && cmd[3] == 'e' && cmd[4] == 't')
 			update_env(&main, cmd, 2);
+		if (ft_strcmp(main.tokens[0].value, "echo") == 0)
+			ft_echo(c_split);
 		/* if (cmd[0] == 'c' && cmd[1] == 'd')
 			update_env(&main, cmd, 3) */
 	}
