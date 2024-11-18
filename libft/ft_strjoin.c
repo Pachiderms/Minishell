@@ -3,67 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 12:02:06 by zamgar            #+#    #+#             */
-/*   Updated: 2024/05/28 16:40:10 by zamgar           ###   ########.fr       */
+/*   Created: 2024/05/22 16:33:23 by tzizi             #+#    #+#             */
+/*   Updated: 2024/11/18 15:40:51 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-//#include <stdio.h>
 
-static char	*ft_strcat(char *dest, char *src)
+char	*ft_dup(char const *s1, char const *s2)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	int		size;
+	char	*res;
 
+	size = ft_strlen(s1) + ft_strlen(s2);
 	i = 0;
 	j = 0;
-	while (dest[i] != '\0')
-		i++;
-	while (src[j] != '\0')
+	res = malloc(size * sizeof(char) + 1);
+	if (!res)
+		return (0);
+	while (s1[i] && i + j < size)
 	{
-		dest[i] = src[j];
+		res[i] = s1[i];
 		i++;
+	}
+	while (s2[j] && i + j < size)
+	{
+		res[j + i] = s2[j];
 		j++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	res[j + i] = '\0';
+	return (res);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		i;
-	int		s1len;
-	int		s2len;
-	int		totalen;
-	char	*newstr;
-
-	i = 0;
-	s1len = ft_strlen((char *)s1);
-	s2len = ft_strlen((char *)s2);
-	totalen = s1len + s2len;
-	newstr = (char *)malloc(sizeof(char) * totalen + 1);
-	if (newstr == NULL)
-		return (NULL);
-	i = 0;
-	newstr[i] = '\0';
-	ft_strcat(newstr, (char *)s1);
-	ft_strcat(newstr, (char *)s2);
-	i = 0;
-	while (newstr[i] != '\0')
-		i++;
-	newstr[i] = '\0';
-	return (newstr);
+	if (!s1)
+		return (ft_strdup(s2));
+	else if (!s2)
+		return (ft_strdup(s1));
+	else
+		return (ft_dup(s1, s2));
 }
-
-/*int	main()
-{
-	char	s1[20] = "Bonjour";
-	char	s2[20] = "Aurevoir";
-
-	printf("%s", ft_strjoin(s1, s2));
-
-	return (0);
-}*/

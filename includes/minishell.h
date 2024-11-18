@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/10/07 13:54:26 by zamgar           ###   ########.fr       */
+/*   Updated: 2024/11/18 15:42:59 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,37 +55,39 @@ char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int	    ft_strncmp(const char *s1, const char *s2, size_t n);
+int	    ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char const *str, unsigned int start, size_t len);
 
 // MINISHELL
 /// Env
-int    init_env(char **env, t_main *main);
+int     init_env(char **env, t_main *main);
 void    update_env(t_main *main, char *cmd, int update_type);
 void    print_env(t_main *main);
 /// Unset
 void    unset(t_main *main, char *cmd);
-int check_syntax_unset(char *cmd);
+int     check_syntax_unset(char *cmd);
 /// Export
 void    export(t_main *main, char *cmd);
-int check_syntax_export(t_main *main, char *cmd);
+int     check_syntax_export(t_main *main, char *cmd);
 void    print_ascii_order(t_main *main);
 /// Echo
 //int    ft_echo(t_token *tokens, int fd);
 /// Utils BuiltIns
-int check_var_exists(t_main *main, char *cmd);
+int     check_var_exists(t_main *main, char *cmd);
 void    free_old_env(char **tab, int tablen);
 void    free_all_data(t_main *main);
 
 /// Tokens
-int init_tokens(char **split, t_main *main);
-int	is_cmd(char *s, char *path);
-int	is_sc(char *s);
-int	ft_findmltpchar(char *s1, char *s2);
-int	check_builtin(char *s);
+int     init_tokens(char **split, t_main *main);
+int	    is_cmd(char *s, char *path);
+int	    is_sc(char *s);
+int	    ft_findmltpchar(char *s1, char *s2);
+int	    check_builtin(char *s);
 char    *get_rid_of(char *s, char supr);
 /// Utils Tokens
-int	ft_quote(char **s, char **split, int q);
+int	    ft_quote(char **s, char **split, int q);
 char	**clean_split(char **split);
 
 #endif

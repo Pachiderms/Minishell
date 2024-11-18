@@ -20,7 +20,7 @@ int	check_var_exists(t_main *main, char *cmd)
 
 	i = 0;
 	j = 0;
-	arg = ft_strdup(ft_strchr(cmd, ' '));
+	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	while (i < main->env_len)
 	{
 		while (main->env[i][j] != '=')
@@ -47,7 +47,7 @@ int	check_syntax_unset(char *cmd)
 	i = 0;
 	if (ft_strncmp(cmd, "unset ", 6) != 0)
 		return (0);
-	arg = ft_strdup(ft_strchr(cmd, ' '));
+	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	if (ft_strncmp(arg, "_", -1) == 0)
 		return (free(arg), 0);
 	while (arg[i])
