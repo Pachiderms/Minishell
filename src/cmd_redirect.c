@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 17:37:18 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/19 16:40:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	get_fd(char **cmd)
 {
 	int	i;
 
-	i = 0;
-	while (cmd[++i])
+	i = 1;
+	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
 	{
 		if (ft_strcmp(cmd[i], ">>") == 0)
 		{
@@ -51,6 +51,7 @@ int	get_fd(char **cmd)
 				return (handle_opening_file(cmd[i + 1], 0));
 			return (-1);
 		}
+		i++;
 	}
 	return (1);
 }

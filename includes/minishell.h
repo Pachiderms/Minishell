@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 13:00:36 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	free_all_data(t_main *main);
 
 //Utils
 int		only_space_line(char *cmd);
+int     get_cmd_number(t_main *main, char **split);
 
 /// Tokens
 int		init_tokens(char **split, t_main *main);
@@ -101,6 +102,7 @@ char	*get_rid_of(char *s, char supr);
 /// Utils Tokens
 int		ft_quote(char **s, char **split, int q);
 char	**clean_split(char **split);
+int	    handle_sc(t_main *main, char **split, int i);
 
 //EXEC
 void	ft_exec(t_main *main, char **split, char *cmd);
