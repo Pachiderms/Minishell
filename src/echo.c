@@ -56,7 +56,7 @@ void	ft_echo(char **cmd)
 
 	nl = 1;
 	fd = get_fd(cmd);
-	if (fd < 0)
+	if (fd < 0 || !cmd[1])
 		return ;
 	if (ft_strcmp(cmd[0], "echo") != 0)
 		return ;

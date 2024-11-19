@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-<<<<<<< HEAD
-=======
 // void    ft_free_cmd(t_main *main, char **split, char *cmd)
 // {
 //     int i;
@@ -35,7 +33,6 @@
 //     free(cmd);
 // }
 
->>>>>>> telvin
 char    *prep_cmd(char *cmd)
 {
     int     i;
@@ -73,15 +70,10 @@ void    ft_exec(t_main *main, char **split, char *cmd)
             if (ft_strcmp(main->tokens[0].value, "cmd") == 0)
 			    ft_echo(split);
         }
-<<<<<<< HEAD
-    }
-    else
-=======
         else
             pipex(main, split);
         main->nb_cmd--;;
     }
     else if (cmd[0] != '\0')
->>>>>>> telvin
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
 }

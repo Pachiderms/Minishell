@@ -6,11 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/11/18 17:33:15 by tzizi            ###   ########.fr       */
-=======
-/*   Updated: 2024/11/18 21:19:54 by marvin           ###   ########.fr       */
->>>>>>> telvin
+/*   Updated: 2024/11/19 13:00:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +26,6 @@
 # include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <fcntl.h>
 
 # define GREEN	"\033[0;32m"
 # define RED	"\033[0;31m"
@@ -88,6 +83,9 @@ int get_fd(char **cmd);
 int     check_var_exists(t_main *main, char *cmd);
 void    free_old_env(char **tab, int tablen);
 void    free_all_data(t_main *main);
+
+//Utils
+int	    only_space_line(char *cmd);
 
 /// Tokens
 int     init_tokens(char **split, t_main *main);
