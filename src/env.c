@@ -39,14 +39,3 @@ void	print_env(t_main *main)
 	}
 	return ;
 }
-
-void	update_env(t_main *main, char *cmd, int update_type)
-{
-	if (update_type == 1)
-		export(main, cmd);
-	if (update_type == 2)
-		unset(main, cmd);
-	/* if (update_type == 3)
-		cd(main, cmd); */
-	return ;
-}

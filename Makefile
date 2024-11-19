@@ -18,7 +18,7 @@ LIBFT_NAME = libft.a
 
 LIBFT_LIB = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
 
-SRC = src/main.c src/env.c src/exec.c src/pipex.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c src/cmd_redirect.c
+SRC = src/main.c src/env.c src/exec.c src/pipex.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c src/cd.c src/pwd.c src/cmd_redirect.c
 
 OBJS := $(SRC:%.c=%.o)
 

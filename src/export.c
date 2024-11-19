@@ -57,7 +57,7 @@ int	check_syntax_export(t_main *main, char *cmd)
 		return (print_ascii_order(main), 0);
 	if (ft_strncmp(cmd, "export ", 7) != 0)
 		return (0);
-	arg = ft_strdup(ft_strchr(cmd, ' '));
+	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	if (arg[0] == '_' && arg[1] == '=')
 		return (free(arg), 0);
 	while (arg[i] != '=' && arg[i])
@@ -94,14 +94,14 @@ void	export(t_main *main, char *cmd)
 	{
 		if (i == replace_pos)
 		{
-			main->env[i] = ft_strdup(ft_strchr(cmd, ' '));
+			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
 		}
 		main->env[i] = ft_strdup(tmp[i]);
 		i++;
 		if (i == replace_pos)
 		{
-			main->env[i] = ft_strdup(ft_strchr(cmd, ' '));
+			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
 		}
 	}
@@ -109,7 +109,7 @@ void	export(t_main *main, char *cmd)
 	if (replace_pos == -1)
 	{
 		main->env[i] = main->env[i - 1];
-		main->env[i - 1] = ft_strdup(ft_strchr(cmd, ' '));
+		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 		main->env_len += 1;
 	}
 	return ;

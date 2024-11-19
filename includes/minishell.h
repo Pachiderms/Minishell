@@ -41,13 +41,13 @@ typedef struct token_t
 }	t_token;
 
 typedef struct s_main {
-    char **env;
-    int env_len;
+    char	**env;
+    int		env_len;
     t_token	*tokens;
-    int tokens_len;
-    int nb_cmd;
-    char *path;
-}   t_main;
+    int		tokens_len;
+    int		nb_cmd;
+    char	*path;
+}	t_main;
 
 // LIBFT
 size_t	ft_atoi(const char *str);
@@ -56,8 +56,8 @@ char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-int	    ft_strncmp(const char *s1, const char *s2, size_t n);
-int	    ft_strcmp(const char *s1, const char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *str, unsigned int start, size_t len);
 void	ft_putendl_fd(char *s, int fd);
@@ -66,42 +66,46 @@ void	ft_putchar_fd(char c, int fd);
 
 // MINISHELL
 /// Env
-int     init_env(char **env, t_main *main);
-void    update_env(t_main *main, char *cmd, int update_type);
-void    print_env(t_main *main);
+int		init_env(char **env, t_main *main);
+void	print_env(t_main *main);
 /// Unset
-void    unset(t_main *main, char *cmd);
-int     check_syntax_unset(char *cmd);
+void	unset(t_main *main, char *cmd);
+int		check_syntax_unset(char *cmd);
 /// Export
-void    export(t_main *main, char *cmd);
-int     check_syntax_export(t_main *main, char *cmd);
-void    print_ascii_order(t_main *main);
+void	export(t_main *main, char *cmd);
+int		check_syntax_export(t_main *main, char *cmd);
+void	print_ascii_order(t_main *main);
 /// Echo
-void    ft_echo(char **cmd);
-int get_fd(char **cmd);
+void	ft_echo(char **cmd);
+int		get_fd(char **cmd);
+// Cd
+void	update_oldpwd_pwd(t_main *main);
+int		cd(t_main *main, char *cmd);
+// Pwd
+int		pwd(void);
 /// Utils BuiltIns
-int     check_var_exists(t_main *main, char *cmd);
-void    free_old_env(char **tab, int tablen);
-void    free_all_data(t_main *main);
+int		check_var_exists(t_main *main, char *cmd);
+void	free_old_env(char **tab, int tablen);
+void	free_all_data(t_main *main);
 
 //Utils
-int	    only_space_line(char *cmd);
+int		only_space_line(char *cmd);
 
 /// Tokens
-int     init_tokens(char **split, t_main *main);
-int	    is_cmd(char *s, char *path);
-int	    is_sc(char *s);
-int	    ft_findmltpchar(char *s1, char *s2);
-int	    check_builtin(char *s);
-char    *get_rid_of(char *s, char supr);
+int		init_tokens(char **split, t_main *main);
+int		is_cmd(char *s, char *path);
+int		is_sc(char *s);
+int		ft_findmltpchar(char *s1, char *s2);
+int		check_builtin(char *s);
+char	*get_rid_of(char *s, char supr);
 /// Utils Tokens
-int	    ft_quote(char **s, char **split, int q);
+int		ft_quote(char **s, char **split, int q);
 char	**clean_split(char **split);
 
 //EXEC
-void    ft_exec(t_main *main, char **split, char *cmd);
+void	ft_exec(t_main *main, char **split, char *cmd);
 
 //PIPEX
-void    pipex(t_main *main, char **split);
+void	pipex(t_main *main, char **split);
 
 #endif
