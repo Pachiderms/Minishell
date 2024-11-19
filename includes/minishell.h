@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/11/18 17:33:15 by tzizi            ###   ########.fr       */
+=======
+/*   Updated: 2024/11/18 21:19:54 by marvin           ###   ########.fr       */
+>>>>>>> telvin
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +50,7 @@ typedef struct s_main {
     int env_len;
     t_token	*tokens;
     int tokens_len;
+    int nb_cmd;
     char *path;
 }   t_main;
 
@@ -94,5 +99,11 @@ char    *get_rid_of(char *s, char supr);
 /// Utils Tokens
 int	    ft_quote(char **s, char **split, int q);
 char	**clean_split(char **split);
+
+//EXEC
+void    ft_exec(t_main *main, char **split, char *cmd);
+
+//PIPEX
+void    pipex(t_main *main, char **split);
 
 #endif

@@ -121,6 +121,8 @@ int	init_tokens(char **split, t_main *main)
 {
 	int		i;
 	i = 0;
+	if (!split)
+		return (0);
 	while (split[i] != NULL)
 		i++;
 	main->tokens = malloc(i * sizeof(t_token));
@@ -130,12 +132,16 @@ int	init_tokens(char **split, t_main *main)
 	while (split[i] != NULL)
 	{
 		if (is_cmd(split[i], main->path))
+		{
 			main->tokens[i].type = command;
+			main->nb_cmd++;
+		}
 		else if (is_sc(split[i]))
 			main->tokens[i].type = sc;
 		else
 			main->tokens[i].type = argument;
 		main->tokens[i].value = split[i];
+		main->tokens_len++;
 		i++;
 	}
 	return (1);

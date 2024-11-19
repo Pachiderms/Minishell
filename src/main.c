@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 16:34:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/18 22:02:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_main(t_main *main)
 	main->env_len = 0;
 	main->tokens = NULL;
 	main->tokens_len = 0;
+	main->nb_cmd = 0;
 	main->path = NULL;
 }
 
@@ -65,10 +66,9 @@ int	only_space_line(char *cmd)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_main	main;
+	static t_main	main;
 	char	*cmd;
 	char	**split;
-	char	**c_split;
 
 	(void)argc;
 	(void)argv;
@@ -84,21 +84,10 @@ int	main(int argc, char **argv, char **env)
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
 			add_history(cmd);
-		split = ft_split(cmd, ' ');
-		c_split = clean_split(split);
-		if (init_tokens(c_split, &main) == 0)
+		split = clean_split(ft_split(cmd, ' '));
+		if (init_tokens(split, &main) == 0)
 			return (free_all_data(&main), 1);
-		// partie exec à faire
-		if (cmd[0] == 'e' && cmd[1] == 'n' && cmd[2] == 'v' && cmd[3] == '\0')
-			print_env(&main);
-		if (cmd[0] == 'e' && cmd[1] == 'x' && cmd[2] == 'p' && cmd[3] == 'o' && cmd[4] == 'r' && cmd[5] == 't')
-			update_env(&main, cmd, 1);
-		if (cmd[0] == 'u' && cmd[1] == 'n' && cmd[2] == 's' && cmd[3] == 'e' && cmd[4] == 't')
-			update_env(&main, cmd, 2);
-		if (ft_strcmp(main.tokens[0].value, "echo") == 0)
-			ft_echo(c_split);
-		/* if (cmd[0] == 'c' && cmd[1] == 'd')
-			update_env(&main, cmd, 3) */
+		ft_exec(&main, split, cmd);
 	}
 	free_all_data(&main);
 	return (0);
