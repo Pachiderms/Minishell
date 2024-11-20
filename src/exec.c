@@ -34,9 +34,9 @@ char    *prep_cmd(char *cmd)
 
 void    ft_exec(t_main *main, char **split, char *cmd)
 {
-    // for (int i=0; split[i];i++)
-    //     printf("token type=%d\t val: %s\n", main->tokens[i].type, main->tokens[i].value);
-    // printf("nb_cmd=%d\n", main->nb_cmd);
+    //for (int i=0; split[i];i++)
+    //    printf("token type=%d\t val: %s\n", main->tokens[i].type, main->tokens[i].value);
+     //printf("nb_cmd=%d\n", main->nb_cmd);
     if (main->tokens[0].type == command)
     {
         if (check_builtin(main->tokens[0].value))
@@ -60,5 +60,5 @@ void    ft_exec(t_main *main, char **split, char *cmd)
     }
     else if (cmd[0] != '\0')
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
-    // printf("nb_cmd=%d\n", main->nb_cmd);
+     //printf("nb_cmd=%d\n", main->nb_cmd);
 }

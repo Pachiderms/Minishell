@@ -58,10 +58,67 @@ void    ft_fork(t_main *main, char **split)
     free(cmd);
 }
 
+void    prep_cmd_pipex(char **split)
+{
+    (void)split;
+    return ;
+}
+
+void    ft_pipe(t_main *main, char **split)
+{
+    int fd[2];
+    int child_pid;
+    int status;
+    char *cmd1[3] = {"/bin/ls", "-l", NULL};
+    char *cmd2[3] = {"/bin/wc", "-l", NULL};
+
+    (void)split;
+    if (pipe(fd) < 0)
+    {
+        perror("pipe fail");
+        exit (-1);
+    }
+    child_pid = fork();
+    if (child_pid < 0)
+    {
+        perror ("fork fail");
+        exit (-1);
+    }
+    if (child_pid == 0)
+    {
+        close(STDOUT_FILENO);
+        dup2(fd[1], STDOUT_FILENO);
+        close(fd[1]);
+        close(fd[0]);
+        execve(cmd1[0], cmd1, main->env);
+    }
+    else
+    {
+        int stat;
+        waitpid(child_pid, &stat, 0);
+        int pid_tmp = fork();
+        if (pid_tmp == 0)
+        {
+            waitpid(child_pid, &status, 0);
+            close(STDIN_FILENO);
+            dup2(fd[0], STDIN_FILENO);
+            close(fd[0]);
+            close(fd[1]);
+            execve(cmd2[0], cmd2, main->env);
+        }
+        else
+        {
+            close(fd[1]);
+            close(fd[0]);
+            waitpid(pid_tmp, &stat, 0);
+        }
+    }
+}
+
 void    pipex(t_main *main, char **split)
 {
     if (main->nb_cmd < 2)
         return (ft_fork(main, split));
     else
-        return ;
+        ft_pipe(main, split);
 }
