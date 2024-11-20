@@ -44,9 +44,9 @@ void    ft_exec(t_main *main, char **split, char *cmd)
             if (ft_strcmp(main->tokens[0].value, "env") == 0)
 			    print_env(main);
 		    if (ft_strcmp(main->tokens[0].value, "export") == 0)
-                export(main, prep_cmd(cmd));
+                prep_export(main, split);
 		    if (ft_strcmp(main->tokens[0].value, "unset") == 0)
-                unset(main, prep_cmd(cmd));
+                prep_unset(main, split);
 		    if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 			    ft_echo(split);
             if (ft_strcmp(main->tokens[0].value, "cd") == 0)

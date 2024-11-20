@@ -71,10 +71,12 @@ void	print_env(t_main *main);
 /// Unset
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
+void	prep_unset(t_main *main, char **split);
 /// Export
 void	export(t_main *main, char *cmd);
 int		check_syntax_export(t_main *main, char *cmd);
 void	print_ascii_order(t_main *main);
+void	prep_export(t_main *main, char **split);
 /// Echo
 void	ft_echo(char **cmd);
 int		get_fd(char **cmd);
