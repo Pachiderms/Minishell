@@ -12,6 +12,21 @@
 
 #include "../includes/minishell.h"
 
+void	prep_unset(t_main *main, char **split)
+{
+	int i;
+	char *tmp;
+
+	i = 1;
+	while (split[i] && is_sc(split[i]) != 1)
+	{
+		tmp = ft_strjoin("unset ", split[i]);
+		unset(main, tmp);
+		free(tmp);
+		i++;	
+	}
+}
+
 int	check_var_exists(t_main *main, char *cmd)
 {
 	int		i;

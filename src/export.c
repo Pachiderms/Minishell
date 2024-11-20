@@ -47,6 +47,23 @@ void	print_ascii_order(t_main *main) // a voir
 	free_old_env(sort_env, main->env_len);
 }
 
+void	prep_export(t_main *main, char **split)
+{
+	int i;
+	char *tmp;
+
+	i = 1;
+	if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
+		return (print_ascii_order(main));
+	while (split[i] && is_sc(split[i]) != 1)
+	{
+		tmp = ft_strjoin("export ", split[i]);
+		export(main, tmp);
+		free(tmp);
+		i++;	
+	}
+}
+
 int	check_syntax_export(t_main *main, char *cmd)
 {
 	int		i;
@@ -55,8 +72,6 @@ int	check_syntax_export(t_main *main, char *cmd)
 	i = 0;
 	if (ft_strlen(cmd) == 6 && ft_strncmp(cmd, "export", -1) == 0)
 		return (print_ascii_order(main), 0);
-	if (ft_strncmp(cmd, "export ", 7) != 0)
-		return (0);
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	if (arg[0] == '_' && arg[1] == '=')
 		return (free(arg), 0);
