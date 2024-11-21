@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:03:22 by zamgar            #+#    #+#             */
-/*   Updated: 2024/05/30 17:17:00 by zamgar           ###   ########.fr       */
+/*   Updated: 2024/11/21 15:28:09 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../includes/libft.h"
 //#include <stdio.h>
 
 char	*ft_strdup(const char *s)

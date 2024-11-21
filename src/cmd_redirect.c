@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/19 16:40:57 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:46:16 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,20 @@ int	handle_opening_file(char *file, int append)
 		if (access(file, W_OK) != 0)
 			return (-1);
 	}
-	else
+	else if (!append)
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		if (access(file, W_OK) != 0)
 			return (-1);
 	}
+	else
+	{
+		fd = open(file, O_RDONLY);
+	}
 	return (fd);
 }
 
-int	get_fd(char **cmd)
+int	get_fd_out(char **cmd)
 {
 	int	i;
 
@@ -52,6 +56,23 @@ int	get_fd(char **cmd)
 			return (-1);
 		}
 		i++;
+	}
+	return (1);
+}
+
+int	get_fd_in(char **cmd)
+{
+	int	i;
+
+	i = 1;
+	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
+	{
+		if (ft_strcmp(cmd[i], "<") == 0)
+		{
+			if (cmd[i + 1])
+				return (handle_opening_file(cmd[i + 1], 2));
+			return (-1);
+		}
 	}
 	return (1);
 }

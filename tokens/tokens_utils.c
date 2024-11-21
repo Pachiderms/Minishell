@@ -64,19 +64,6 @@ char	*get_rid_of(char *s, char supr)
 	return (dest);
 }
 
-void	ft_free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		if (split[i])
-			free(split[i]);
-		i++;
-	}
-}
-
 int	ft_quote(char **s, char **split, int q)
 {
 	int		i;

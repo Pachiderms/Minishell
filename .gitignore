@@ -2,5 +2,5 @@
 *.d
 *.a
 minishell
-test.txt
+*.txt
 .vscode/

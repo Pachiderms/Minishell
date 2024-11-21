@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/21 15:27:47 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,13 @@
 # include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+#include "token.h"
+#include "libft.h"
 
 # define GREEN	"\033[0;32m"
 # define RED	"\033[0;31m"
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
-
-enum e_type {command, argument, sc, end};
-
-typedef struct token_t
-{
-	enum e_type	type;
-	char		*value;
-}	t_token;
 
 typedef struct s_main {
     char	**env;
@@ -48,21 +42,6 @@ typedef struct s_main {
     int		nb_cmd;
     char	*path;
 }	t_main;
-
-// LIBFT
-size_t	ft_atoi(const char *str);
-int		ft_isspace(int c);
-char	**ft_split(char const *s, char c);
-char	*ft_strdup(const char *s);
-size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		ft_strcmp(const char *s1, const char *s2);
-char	*ft_strchr(const char *s, int c);
-char	*ft_substr(char const *str, unsigned int start, size_t len);
-void	ft_putendl_fd(char *s, int fd);
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putchar_fd(char c, int fd);
 
 // MINISHELL
 /// Env
@@ -79,7 +58,8 @@ void	print_ascii_order(t_main *main);
 void	prep_export(t_main *main, char **split);
 /// Echo
 void	ft_echo(char **cmd);
-int		get_fd(char **cmd);
+int		get_fd_out(char **cmd);
+int		get_fd_in(char **cmd);
 // Cd
 void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char *cmd);
@@ -89,27 +69,16 @@ int		pwd(void);
 int		check_var_exists(t_main *main, char *cmd);
 void	free_old_env(char **tab, int tablen);
 void	free_all_data(t_main *main);
-
 //Utils
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
-
-/// Tokens
-int		init_tokens(char **split, t_main *main);
-int		is_cmd(char *s, char *path);
-int		is_sc(char *s);
-int		ft_findmltpchar(char *s1, char *s2);
-int		check_builtin(char *s);
-char	*get_rid_of(char *s, char supr);
-/// Utils Tokens
-int		ft_quote(char **s, char **split, int q);
-char	**clean_split(char **split);
-int	    handle_sc(t_main *main, char **split, int i);
-
 //EXEC
 void	ft_exec(t_main *main, char **split, char *cmd);
-
+void    ft_fork(t_main *main, char **split);
 //PIPEX
 void	pipex(t_main *main, char **split);
+//ORGANISE
+char    *prep_cmd(char *cmd);
+char    *prep_cmd_excve(t_main *main, char **split);
 
 #endif

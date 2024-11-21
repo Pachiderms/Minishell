@@ -30,7 +30,10 @@ int	is_cmd(char *s, char *path)
 	char	**split;
 
 	i = 0;
-	s1 = ft_strjoin("/", s);
+	if (ft_strncmp(s, "/bin/", 4) == 0)
+		s1 = ft_strjoin("/", &s[5]);
+	else
+		s1 = ft_strjoin("/", s);
 	split = ft_split(path, ':');
 	if (check_builtin(s))
 			return (free(split), free(s1), 1);

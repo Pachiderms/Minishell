@@ -41,29 +41,6 @@ int get_cmd_number(t_main *main, char **split)
     return (cmd);
 }
 
-void    ft_fork(t_main *main, char **split)
-{
-    pid_t   fork_id;
-    char    *cmd;
-
-    int status = 0;
-    fork_id = fork();
-    if (fork_id == 0)
-    {
-        cmd = ft_strjoin("/bin/", split[0]);
-        execve(cmd, split, main->env);
-    }
-    else
-        waitpid(fork_id, &status, 0);
-    free(cmd);
-}
-
-void    prep_cmd_pipex(char **split)
-{
-    (void)split;
-    return ;
-}
-
 void    ft_pipe(t_main *main, char **split)
 {
     int fd[2];
