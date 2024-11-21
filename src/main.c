@@ -12,12 +12,25 @@
 
 #include "../includes/minishell.h"
 
+void	free_tokens(t_token *tokens, int tokens_len)
+{
+	int	i;
+
+	i = tokens_len - 1;
+	while (i >= 0)
+	{
+		free(tokens[i].value);
+		i--;
+	}
+	return ;
+}
+
 void	free_all_data(t_main *main)
 {
 	if (main->env)
-		free_old_env(main->env, main->env_len);
-	/* if (main->tokens)
-		// fonction à faire pour free une liste */
+		free_env(main->env, main->env_len);
+	if (main->tokens)
+		free_tokens(main->tokens, main->tokens_len);
 }
 
 void	init_main(t_main *main)
@@ -26,6 +39,7 @@ void	init_main(t_main *main)
 	main->env_len = 0;
 	main->tokens = NULL;
 	main->tokens_len = 0;
+	main->split_len = 0;
 	main->nb_cmd = 0;
 	main->path = NULL;
 }
@@ -72,6 +86,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	(void)cmd;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
@@ -84,7 +99,7 @@ int	main(int argc, char **argv, char **env)
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
 			add_history(cmd);
-		split = clean_split(ft_split(cmd, ' '));
+		split = clean_split(&main, ft_split(cmd, ' '));
 		if (init_tokens(split, &main) == 0)
 			return (free_all_data(&main), 1);
 		ft_exec(&main, split, cmd);

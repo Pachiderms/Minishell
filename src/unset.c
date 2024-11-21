@@ -95,7 +95,7 @@ void	unset(t_main *main, char *cmd)
 		tmp[i] = ft_strdup(main->env[i]);
 		i++;
 	}
-	free_old_env(main->env, main->env_len);
+	free_env(main->env, main->env_len);
 	main->env = (char **)malloc(sizeof(char *) * (main->env_len - 1) + 1);
 	i = 0;
 	while (i < main->env_len)
@@ -108,7 +108,7 @@ void	unset(t_main *main, char *cmd)
 		if (i == var_to_unset)
 			i++;
 	}
-	free_old_env(tmp, main->env_len);
+	free_env(tmp, main->env_len);
 	main->env_len -= 1;
 	return ;
 }

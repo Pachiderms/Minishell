@@ -9,7 +9,7 @@
 /*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-oo
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -45,6 +45,7 @@ typedef struct s_main {
     int		env_len;
     t_token	*tokens;
     int		tokens_len;
+    int     split_len;
     int		nb_cmd;
     char	*path;
 }	t_main;
@@ -87,8 +88,6 @@ int		cd(t_main *main, char *cmd);
 int		pwd(void);
 /// Utils BuiltIns
 int		check_var_exists(t_main *main, char *cmd);
-void	free_old_env(char **tab, int tablen);
-void	free_all_data(t_main *main);
 
 //Utils
 int		only_space_line(char *cmd);
@@ -103,7 +102,7 @@ int		check_builtin(char *s);
 char	*get_rid_of(char *s, char supr);
 /// Utils Tokens
 int		ft_quote(char **s, char **split, int q);
-char	**clean_split(char **split);
+char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 
 //EXEC
@@ -111,5 +110,10 @@ void	ft_exec(t_main *main, char **split, char *cmd);
 
 //PIPEX
 void	pipex(t_main *main, char **split);
+
+// FREE
+void	free_all_data(t_main *main);
+void	free_env(char **tab, int tablen);
+void	free_tokens(t_token *tokens, int tokens_len);
 
 #endif

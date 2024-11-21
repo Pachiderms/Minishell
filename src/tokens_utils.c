@@ -101,7 +101,7 @@ int	ft_quote(char **s, char **split, int q)
 	return (i + 1);
 }
 
-char	**clean_split(char **split)
+char	**clean_split(t_main *main, char **split)
 {
 	int		i;
 	int		len;
@@ -126,17 +126,21 @@ char	**clean_split(char **split)
 		}
 	}
 	res[len] = NULL;
+	main->split_len = len;
+	free(split);
 	return (res);
 }
 
 int	init_tokens(char **split, t_main *main)
 {
 	int		i;
+
 	i = 0;
 	if (!split)
 		return (0);
 	while (split[i] != NULL)
 		i++;
+	main->tokens_len = i;
 	main->tokens = malloc(i * sizeof(t_token));
 	if (!main->tokens)
 		return (0);
@@ -152,7 +156,7 @@ int	init_tokens(char **split, t_main *main)
 		}
 		else
 			main->tokens[i].type = argument;
-		main->tokens[i].value = split[i];
+		main->tokens[i].value = ft_strdup(split[i]);
 	}
 	main->nb_cmd = get_cmd_number(main, split);
 	return (1);

@@ -12,21 +12,23 @@
 
 #include "../includes/minishell.h"
 
-void	print_ascii_order(t_main *main) // a voir
+void	print_ascii_order(t_main *main)
 {
 	int		i;
 	char	*tmp;
 	char	**sort_env;
+	int		sortenv_len;
 
 	i = 0;
-	sort_env = (char **)malloc(sizeof(char *) * main->env_len + 1);
-	while (i < main->env_len)
+	sortenv_len = main->env_len - 1;
+	sort_env = (char **)malloc(sizeof(char *) * sortenv_len + 1);
+	while (i < sortenv_len)
 	{
 		sort_env[i] = ft_strdup(main->env[i]);
 		i++;
 	}
 	i = 0;
-	while (i < main->env_len - 1)
+	while (i < sortenv_len - 1)
 	{
 		if (ft_strncmp(sort_env[i], sort_env[i + 1], -1) > 0)
 		{
@@ -37,14 +39,17 @@ void	print_ascii_order(t_main *main) // a voir
 		}
 		i++;
 	}
+	tmp = sort_env[1];
+	sort_env[1] = sort_env[0];
+	sort_env[0] = tmp;
 	i = 0;
-	while (i < main->env_len)
+	while (i < sortenv_len)
 	{
-		if (!(sort_env[i][0] == '_' && sort_env[i][0] == '=')) // faire en sorte de ne pas afficher le _= et de trouver cmment bouger le SSH_AUTH_SOCK en haut
-			printf("%s\n", sort_env[i]);
+		printf("%s\n", sort_env[i]);
 		i++;
 	}
-	free_old_env(sort_env, main->env_len);
+	free_env(sort_env, sortenv_len);
+	//printf("Env Len : %d\n", (main->env_len));
 }
 
 void	prep_export(t_main *main, char **split)
@@ -54,7 +59,10 @@ void	prep_export(t_main *main, char **split)
 
 	i = 1;
 	if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
-		return (print_ascii_order(main));
+	{
+		print_ascii_order(main);
+		return ;
+	}
 	while (split[i] && is_sc(split[i]) != 1)
 	{
 		tmp = ft_strjoin("export ", split[i]);
@@ -99,7 +107,7 @@ void	export(t_main *main, char *cmd)
 		tmp[i] = ft_strdup(main->env[i]);
 		i++;
 	}
-	free_old_env(main->env, main->env_len);
+	free_env(main->env, main->env_len);
 	if (replace_pos >= 0)
 		main->env = (char **)malloc(sizeof(char *) * (main->env_len) + 1);
 	else
@@ -120,12 +128,13 @@ void	export(t_main *main, char *cmd)
 			i++;
 		}
 	}
-	free_old_env(tmp, main->env_len);
+	free_env(tmp, main->env_len);
 	if (replace_pos == -1)
 	{
 		main->env[i] = main->env[i - 1];
 		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 		main->env_len += 1;
 	}
+	//printf("Env Len : %d\n", (main->env_len));
 	return ;
 }

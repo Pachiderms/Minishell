@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	free_old_env(char **tab, int tablen)
+void	free_env(char **tab, int tablen)
 {
 	int	i;
 
@@ -37,5 +37,6 @@ void	print_env(t_main *main)
 		printf("%s\n", main->env[i]);
 		i++;
 	}
+	printf("Env Len : %d\n", (main->env_len));
 	return ;
 }
