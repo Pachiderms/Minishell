@@ -29,14 +29,18 @@ void	free_all_data(t_main *main)
 {
 	if (main->env)
 		free_env(main->env, main->env_len);
-	if (main->tokens)
-		free_tokens(main->tokens, main->tokens_len);
+	if (main->export)
+		free_env(main->export, main->export_len);
+	/* if (main->tokens)
+		free_tokens(main->tokens, main->tokens_len); */
 }
 
 void	init_main(t_main *main)
 {
 	main->env = NULL;
 	main->env_len = 0;
+	main->export = NULL;
+	main->export_len = 0;
 	main->tokens = NULL;
 	main->tokens_len = 0;
 	main->split_len = 0;
@@ -47,13 +51,16 @@ void	init_main(t_main *main)
 int	init_env(char **env, t_main *main)
 {
 	int	i;
+	char *tmp;
 
 	i = -1;
 	while (env[++i] != NULL)
 		continue ;
 	main->env_len = i;
+	main->export_len = i - 1;
 	main->env = (char **)malloc(sizeof(char *) * main->env_len + 1);
-	if (!main->env)
+	main->export = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	if (!main->env || !main->export)
 		return (0);
 	i = 0;
 	while (i < main->env_len)
@@ -61,6 +68,27 @@ int	init_env(char **env, t_main *main)
 		main->env[i] = ft_strdup(env[i]);
 		i++;
 	}
+	i = 0;
+	while (i < main->export_len)
+	{
+		main->export[i] = ft_strdup(env[i]);
+		i++;
+	}
+	i = 0;
+	while (i < main->export_len - 1)
+	{
+		if (ft_strncmp(main->export[i], main->export[i + 1], -1) > 0)
+		{
+			tmp = main->export[i + 1];
+			main->export[i + 1] = main->export[i];
+			main->export[i] = tmp;
+			i = 0;
+		}
+		i++;
+	}
+	tmp = main->export[1];
+	main->export[1] = main->export[0];
+	main->export[0] = tmp;
 	return (1);
 }
 

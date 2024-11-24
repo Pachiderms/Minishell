@@ -43,6 +43,8 @@ typedef struct token_t
 typedef struct s_main {
     char	**env;
     int		env_len;
+    char	**export;
+    int		export_len;
     t_token	*tokens;
     int		tokens_len;
     int     split_len;
@@ -68,15 +70,16 @@ void	ft_putchar_fd(char c, int fd);
 // MINISHELL
 /// Env
 int		init_env(char **env, t_main *main);
-void	print_env(t_main *main);
+void	print_env(t_main *main, int check);
 /// Unset
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
 void	prep_unset(t_main *main, char **split);
 /// Export
 void	export(t_main *main, char *cmd);
-int		check_syntax_export(t_main *main, char *cmd);
-void	print_ascii_order(t_main *main);
+int		check_syntax_export(char *cmd);
+void	fill_export(t_main *main, char *cmd, int replace_pos);
+void	fill_env_export(t_main *main, char *cmd, int replace_pos);
 void	prep_export(t_main *main, char **split);
 /// Echo
 void	ft_echo(char **cmd);
