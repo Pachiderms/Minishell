@@ -66,6 +66,7 @@ char	*ft_substr(char const *str, unsigned int start, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+int	ft_isdigit(int c);
 
 // MINISHELL
 /// Env
@@ -78,9 +79,10 @@ void	prep_unset(t_main *main, char **split);
 /// Export
 void	export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
-void	fill_export(t_main *main, char *cmd, int replace_pos);
-void	fill_env_export(t_main *main, char *cmd, int replace_pos);
+void	fill_export(t_main *main, char *cmd);
+void	fill_env_export(t_main *main, char *cmd);
 void	prep_export(t_main *main, char **split);
+void	print_ascii_order(t_main *main);
 /// Echo
 void	ft_echo(char **cmd);
 int		get_fd(char **cmd);
@@ -90,7 +92,7 @@ int		cd(t_main *main, char *cmd);
 // Pwd
 int		pwd(void);
 /// Utils BuiltIns
-int		check_var_exists(t_main *main, char *cmd);
+int		check_var_exists(char **env, int len, char *cmd);
 
 //Utils
 int		only_space_line(char *cmd);

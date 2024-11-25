@@ -27,26 +27,32 @@ void	prep_unset(t_main *main, char **split)
 	}
 }
 
-int	check_var_exists(t_main *main, char *cmd)
+int	check_var_exists(char **env, int len, char *cmd)
 {
 	int		i;
 	int		j;
 	char	*arg;
+	char	*actual_var;
 
 	i = 0;
 	j = 0;
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-	while (i < main->env_len)
+	while (arg[i] != '=' && arg[i])
+		i++;
+	arg[i] = '\0';
+	//printf("'%s'\n\n", arg);
+	i = 0;
+	while (i < len)
 	{
-		while (main->env[i][j] != '=')
-		{
-			if (arg[j] == main->env[i][j])
-				j++;
-			else
-				break ;
-			if (main->env[i][j] == '=')
-				return (free(arg), i);
-		}
+		actual_var = ft_strdup(env[i]);
+		while (actual_var[j] != '=' && actual_var[j])
+			j++;
+		actual_var[j] = '\0';
+		//printf("'%s'\n", actual_var);
+		if (ft_strcmp(arg, actual_var) == 0)
+			return (free(arg), free(actual_var), i);
+		free(actual_var);
+		actual_var = NULL;
 		j = 0;
 		i++;
 	}
@@ -86,7 +92,7 @@ void	unset(t_main *main, char *cmd)
 	j = 0;
 	if (check_syntax_unset(cmd) == 0)
 		return ;
-	var_to_unset = check_var_exists(main, cmd);
+	var_to_unset = check_var_exists(main->env, main->env_len, cmd);
 	if (var_to_unset == -1)
 		return ;
 	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);

@@ -75,9 +75,9 @@ int	handle_sc(t_main *main, char **split, int i)
 	{
 		tmp = ft_strjoin("export ", &split[i][1]);
 		tmp2 = ft_strjoin(tmp, "=");
-		if (check_var_exists(main, tmp2) != -1)
+		if (check_var_exists(main->env, main->env_len, tmp2) != -1)
 		{
-			split[i] = &ft_strchr(main->env[check_var_exists(main, tmp2)], '=')[1];
+			split[i] = &ft_strchr(main->env[check_var_exists(main->env, main->env_len, tmp2)], '=')[1];
 			main->tokens[i].type = argument;
 			return (free(tmp), free(tmp2), 1);
 		}

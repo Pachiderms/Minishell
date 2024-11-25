@@ -51,13 +51,14 @@ void	init_main(t_main *main)
 int	init_env(char **env, t_main *main)
 {
 	int	i;
-	char *tmp;
 
 	i = -1;
 	while (env[++i] != NULL)
 		continue ;
 	main->env_len = i;
+	printf("Basic env len : %d\n", main->env_len);
 	main->export_len = i - 1;
+	printf("Basic export len : %d\n", main->export_len);
 	main->env = (char **)malloc(sizeof(char *) * main->env_len + 1);
 	main->export = (char **)malloc(sizeof(char *) * main->export_len + 1);
 	if (!main->env || !main->export)
@@ -74,21 +75,6 @@ int	init_env(char **env, t_main *main)
 		main->export[i] = ft_strdup(env[i]);
 		i++;
 	}
-	i = 0;
-	while (i < main->export_len - 1)
-	{
-		if (ft_strncmp(main->export[i], main->export[i + 1], -1) > 0)
-		{
-			tmp = main->export[i + 1];
-			main->export[i + 1] = main->export[i];
-			main->export[i] = tmp;
-			i = 0;
-		}
-		i++;
-	}
-	tmp = main->export[1];
-	main->export[1] = main->export[0];
-	main->export[0] = tmp;
 	return (1);
 }
 
@@ -118,8 +104,8 @@ int	main(int argc, char **argv, char **env)
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
-	if (check_var_exists(&main, "export PATH=") != -1)
-		main.path = env[check_var_exists(&main, "export PATH=")];
+	if (check_var_exists(main.env, main.env_len, "export PATH=") != -1)
+		main.path = env[check_var_exists(main.env, main.env_len, "export PATH=")];
 	else
 		return (free_all_data(&main), 1);
 	while (1)

@@ -12,6 +12,43 @@
 
 #include "../includes/minishell.h"
 
+void	print_ascii_order(t_main *main)
+{
+	int		i;
+	char	*tmp;
+	char	**sort_env;
+
+	i = 0;
+	sort_env = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	while (i < main->export_len)
+	{
+		sort_env[i] = ft_strdup(main->export[i]);
+		i++;
+	}
+	i = 0;
+	while (i < main->export_len - 1)
+	{
+		if (ft_strncmp(sort_env[i], sort_env[i + 1], -1) > 0)
+		{
+			tmp = sort_env[i + 1];
+			sort_env[i + 1] = sort_env[i];
+			sort_env[i] = tmp;
+			i = 0;
+		}
+		i++;
+	}
+	tmp = sort_env[1];
+	sort_env[1] = sort_env[0];
+	sort_env[0] = tmp;
+	i = 0;
+	while (i < main->export_len)
+	{
+		printf("%s\n", sort_env[i]);
+		i++;
+	}
+	free_env(sort_env, main->export_len);
+}
+
 void	prep_export(t_main *main, char **split)
 {
 	int i;
@@ -28,7 +65,7 @@ void	prep_export(t_main *main, char **split)
 		tmp = ft_strjoin("export ", split[i]);
 		export(main, tmp);
 		free(tmp);
-		i++;	
+		i++;
 	}
 }
 
@@ -39,8 +76,20 @@ int	check_syntax_export(char *cmd)
 
 	i = 0;
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-	if (arg[0] == '_' && arg[1] == '=')
+	if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
 		return (free(arg), 0);
+	if (ft_isdigit(arg[0]) == 1 || arg[0] == '=')
+		return (printf("bash: export: '%c': not a valid identifier\n", arg[0]), free(arg), 0);
+	while (arg[i] != '=' && arg[i])
+	{
+		if (arg[i] == '%' || arg[i] == '?' || arg[i] == '@'
+			|| arg[i] == '\\' || arg[i] == '~' || arg[i] == '-'
+			|| arg[i] == '.' || arg[i] == '}' || arg[i] == '{'
+			|| arg[i] == '*' || arg[i] == '#' || arg[i] == '!'
+			|| (arg[i] == '+' && arg[i + 1] != '='))
+			return (printf("bash: export: '%c': not a valid identifier\n", arg[i]), free(arg), 0);
+		i++;																																		
+	}
 	while (arg[i])
 	{
 		if (arg[i] == '=')
@@ -60,13 +109,15 @@ int	check_syntax_export(char *cmd)
 	return (2); // 2 pour mettre seulement dans export
 }
 
-void	fill_env_export(t_main *main, char *cmd, int replace_pos)
+void	fill_env_export(t_main *main, char *cmd)
 {
 	int		i;
+	int		replace_pos;
 	char	*arg;
 	char	**tmp;
 
 	i = 0;
+	replace_pos = check_var_exists(main->env, main->env_len, cmd);
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);
 	while (i < main->env_len)
@@ -103,24 +154,26 @@ void	fill_env_export(t_main *main, char *cmd, int replace_pos)
 		main->env_len += 1;
 	}
 	free(arg);
-	fill_export(main, cmd, replace_pos);
+	fill_export(main, cmd);
 }
 
-void	fill_export(t_main *main, char *cmd, int replace_pos)
+void	fill_export(t_main *main, char *cmd)
 {
 	int		i;
+	int		replace_pos;
 	char	*arg;
 	char	**tmp;
 
 	i = 0;
+	replace_pos = check_var_exists(main->export, main->export_len, cmd);
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
 	while (i < main->export_len)
 	{
-		tmp[i] = ft_strdup(main->env[i]);
+		tmp[i] = ft_strdup(main->export[i]);
 		i++;
 	}
-	free_env(main->env, main->export_len);
+	free_env(main->export, main->export_len);
 	if (replace_pos >= 0)
 		main->export = (char **)malloc(sizeof(char *) * (main->export_len) + 1);
 	else
@@ -145,7 +198,7 @@ void	fill_export(t_main *main, char *cmd, int replace_pos)
 	if (replace_pos == -1)
 	{
 		main->export[i] = main->export[i - 1];
-		main->export[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+		main->export[i - 1] = ft_strdup(ft_strjoin(&ft_strchr(cmd, ' ')[1], "="));
 		main->export_len += 1;
 	}
 	free(arg);
@@ -153,17 +206,21 @@ void	fill_export(t_main *main, char *cmd, int replace_pos)
 
 void	export(t_main *main, char *cmd)
 {
-	int	replace_pos;
 	int	syntax;
 
 	syntax = check_syntax_export(cmd);
-	replace_pos = check_var_exists(main, cmd);
+	printf("Syntax : %d\n", syntax);
 	if (syntax == 0)
 		return ;
 	else if (syntax == 1)
-		fill_env_export(main, cmd, replace_pos);
+	{
+		fill_env_export(main, cmd);
+		printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
+	}
 	else if (syntax == 2)
-		fill_export(main, cmd, replace_pos);
-	//printf("Env Len : %d\n", (main->env_len));
+	{
+		fill_export(main, cmd);
+		printf("Export Len : %d\n", main->export_len);
+	}
 	return ;
 }
