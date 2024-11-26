@@ -39,8 +39,10 @@ int	check_var_exists(char **env, int len, char *cmd)
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	while (arg[i] != '=' && arg[i])
 		i++;
-	arg[i] = '\0';
-	//printf("'%s'\n\n", arg);
+	if (arg [i - 1] == '+')
+		arg[i - 1] = '\0';
+	else
+		arg[i] = '\0';
 	i = 0;
 	while (i < len)
 	{
@@ -48,7 +50,6 @@ int	check_var_exists(char **env, int len, char *cmd)
 		while (actual_var[j] != '=' && actual_var[j])
 			j++;
 		actual_var[j] = '\0';
-		//printf("'%s'\n", actual_var);
 		if (ft_strcmp(arg, actual_var) == 0)
 			return (free(arg), free(actual_var), i);
 		free(actual_var);
@@ -81,7 +82,7 @@ int	check_syntax_unset(char *cmd)
 	return (1);
 }
 
-void	unset(t_main *main, char *cmd)
+void	unset_env(t_main *main, char *cmd)
 {
 	int		i;
 	int		j;
@@ -90,8 +91,6 @@ void	unset(t_main *main, char *cmd)
 
 	i = 0;
 	j = 0;
-	if (check_syntax_unset(cmd) == 0)
-		return ;
 	var_to_unset = check_var_exists(main->env, main->env_len, cmd);
 	if (var_to_unset == -1)
 		return ;
@@ -116,5 +115,51 @@ void	unset(t_main *main, char *cmd)
 	}
 	free_env(tmp, main->env_len);
 	main->env_len -= 1;
+	return ;
+}
+
+void	unset_export(t_main *main, char *cmd)
+{
+	int		i;
+	int		j;
+	int		var_to_unset;
+	char	**tmp;
+
+	i = 0;
+	j = 0;
+	var_to_unset = check_var_exists(main->export, main->export_len, cmd);
+	if (var_to_unset == -1)
+		return ;
+	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	while (i < main->export_len)
+	{
+		tmp[i] = ft_strdup(main->export[i]);
+		i++;
+	}
+	free_env(main->export, main->export_len);
+	main->export = (char **)malloc(sizeof(char *) * (main->export_len - 1) + 1);
+	i = 0;
+	while (i < main->export_len)
+	{
+		if (i == var_to_unset)
+			i++;
+		main->export[j] = ft_strdup(tmp[i]);
+		i++;
+		j++;
+		if (i == var_to_unset)
+			i++;
+	}
+	free_env(tmp, main->export_len);
+	main->export_len -= 1;
+	return ;
+}
+
+void	unset(t_main *main, char *cmd)
+{
+	if (check_syntax_unset(cmd) == 0)
+		return ;
+	unset_env(main, cmd);
+	unset_export(main, cmd);
+	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	return ;
 }

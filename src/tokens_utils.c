@@ -12,31 +12,6 @@
 
 #include "../includes/minishell.h"
 
-char	**ft_double_array_clean(char **split)
-{
-	char	**res;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = 1;
-	while (split[++i])
-	{
-		if (!ft_strchr(split[i], 34) && !ft_strchr(split[i], 39))
-		len++;
-	}
-	res = malloc ((len + 1) * sizeof(char *));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (i <= len)
-	{
-		res[i] = NULL;
-		i++;
-	}
-	return (res);
-}
-
 char	*get_rid_of(char *s, char supr)
 {
 	int		i;
@@ -82,82 +57,115 @@ int	ft_quote(char **s, char **split, int q)
 	int		i;
 	char	*tmp;
 
-	i = 1;
-	*s = get_rid_of(split[0], q);
+	i = 0;
 	tmp = NULL;
 	while (split[i])
 	{
+		tmp = get_rid_of(split[i], q);
 		if (ft_strchr(split[i], q))
 		{
-			tmp = ft_strjoin(" ", get_rid_of(split[i], q));
-			*s = ft_strjoin(*s, tmp);
+			*s = tmp;
 			break ;
 		}
-		else
-			tmp = ft_strjoin(" ", get_rid_of(split[i], q));
-		*s = ft_strjoin(*s, tmp);
+		*s = ft_strjoin(tmp, " ");
 		i++;
 	}
 	return (i + 1);
 }
 
-char	**clean_split(t_main *main, char **split)
+int	check_builtin(char *s)
+{
+	if (!ft_strncmp(s, "echo", -1) || !ft_strncmp(s, "cd", -1)
+		|| !ft_strncmp(s, "pwd", -1) || !ft_strncmp(s, "export", -1)
+		|| !ft_strncmp(s, "unset", -1) || !ft_strncmp(s, "env", -1)
+		|| !ft_strncmp(s, "exit", -1))
+		return (1);
+	return (0);
+}
+
+int	is_cmd(char *s, char *path)
+{
+	int		i;
+	char	*s1;
+	char	*tmp;
+	char	**split;
+
+	i = 0;
+	s1 = ft_strjoin("/", s);
+	split = ft_split(path, ':');
+	if (check_builtin(s))
+			return (free(split), free(s1), 1);
+	while (split[i])
+	{
+		tmp = ft_strjoin(split[i], s1);
+		if (access(tmp, R_OK) == 0)
+		{
+			return (free(tmp), free(split), free(s1), 1);
+		}
+		tmp = NULL;
+		free(tmp);
+		i++;
+	}
+	return (free(split), free(s1), 0);
+}
+
+int	is_sc(char *s)
+{
+	if (ft_strcmp(s, "|") == 0 || ft_strcmp(s, "<") == 0
+		|| ft_strcmp(s, ">") == 0 || ft_strcmp(s, "<<") == 0
+		|| ft_strcmp(s, ">>") == 0)
+		return (1);
+	if (s[0] == '$')
+		return (2);
+	return (0);
+}
+
+int	handle_sc(t_main *main, char **split, int i)
+{
+	int		sc_type;
+	char	*tmp;
+	char	*tmp2;
+
+	sc_type = is_sc(split[i]);
+	if (sc_type == 1)
+	{
+		main->tokens[i].type = sc;
+		return (1);
+	}
+	if (sc_type == 2)
+	{
+		tmp = ft_strjoin("export ", &split[i][1]);
+		tmp2 = ft_strjoin(tmp, "=");
+		if (check_var_exists(main->env, main->env_len, tmp2) != -1)
+		{
+			split[i] = &ft_strchr(main->env[check_var_exists(main->env, main->env_len, tmp2)], '=')[1];
+			main->tokens[i].type = argument;
+			return (free(tmp), free(tmp2), 1);
+		}
+		free(tmp);
+		free(tmp2);
+	}
+	return (0);
+}
+
+char	*ft_strendchr(char *s, char end)
 {
 	int		i;
 	int		len;
-	char	**res;
+	char	*res;
 
 	i = 0;
 	len = 0;
-	res = ft_double_array_clean(split);
+	while (s[len] && s[len] != end)
+		len++;
+	res = malloc(len * sizeof(char) + 1);
 	if (!res)
-		return (NULL);
-	while (split[i])
-	{
-		if (ft_strchr(split[i], 34))
-			i += ft_quote(&res[len++], &split[i], 34);
-		else if (ft_strchr(split[i], 39))
-			i += ft_quote(&res[len++], &split[i], 39);
-		else
-		{
-			res[len] = split[i];
-			len++;
-			i++;
-		}
-	}
-	res[len] = NULL;
-	main->split_len = len;
-	free(split);
-	return (res);
-}
-
-int	init_tokens(char **split, t_main *main)
-{
-	int		i;
-
-	i = 0;
-	if (!split)
 		return (0);
-	while (split[i] != NULL)
+	while (i < len)
+	{
+		res[i] = s[i];
 		i++;
-	main->tokens_len = i;
-	main->tokens = malloc(i * sizeof(t_token));
-	if (!main->tokens)
-		return (0);
-	i = -1;
-	while (split[++i] != NULL)
-	{
-		if (is_cmd(split[i], main->path))
-			main->tokens[i].type = command;
-		else if (is_sc(split[i]) > 0)
-		{
-			if (!handle_sc(main, split, i))
-				return (0);
-		}
-		else
-			main->tokens[i].type = argument;
-		main->tokens[i].value = ft_strdup(split[i]);
 	}
-	main->nb_cmd = get_cmd_number(main, split);
-	return (1);
+	res[i] = '\0';
+	return (res);
 }

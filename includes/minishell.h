@@ -79,8 +79,8 @@ void	prep_unset(t_main *main, char **split);
 /// Export
 void	export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
-void	fill_export(t_main *main, char *cmd);
-void	fill_env_export(t_main *main, char *cmd);
+void	fill_export(t_main *main, char *cmd, int plus);
+void	fill_env_export(t_main *main, char *cmd, int plus);
 void	prep_export(t_main *main, char **split);
 void	print_ascii_order(t_main *main);
 /// Echo
@@ -120,5 +120,8 @@ void	pipex(t_main *main, char **split);
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);
 void	free_tokens(t_token *tokens, int tokens_len);
+
+
+char	*ft_strendchr(char *s, char end);
 
 #endif
