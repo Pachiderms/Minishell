@@ -146,3 +146,24 @@ int	handle_sc(t_main *main, char **split, int i)
 	}
 	return (0);
 }
+char	*ft_strendchr(char *s, char end)
+{
+	int		i;
+	int		len;
+	char	*res;
+
+	i = 0;
+	len = 0;
+	while (s[len] && s[len] != end)
+		len++;
+	res = malloc(len * sizeof(char) + 1);
+	if (!res)
+		return (0);
+	while (i < len)
+	{
+		res[i] = s[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}
