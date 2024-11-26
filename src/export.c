@@ -111,19 +111,14 @@ int	check_syntax_export(char *cmd)
 
 
 
-void	fill_env_export(t_main *main, char *cmd, int plus)
+void	fill_env_export(t_main *main, char *cmd)
 {
 	int		i;
 	int		replace_pos;
-	char	*arg;
 	char	**tmp;
 
 	i = 0;
 	replace_pos = check_var_exists(main->env, main->env_len, cmd);
-	if (plus == 1)
-		arg = get_without_plus(cmd);
-	else
-		arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);
 	while (i < main->env_len)
 	{
@@ -140,20 +135,14 @@ void	fill_env_export(t_main *main, char *cmd, int plus)
 	{
 		if (i == replace_pos)
 		{
-			if (plus == 0)
-				main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-			else
-				main->env[i] = ft_strjoin(main->env[i], ft_strdup(arg));
+			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
 		}
 		main->env[i] = ft_strdup(tmp[i]);
 		i++;
 		if (i == replace_pos)
 		{
-			if (plus == 0)
-				main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-			else
-				main->env[i] = ft_strjoin(main->env[i], ft_strdup(arg));
+			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
 		}
 	}
@@ -164,20 +153,17 @@ void	fill_env_export(t_main *main, char *cmd, int plus)
 		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 		main->env_len += 1;
 	}
-	free(arg);
-	fill_export(main, cmd, plus);
+	fill_export(main, cmd);
 }
 
-void	fill_export(t_main *main, char *cmd, int plus)
+void	fill_export(t_main *main, char *cmd)
 {
 	int		i;
 	int		replace_pos;
-	char	*arg;
 	char	**tmp;
 
 	i = 0;
 	replace_pos = check_var_exists(main->export, main->export_len, cmd);
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
 	while (i < main->export_len)
 	{
@@ -194,20 +180,14 @@ void	fill_export(t_main *main, char *cmd, int plus)
 	{
 		if (i == replace_pos)
 		{
-			if (plus == 0)
-				main->export[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-			else
-				main->export[i] = ft_strjoin(&ft_strchr(main->export[i], '=')[1], ft_strdup(&ft_strchr(cmd, ' ')[1]));
+			main->export[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
 		}
 		main->export[i] = ft_strdup(tmp[i]);
 		i++;
 		if (i == replace_pos)
 		{
-			if (plus == 0)
-				main->export[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-			else
-				main->export[i] = ft_strjoin(&ft_strchr(main->export[i], '=')[1], ft_strdup(&ft_strchr(cmd, ' ')[1]));
+			main->export[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
 		}
 	}
@@ -218,7 +198,6 @@ void	fill_export(t_main *main, char *cmd, int plus)
 		main->export[i - 1] = ft_strdup(ft_strjoin(&ft_strchr(cmd, ' ')[1], "="));
 		main->export_len += 1;
 	}
-	free(arg);
 }
 
 int check_plus(char *cmd)
@@ -259,13 +238,17 @@ char	*get_without_plus(char *cmd)
 	return (free(arg), str);
 }
 
-char	*get_plus_str(t_main *main, char *cmd) // "export a=a" "bonjour"
+char	*get_plus_str(t_main *main, char *cmd)
 {
 	int	replace_pos;
+	char	*arg;
 
 	replace_pos = check_var_exists(main->env, main->env_len, cmd);
 	if (replace_pos == -1)
-		fill_env_export(main, cmd)
+		arg = ft_strjoin("export ", get_without_plus(cmd));
+	else
+		arg = ft_strjoin(ft_strjoin("export ", main->env[replace_pos]), &ft_strchr(cmd, '=')[1]);
+	return (arg);
 }
 
 void	export(t_main *main, char *cmd)
@@ -283,16 +266,16 @@ void	export(t_main *main, char *cmd)
 		plus = check_plus(cmd);
 		if (plus == 1)
 		{
-			plus_str = get_plus_str();
-			fill_env_export(main, ft_strjoin("export", )); // ajoute ft_strjoin("export a=a", "a+=bonjour"); cmd = "export a+=bonjour"
+			plus_str = get_plus_str(main, cmd);
+			fill_env_export(main, plus_str);
 		}
 		else
-			fill_env_export(main, cmd); // remplace
+			fill_env_export(main, cmd);
 		printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	}
 	else if (syntax == 2)
 	{
-		fill_export(main, cmd, 0);
+		fill_export(main, cmd);
 		printf("Export Len : %d\n", main->export_len);
 	}
 	return ;

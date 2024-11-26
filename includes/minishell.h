@@ -79,8 +79,8 @@ void	prep_unset(t_main *main, char **split);
 /// Export
 void	export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
-void	fill_export(t_main *main, char *cmd, int plus);
-void	fill_env_export(t_main *main, char *cmd, int plus);
+void	fill_export(t_main *main, char *cmd);
+void	fill_env_export(t_main *main, char *cmd);
 void	prep_export(t_main *main, char **split);
 void	print_ascii_order(t_main *main);
 /// Echo
