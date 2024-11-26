@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/26 17:16:05 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ int		is_cmd(char *s, char *path);
 int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
-char	*get_rid_of(char *s, char supr);
+char	*get_rid_of(char *s);
 /// Utils Tokens
-int		ft_quote(char **s, char **split, int q);
+int		ft_quote(char **s, char **split);
 char	**clean_split(char **split);
 int	    handle_sc(t_main *main, char **split, int i);
-
+char	**ft_split_k_q_s(char const *s, char c);
 //EXEC
 void	ft_exec(t_main *main, char **split, char *cmd);
 

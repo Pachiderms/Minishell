@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-char	*get_rid_of(char *s, char supr)
+char	*get_rid_of(char *s)
 {
 	int		i;
 	int		len;
@@ -22,8 +22,8 @@ char	*get_rid_of(char *s, char supr)
 	len = 0;
 	while (s[++i])
 	{
-		if (s[i] != supr)
-		len++;
+		if (s[i] != 34 && s[i] != 39)
+			len++;
 	}
 	dest = malloc(len * sizeof(char) + 1);
 	if (!dest)
@@ -32,8 +32,8 @@ char	*get_rid_of(char *s, char supr)
 	len = 0;
 	while (s[++i])
 	{
-		if (s[i] != supr)
-		dest[len++] = s[i];
+		if (s[i] != 34 && s[i] != 39)
+			dest[len++] = s[i];
 	}
 	dest[len++] = '\0';
 	return (dest);
@@ -52,19 +52,20 @@ void	ft_free_split(char **split)
 	}
 }
 
-int	ft_quote(char **s, char **split, int q)
+int	ft_quote(char **s, char **split)
 {
 	int		i;
 	char	*tmp;
 
-	i = 0;
+	i = 1;
+	*s = get_rid_of(split[0]);
 	tmp = NULL;
 	while (split[i])
 	{
-		tmp = get_rid_of(split[i], q);
-		if (ft_strchr(split[i], q))
+		tmp = get_rid_of(split[i]);
+		if (ft_strchr(split[i], 34) || ft_strchr(split[i], 39))
 		{
-			*s = tmp;
+			*s = ft_strjoin(*s, tmp);
 			break ;
 		}
 		*s = ft_strjoin(tmp, " ");

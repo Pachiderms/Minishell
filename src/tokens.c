@@ -18,12 +18,14 @@ char	**ft_double_array_clean(char **split)
 	int		i;
 	int		len;
 
-	i = 0;
+	i = -1;
 	len = 1;
 	while (split[++i])
 	{
+		printf("s[i]=%s\n", split[i]);
+		printf("len s[i]=%ld\n", ft_strlen(split[i]));
 		if (!ft_strchr(split[i], 34) && !ft_strchr(split[i], 39))
-		len++;
+			len++;
 	}
 	res = malloc ((len + 1) * sizeof(char *));
 	if (!res)
@@ -50,10 +52,8 @@ char	**clean_split(char **split)
 		return (NULL);
 	while (split[i])
 	{
-		if (ft_strchr(split[i], 34))
-			i += ft_quote(&res[len], &split[i], 34);
-		else if (ft_strchr(split[i], 39))
-			i += ft_quote(&res[len], &split[i], 39);
+		if (ft_strchr(split[i], 34) || ft_strchr(split[i], 39))
+			i += ft_quote(&res[len], &split[i]);
 		else
 		{
 			res[len] = split[i];
