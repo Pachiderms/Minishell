@@ -6,11 +6,11 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:03:22 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/21 15:28:09 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/26 15:48:56 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../includes/minishell.h"
 //#include <stdio.h>
 
 char	*ft_strdup(const char *s)
