@@ -67,15 +67,18 @@ int	check_syntax_unset(char *cmd)
 	char	*arg;
 
 	i = 0;
-	if (ft_strncmp(cmd, "unset ", 6) != 0)
-		return (0);
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	if (ft_strncmp(arg, "_", -1) == 0)
 		return (free(arg), 0);
+	if (ft_isdigit(arg[0]) == 1)
+		return (printf("bash: export: '%c': not a valid identifier\n", arg[0]), free(arg), 0);
 	while (arg[i])
 	{
-		if (arg[i] == '=')
-			return (free(arg), 0);
+		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.'
+		|| arg[i] == '+' || arg[i] == '{' || arg[i] == '}'
+		|| arg[i] == '-' || arg[i] == '*' || arg[i] == '#'
+		|| arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
+			return (printf("bash: export: '%c': not a valid identifier\n", arg[i]), free(arg), 0);
 		i++;
 	}
 	free(arg);
