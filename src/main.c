@@ -12,20 +12,38 @@
 
 #include "../includes/minishell.h"
 
+void	free_tokens(t_token *tokens, int tokens_len)
+{
+	int	i;
+
+	i = tokens_len - 1;
+	while (i >= 0)
+	{
+		free(tokens[i].value);
+		i--;
+	}
+	return ;
+}
+
 void	free_all_data(t_main *main)
 {
 	if (main->env)
-		free_old_env(main->env, main->env_len);
+		free_env(main->env, main->env_len);
+	if (main->export)
+		free_env(main->export, main->export_len);
 	/* if (main->tokens)
-		// fonction à faire pour free une liste */
+		free_tokens(main->tokens, main->tokens_len); */
 }
 
 void	init_main(t_main *main)
 {
 	main->env = NULL;
 	main->env_len = 0;
+	main->export = NULL;
+	main->export_len = 0;
 	main->tokens = NULL;
 	main->tokens_len = 0;
+	main->split_len = 0;
 	main->nb_cmd = 0;
 	main->path = NULL;
 }
@@ -38,13 +56,23 @@ int	init_env(char **env, t_main *main)
 	while (env[++i] != NULL)
 		continue ;
 	main->env_len = i;
+	printf("Basic env len : %d\n", main->env_len);
+	main->export_len = i - 1;
+	printf("Basic export len : %d\n", main->export_len);
 	main->env = (char **)malloc(sizeof(char *) * main->env_len + 1);
-	if (!main->env)
+	main->export = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	if (!main->env || !main->export)
 		return (0);
 	i = 0;
 	while (i < main->env_len)
 	{
 		main->env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	i = 0;
+	while (i < main->export_len)
+	{
+		main->export[i] = ft_strdup(env[i]);
 		i++;
 	}
 	return (1);
@@ -72,11 +100,12 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	(void)cmd;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
-	if (check_var_exists(&main, "export PATH=") != -1)
-		main.path = env[check_var_exists(&main, "export PATH=")];
+	if (check_var_exists(main.env, main.env_len, "export PATH=") != -1)
+		main.path = env[check_var_exists(main.env, main.env_len, "export PATH=")];
 	else
 		return (free_all_data(&main), 1);
 	while (1)
@@ -84,7 +113,7 @@ int	main(int argc, char **argv, char **env)
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
 			add_history(cmd);
-		split = clean_split(ft_split(cmd, ' '));
+		split = clean_split(&main, ft_split(cmd, ' '));
 		if (init_tokens(split, &main) == 0)
 			return (free_all_data(&main), 1);
 		ft_exec(&main, split, cmd);

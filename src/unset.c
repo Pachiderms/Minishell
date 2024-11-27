@@ -27,26 +27,33 @@ void	prep_unset(t_main *main, char **split)
 	}
 }
 
-int	check_var_exists(t_main *main, char *cmd)
+int	check_var_exists(char **env, int len, char *cmd)
 {
 	int		i;
 	int		j;
 	char	*arg;
+	char	*actual_var;
 
 	i = 0;
 	j = 0;
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-	while (i < main->env_len)
+	while (arg[i] != '=' && arg[i])
+		i++;
+	if (arg [i - 1] == '+')
+		arg[i - 1] = '\0';
+	else
+		arg[i] = '\0';
+	i = 0;
+	while (i < len)
 	{
-		while (main->env[i][j] != '=')
-		{
-			if (arg[j] == main->env[i][j])
-				j++;
-			else
-				break ;
-			if (main->env[i][j] == '=')
-				return (free(arg), i);
-		}
+		actual_var = ft_strdup(env[i]);
+		while (actual_var[j] != '=' && actual_var[j])
+			j++;
+		actual_var[j] = '\0';
+		if (ft_strcmp(arg, actual_var) == 0)
+			return (free(arg), free(actual_var), i);
+		free(actual_var);
+		actual_var = NULL;
 		j = 0;
 		i++;
 	}
@@ -60,22 +67,25 @@ int	check_syntax_unset(char *cmd)
 	char	*arg;
 
 	i = 0;
-	if (ft_strncmp(cmd, "unset ", 6) != 0)
-		return (0);
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	if (ft_strncmp(arg, "_", -1) == 0)
 		return (free(arg), 0);
+	if (ft_isdigit(arg[0]) == 1)
+		return (printf("bash: export: '%c': not a valid identifier\n", arg[0]), free(arg), 0);
 	while (arg[i])
 	{
-		if (arg[i] == '=')
-			return (free(arg), 0);
+		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.'
+		|| arg[i] == '+' || arg[i] == '{' || arg[i] == '}'
+		|| arg[i] == '-' || arg[i] == '*' || arg[i] == '#'
+		|| arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
+			return (printf("bash: export: '%c': not a valid identifier\n", arg[i]), free(arg), 0);
 		i++;
 	}
 	free(arg);
 	return (1);
 }
 
-void	unset(t_main *main, char *cmd)
+void	unset_env(t_main *main, char *cmd)
 {
 	int		i;
 	int		j;
@@ -84,9 +94,7 @@ void	unset(t_main *main, char *cmd)
 
 	i = 0;
 	j = 0;
-	if (check_syntax_unset(cmd) == 0)
-		return ;
-	var_to_unset = check_var_exists(main, cmd);
+	var_to_unset = check_var_exists(main->env, main->env_len, cmd);
 	if (var_to_unset == -1)
 		return ;
 	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);
@@ -95,7 +103,7 @@ void	unset(t_main *main, char *cmd)
 		tmp[i] = ft_strdup(main->env[i]);
 		i++;
 	}
-	free_old_env(main->env, main->env_len);
+	free_env(main->env, main->env_len);
 	main->env = (char **)malloc(sizeof(char *) * (main->env_len - 1) + 1);
 	i = 0;
 	while (i < main->env_len)
@@ -108,7 +116,53 @@ void	unset(t_main *main, char *cmd)
 		if (i == var_to_unset)
 			i++;
 	}
-	free_old_env(tmp, main->env_len);
+	free_env(tmp, main->env_len);
 	main->env_len -= 1;
+	return ;
+}
+
+void	unset_export(t_main *main, char *cmd)
+{
+	int		i;
+	int		j;
+	int		var_to_unset;
+	char	**tmp;
+
+	i = 0;
+	j = 0;
+	var_to_unset = check_var_exists(main->export, main->export_len, cmd);
+	if (var_to_unset == -1)
+		return ;
+	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	while (i < main->export_len)
+	{
+		tmp[i] = ft_strdup(main->export[i]);
+		i++;
+	}
+	free_env(main->export, main->export_len);
+	main->export = (char **)malloc(sizeof(char *) * (main->export_len - 1) + 1);
+	i = 0;
+	while (i < main->export_len)
+	{
+		if (i == var_to_unset)
+			i++;
+		main->export[j] = ft_strdup(tmp[i]);
+		i++;
+		j++;
+		if (i == var_to_unset)
+			i++;
+	}
+	free_env(tmp, main->export_len);
+	main->export_len -= 1;
+	return ;
+}
+
+void	unset(t_main *main, char *cmd)
+{
+	if (check_syntax_unset(cmd) == 0)
+		return ;
+	unset_env(main, cmd);
+	unset_export(main, cmd);
+	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	return ;
 }

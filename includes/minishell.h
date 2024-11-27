@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/26 17:16:05 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,11 @@ typedef struct token_t
 typedef struct s_main {
     char	**env;
     int		env_len;
+    char	**export;
+    int		export_len;
     t_token	*tokens;
     int		tokens_len;
+    int     split_len;
     int		nb_cmd;
     char	*path;
 }	t_main;
@@ -63,18 +66,23 @@ char	*ft_substr(char const *str, unsigned int start, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+int	ft_isdigit(int c);
 
 // MINISHELL
 /// Env
 int		init_env(char **env, t_main *main);
-void	print_env(t_main *main);
+int     check_syntax_env(char **split);
+void	print_env(t_main *main, int check, char **split);
 /// Unset
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
 void	prep_unset(t_main *main, char **split);
 /// Export
 void	export(t_main *main, char *cmd);
-int		check_syntax_export(t_main *main, char *cmd);
+int		check_syntax_export(char *cmd);
+void	fill_export(t_main *main, char *cmd);
+void	fill_env_export(t_main *main, char *cmd);
+void	prep_export(t_main *main, char **split);
 void	print_ascii_order(t_main *main);
 void	prep_export(t_main *main, char **split);
 /// Echo
@@ -86,9 +94,7 @@ int		cd(t_main *main, char *cmd);
 // Pwd
 int		pwd(void);
 /// Utils BuiltIns
-int		check_var_exists(t_main *main, char *cmd);
-void	free_old_env(char **tab, int tablen);
-void	free_all_data(t_main *main);
+int		check_var_exists(char **env, int len, char *cmd);
 
 //Utils
 int		only_space_line(char *cmd);
@@ -102,14 +108,22 @@ int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of(char *s);
 /// Utils Tokens
-int		ft_quote(char **s, char **split);
-char	**clean_split(char **split);
+int		ft_quote(char **s, char **split, int q);
+char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
-char	**ft_split_k_q_s(char const *s, char c);
+
 //EXEC
 void	ft_exec(t_main *main, char **split, char *cmd);
 
 //PIPEX
 void	pipex(t_main *main, char **split);
+
+// FREE
+void	free_all_data(t_main *main);
+void	free_env(char **tab, int tablen);
+void	free_tokens(t_token *tokens, int tokens_len);
+
+
+char	*ft_strendchr(char *s, char end);
 
 #endif
