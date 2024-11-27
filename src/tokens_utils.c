@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-char	*get_rid_of(char *s, char supr)
+char	*get_rid_of(char *s)
 {
 	int		i;
 	int		len;

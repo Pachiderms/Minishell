@@ -51,11 +51,15 @@ void    ft_fork(t_main *main, char **split)
     if (fork_id == 0)
     {
         cmd = ft_strjoin("/bin/", split[0]);
+        printf("child cmd: %s\n", cmd);
         execve(cmd, split, main->env);
     }
     else
+    {
+        ft_putendl_fd("on attend", 1);
         waitpid(fork_id, &status, 0);
-    free(cmd);
+        ft_putendl_fd("on attend plus", 1);
+    }
 }
 
 void    prep_cmd_pipex(char **split)

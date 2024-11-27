@@ -97,14 +97,14 @@ void	unset_env(t_main *main, char *cmd)
 	var_to_unset = check_var_exists(main->env, main->env_len, cmd);
 	if (var_to_unset == -1)
 		return ;
-	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);
+	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
 	while (i < main->env_len)
 	{
 		tmp[i] = ft_strdup(main->env[i]);
 		i++;
 	}
 	free_env(main->env, main->env_len);
-	main->env = (char **)malloc(sizeof(char *) * (main->env_len - 1) + 1);
+	main->env = (char **)malloc(sizeof(char *) * ((main->env_len - 1) + 1));
 	i = 0;
 	while (i < main->env_len)
 	{
@@ -116,6 +116,7 @@ void	unset_env(t_main *main, char *cmd)
 		if (i == var_to_unset)
 			i++;
 	}
+	main->env[j] = NULL;
 	free_env(tmp, main->env_len);
 	main->env_len -= 1;
 	return ;
@@ -133,14 +134,14 @@ void	unset_export(t_main *main, char *cmd)
 	var_to_unset = check_var_exists(main->export, main->export_len, cmd);
 	if (var_to_unset == -1)
 		return ;
-	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	tmp = (char **)malloc(sizeof(char *) * (main->export_len + 1));
 	while (i < main->export_len)
 	{
 		tmp[i] = ft_strdup(main->export[i]);
 		i++;
 	}
 	free_env(main->export, main->export_len);
-	main->export = (char **)malloc(sizeof(char *) * (main->export_len - 1) + 1);
+	main->export = (char **)malloc(sizeof(char *) * ((main->export_len - 1) + 1));
 	i = 0;
 	while (i < main->export_len)
 	{
@@ -152,6 +153,7 @@ void	unset_export(t_main *main, char *cmd)
 		if (i == var_to_unset)
 			i++;
 	}
+	main->export[j] = NULL;
 	free_env(tmp, main->export_len);
 	main->export_len -= 1;
 	return ;

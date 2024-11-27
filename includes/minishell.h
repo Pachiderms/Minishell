@@ -52,6 +52,7 @@ typedef struct s_main {
     char	*path;
 }	t_main;
 
+
 // LIBFT
 size_t	ft_atoi(const char *str);
 int		ft_isspace(int c);
@@ -99,6 +100,7 @@ int		check_var_exists(char **env, int len, char *cmd);
 //Utils
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
+char	**ft_split_k_q_s(char const *s, char c);
 
 /// Tokens
 int		init_tokens(char **split, t_main *main);
@@ -108,7 +110,7 @@ int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of(char *s);
 /// Utils Tokens
-int		ft_quote(char **s, char **split, int q);
+int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 

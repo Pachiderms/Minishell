@@ -112,11 +112,17 @@ int	main(int argc, char **argv, char **env)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
+		{
 			add_history(cmd);
-		split = clean_split(&main, ft_split(cmd, ' '));
-		if (init_tokens(split, &main) == 0)
-			return (free_all_data(&main), 1);
-		ft_exec(&main, split, cmd);
+			split = ft_split_k_q_s(cmd, ' ');
+			for(int i=0;split[i];i++)
+				printf("split : %s\n", split[i]);
+			return (0);
+			if (init_tokens(split, &main) == 0)
+				return (free_all_data(&main), 1);
+			ft_exec(&main, split, cmd);
+			ft_putendl_fd("end of while", 1);
+		}
 	}
 	free_all_data(&main);
 	return (0);
