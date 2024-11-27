@@ -57,7 +57,7 @@ void	prep_export(t_main *main, char **split)
 	i = 1;
 	if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
 	{
-		print_env(main, 1);
+		print_env(main, 1, split);
 		return ;
 	}
 	while (split[i] && is_sc(split[i]) != 1)

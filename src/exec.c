@@ -42,7 +42,7 @@ void    ft_exec(t_main *main, char **split, char *cmd)
         if (check_builtin(main->tokens[0].value))
         {
             if (ft_strcmp(main->tokens[0].value, "env") == 0)
-			    print_env(main, 0);
+			    print_env(main, 0, split);
 		    if (ft_strcmp(main->tokens[0].value, "export") == 0)
                 prep_export(main, split);
 		    if (ft_strcmp(main->tokens[0].value, "unset") == 0)

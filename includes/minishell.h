@@ -71,7 +71,8 @@ int	ft_isdigit(int c);
 // MINISHELL
 /// Env
 int		init_env(char **env, t_main *main);
-void	print_env(t_main *main, int check);
+int     check_syntax_env(char **split);
+void	print_env(t_main *main, int check, char **split);
 /// Unset
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
