@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:33:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/02 19:29:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,11 @@ int	main(int argc, char **argv, char **env)
 			split = ft_split_k_q_s(cmd, ' ');
 			for(int i=0;split[i];i++)
 				printf("split : %s\n", split[i]);
-			return (0);
+			// return (0);
 			if (init_tokens(split, &main) == 0)
 				return (free_all_data(&main), 1);
 			ft_exec(&main, split, cmd);
-			ft_putendl_fd("end of while", 1);
+			// ft_putendl_fd("end of while", 1);
 		}
 	}
 	free_all_data(&main);

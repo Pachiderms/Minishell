@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2024/11/26 17:16:19 by tzizi            ###   ########.fr        #
+#    Updated: 2024/12/02 19:41:03 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,11 +34,13 @@ $(LIBFT_LIB):
 	make -sC $(LIBFT_PATH)
 
 $(NAME): $(LIBFT_LIB) $(OBJS)
+	mkdir objs
 	$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
+	mv src/*.o objs
 
 clean:
 	make clean -sC $(LIBFT_PATH)
-	rm -rf $(OBJS)
+	rm -rf objs
 
 fclean: clean
 	make fclean -sC $(LIBFT_PATH)
