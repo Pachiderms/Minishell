@@ -87,9 +87,9 @@ int	is_sc(char *s)
 }
 char	*get_dollar_baby(char *s, t_main *main)
 {
-	char	*res;
 	char	*tmp;
-	// char	*tmpp;
+	char	*tmp2;
+	int		yes;
 	int		i;
 	int		j;
 
@@ -100,11 +100,21 @@ char	*get_dollar_baby(char *s, t_main *main)
 	while (s[j] && s[j] != '=')
 		j++;
 	tmp = ft_substr(s, i, j - i);
+	yes = check_var_exists(main->env, main->env_len, tmp);
+	if (yes != 1)
+		return (free(tmp), NULL);
+	// printf("i=%d\tj=%d\n", i, j);
 	printf("tmp: %s\n", tmp);
-	if (!tmp)
-		return (0);
-	return (0);
-	res = main->env[check_var_exists(main->env, main->env_len, 0)];
+	if (i == 0)
+	{
+		tmp2 = ft_substr(s, j, ft_strlen(s) - j);
+		return (ft_strjoin(main->env[check_var_exists(main->env, main->env_len, tmp)], tmp2));
+	}
+	else
+	{
+		tmp2 = ft_substr(s, 0, i);
+		return (ft_strjoin(tmp2, main->env[check_var_exists(main->env, main->env_len, tmp)]));
+	}
 	return (0);
 }
 
