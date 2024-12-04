@@ -76,11 +76,11 @@ int	check_syntax_export(char *cmd)
 	char	*arg;
 
 	i = 0;
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+	arg = &ft_strchr(cmd, ' ')[1];
 	if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
-		return (free(arg), 0);
+		return (0);
 	if (ft_isdigit(arg[0]) == 1 || arg[0] == '=')
-		return (printf("bash: export: '%c': not a valid identifier\n", arg[0]), free(arg), 0);
+		return (printf("bash: export: '%c': not a valid identifier\n", arg[0]), 0);
 	while (arg[i] != '=' && arg[i])
 	{
 		if (arg[i] == '%' || arg[i] == '?' || arg[i] == '@'
@@ -88,7 +88,7 @@ int	check_syntax_export(char *cmd)
 			|| arg[i] == '.' || arg[i] == '}' || arg[i] == '{'
 			|| arg[i] == '*' || arg[i] == '#' || arg[i] == '!'
 			|| (arg[i] == '+' && arg[i + 1] != '='))
-			return (printf("bash: export: '%c': not a valid identifier\n", arg[i]), free(arg), 0);
+			return (printf("bash: export: '%c': not a valid identifier\n", arg[i]), 0);
 		i++;																																		
 	}
 	while (arg[i])
@@ -96,17 +96,16 @@ int	check_syntax_export(char *cmd)
 		if (arg[i] == '=')
 		{
 			if (arg[i - 1] == ' ' || i == 0 || arg[i] == '\0')
-				return (printf("HERE0"), free(arg), 0);
+				return (printf("HERE0"), 0);
 			else
 				return (1); // 1 pour mettre dans env et export
 		}
 		i++;
 	}
 	if (i == 0)
-		return (printf("HERE"), free(arg), 0);
+		return (printf("HERE"), 0);
 	/* if (arg[i - 1] == ' ')
 		return (printf("HERE2"), free(arg), 0); */
-	free(arg);
 	return (2); // 2 pour mettre seulement dans export
 }
 
@@ -198,7 +197,7 @@ void	fill_export(t_main *main, char *cmd)
 	if (replace_pos == -1)
 	{
 		main->export[i] = main->export[i - 1];
-		main->export[i - 1] = ft_strdup(ft_strjoin(&ft_strchr(cmd, ' ')[1], "="));
+		main->export[i - 1] = ft_strjoin(&ft_strchr(cmd, ' ')[1], "=");
 		main->export_len += 1;
 	}
 }
@@ -209,7 +208,7 @@ int check_plus(char *cmd)
 	char	*arg;
 
 	i = 0;
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+	arg = &ft_strchr(cmd, ' ')[1];
 	while (arg[i] != '=')
 		i++;
 	if (arg[i - 1] == '+')
@@ -226,7 +225,7 @@ char	*get_without_plus(char *cmd)
 
 	i = 0;
 	j = 0;
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+	arg = &ft_strchr(cmd, ' ')[1];
 	str = (char *)malloc(sizeof(char) * ft_strlen(arg));
 	while (arg[i])
 	{
@@ -238,7 +237,7 @@ char	*get_without_plus(char *cmd)
 		i++;
 	}
 	str[j] = '\0';
-	return (free(arg), str);
+	return (str);
 }
 
 char	*get_plus_str(t_main *main, char *cmd)

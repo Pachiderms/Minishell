@@ -39,40 +39,6 @@ char	*get_rid_of(char *s)
 	return (dest);
 }
 
-void	ft_free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		if (split[i])
-			free(split[i]);
-		i++;
-	}
-}
-
-int	ft_quote(char **s, char **split)
-{
-	int		i;
-	char	*tmp;
-
-	i = 1;
-	*s = get_rid_of(split[0]);
-	tmp = NULL;
-	while (split[i])
-	{
-		tmp = get_rid_of(split[i]);
-		if (ft_strchr(split[i], 34) || ft_strchr(split[i], 39))
-		{
-			*s = ft_strjoin(*s, tmp);
-			break ;
-		}
-		*s = ft_strjoin(tmp, " ");
-		i++;
-	}
-	return (i + 1);
-}
 int	check_builtin(char *s)
 {
 	if (!ft_strncmp(s, "echo", -1) || !ft_strncmp(s, "cd", -1)
@@ -94,19 +60,19 @@ int	is_cmd(char *s, char *path)
 	s1 = ft_strjoin("/", s);
 	split = ft_split(path, ':');
 	if (check_builtin(s))
-			return (free(split), free(s1), 1);
+			return (free_split(split), free(s1), 1);
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);
 		if (access(tmp, R_OK) == 0)
 		{
-			return (free(tmp), free(split), free(s1), 1);
+			return (free(tmp), free_split(split), free(s1), 1);
 		}
-		tmp = NULL;
 		free(tmp);
+		tmp = NULL;
 		i++;
 	}
-	return (free(split), free(s1), 0);
+	return (free_split(split), free(s1), 0);
 }
 
 int	is_sc(char *s)

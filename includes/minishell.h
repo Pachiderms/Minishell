@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/04 15:29:08 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int		check_var_exists(char **env, int len, char *cmd);
 //Utils
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
-char	**ft_split_k_q_s(char const *s, char c);
+char	**ft_split_k_q_s(char const *s, char c, t_main *main);
 
 /// Tokens
 int		init_tokens(char **split, t_main *main);
@@ -110,8 +110,6 @@ int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of(char *s);
 /// Utils Tokens
-int		ft_quote(char **s, char **split);
-char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 
 //EXEC
@@ -123,8 +121,9 @@ void	pipex(t_main *main, char **split);
 // FREE
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);
-void	free_tokens(t_token *tokens, int tokens_len);
-
+void	free_tokens(t_main *main);
+void    free_end_cmd(t_main *main, char **split);
+void    free_split(char **split);
 
 char	*ft_strendchr(char *s, char end);
 

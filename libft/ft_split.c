@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 17:42:11 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:18 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/04 15:20:55 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	**ft_split(char const *s, char c)
 	j = 0;
 	size = sizeup(s, c);
 	dest = malloc((size + 1) * sizeof(char *));
-	if (dest == NULL || s == 0)
+	if (dest == NULL)
 		return (0);
 	while (size-- > 0)
 	{

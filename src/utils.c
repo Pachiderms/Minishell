@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/02 19:37:06 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/04 15:33:20 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,30 +157,36 @@ int	count_words(char *no_space)
 	return (word);
 }
 
-char	**ft_split_k_q_s(char const *s, char c)
+char	**ft_split_k_q_s(char const *s, char c, t_main *main)
 {
 	int		i;
 	int		j;
 	int		x;
+	int		size;
+	char	*tmp;
 	char	**dest;
 
 	i = 0;
 	x = 0;
 	j = 0;
 	char *no_space = sizeup_k_q_s(s);
-	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
+	size = count_words(no_space);
+	dest = malloc((size + 2) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (0);
-	while (no_space[i])
+	main->split_len = size + 1;
+	while (size-- >= 0)
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
-		dest[x] = get_rid_of(ft_substr(no_space, i, j - i));
+		tmp = ft_substr(no_space, i, j - i);
+		dest[x] = get_rid_of(tmp);
+		free(tmp);
 		if (dest[x] == NULL)
 			return (ft_free_split_k_q_s(dest, x));
 		x++;
 		i += (j - i);
 	}
 	dest[x] = 0;
-	return (dest);
+	return (free(no_space), dest);
 }
