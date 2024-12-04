@@ -27,24 +27,33 @@ void	free_env(char **tab, int tablen)
 	return ;
 }
 
-int	check_syntax_env(char **split)
+int	check_syntax_env(t_main *main, char **split)
 {
 	if (ft_strcmp(split[0], "env") == 0 && split[1] == NULL)
 		return (1);
-	printf("env: ‘%s’: No such file or directory\n", split[1]);
-	return (0);
+	if (ft_strcmp(split[0], "env") == 0 && split[1] != NULL)
+	{
+		int i = 1;
+		while (i < main->split_len)
+		{
+			if (ft_strcmp(split[i], "env") == 0)
+				i++;
+			else
+				return (printf("env: ‘%s’: No such file or directory\n", split[i]), 0);
+		}
+	}
+	return (1);
 }
-
 
 void	print_env(t_main *main, int check, char **split)
 {
 	int	i;
 
 	i = 0;
-	if (check_syntax_env(split) == 0)
-		return ;
 	if (check == 0)
 	{
+		if (check_syntax_env(main, split) == 0)
+			return ;
 		while (i < main->env_len)
 		{
 			printf("%s\n", main->env[i]);

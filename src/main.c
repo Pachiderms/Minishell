@@ -48,9 +48,42 @@ void	init_main(t_main *main)
 	main->path = NULL;
 }
 
+char	*get_var_name(char *cmd) // export aaa=aaa
+{
+	int i;
+	int j;
+	char *var_name;
+
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		j++;
+		i++;
+	}
+	var_name = (char *)malloc(sizeof(char) * (j + 2));
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		var_name[j] = cmd[i];
+		j++;
+		i++;
+	}
+	var_name[j] = cmd[i];
+	var_name[j + 1] = '\0';
+	return (var_name);
+}
+
 int	init_env(char **env, t_main *main)
 {
 	int	i;
+	char *save_value;
+	char *temp;
 
 	i = -1;
 	while (env[++i] != NULL)
@@ -72,7 +105,11 @@ int	init_env(char **env, t_main *main)
 	i = 0;
 	while (i < main->export_len)
 	{
-		main->export[i] = ft_strdup(env[i]);
+		save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(env[i], '=')[1])), "\"");
+		temp = save_value;
+		save_value = ft_strjoin("export ", ft_strjoin(get_var_name(env[i]), temp));
+		free(temp);
+		main->export[i] = save_value;
 		i++;
 	}
 	return (1);
@@ -112,11 +149,19 @@ int	main(int argc, char **argv, char **env)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
+		{
 			add_history(cmd);
-		split = clean_split(&main, ft_split(cmd, ' '));
-		if (init_tokens(split, &main) == 0)
-			return (free_all_data(&main), 1);
-		ft_exec(&main, split, cmd);
+			split = ft_split_k_q_s(&main, cmd, ' ');
+			for(int i=0;split[i];i++)
+				printf("split : %s\n", split[i]);
+			printf("\n");
+			//return (0);
+			if (init_tokens(split, &main) == 0)
+				return (free_all_data(&main), 1);
+			if (ft_exec(&main, split, cmd) == 0)
+				return (free_all_data(&main), 1);
+			//ft_putendl_fd("end of while", 1);
+		}
 	}
 	free_all_data(&main);
 	return (0);

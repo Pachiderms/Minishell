@@ -32,7 +32,7 @@ char    *prep_cmd(char *cmd)
     return (res);
 }
 
-void    ft_exec(t_main *main, char **split, char *cmd)
+int    ft_exec(t_main *main, char **split, char *cmd)
 {
     //for (int i=0; split[i];i++)
     //    printf("token type=%d\t val: %s\n", main->tokens[i].type, main->tokens[i].value);
@@ -55,10 +55,15 @@ void    ft_exec(t_main *main, char **split, char *cmd)
                 pwd();
         }
         else
+        {
+            if(check_var_exists(main->env, main->env_len, "export PATH=") == -1)
+                return (printf("bash: %s: No such file or directory\n", split[0]), 1);
             pipex(main, split);
+        }
         main->nb_cmd--;
     }
     else if (cmd[0] != '\0')
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
      //printf("nb_cmd=%d\n", main->nb_cmd);
+     return (1);
 }

@@ -50,10 +50,8 @@ char	**clean_split(t_main *main, char **split)
 		return (NULL);
 	while (split[i])
 	{
-		if (ft_strchr(split[i], 34))
-			i += ft_quote(&res[len], &split[i], 34);
-		else if (ft_strchr(split[i], 39))
-			i += ft_quote(&res[len], &split[i], 39);
+		if (ft_strchr(split[i], 34) || ft_strchr(split[i], 39))
+			i += ft_quote(&res[len], &split[i]);
 		else
 		{
 			res[len] = split[i];
