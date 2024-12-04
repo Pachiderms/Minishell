@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2024/12/02 19:41:03 by marvin           ###   ########.fr        #
+#    Updated: 2024/12/04 13:58:05 by tzizi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ $(LIBFT_LIB):
 	make -sC $(LIBFT_PATH)
 
 $(NAME): $(LIBFT_LIB) $(OBJS)
-	mkdir objs
+	mkdir -p objs
 	$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
 	mv src/*.o objs
 
