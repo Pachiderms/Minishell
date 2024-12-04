@@ -81,8 +81,30 @@ int	is_sc(char *s)
 		|| ft_strcmp(s, ">") == 0 || ft_strcmp(s, "<<") == 0
 		|| ft_strcmp(s, ">>") == 0)
 		return (1);
-	if (s[0] == '$')
+	if (ft_strchr(s, '$'))
 		return (2);
+	return (0);
+}
+char	*get_dollar_baby(char *s, t_main *main)
+{
+	char	*res;
+	char	*tmp;
+	// char	*tmpp;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (s[i] && s[i] != '$')
+		i++;
+	j = i;
+	while (s[j] && s[j] != '=')
+		j++;
+	tmp = ft_substr(s, i, j - i);
+	printf("tmp: %s\n", tmp);
+	if (!tmp)
+		return (0);
+	return (0);
+	res = main->env[check_var_exists(main->env, main->env_len, 0)];
 	return (0);
 }
 
@@ -90,7 +112,6 @@ int	handle_sc(t_main *main, char **split, int i)
 {
 	int		sc_type;
 	char	*tmp;
-	char	*tmp2;
 
 	sc_type = is_sc(split[i]);
 	if (sc_type == 1)
@@ -100,16 +121,16 @@ int	handle_sc(t_main *main, char **split, int i)
 	}
 	if (sc_type == 2)
 	{
-		tmp = ft_strjoin("export ", &split[i][1]);
-		tmp2 = ft_strjoin(tmp, "=");
-		if (check_var_exists(main->env, main->env_len, tmp2) != -1)
+		tmp = get_dollar_baby(split[i], main);
+		printf("tmp2: %s\n", tmp);
+		exit(0);
+		if (check_var_exists(main->env, main->env_len, ft_strchr(tmp, '=')) != -1)
 		{
-			split[i] = &ft_strchr(main->env[check_var_exists(main->env, main->env_len, tmp2)], '=')[1];
+			split[i] = get_dollar_baby(split[i], main);
 			main->tokens[i].type = argument;
-			return (free(tmp), free(tmp2), 1);
+			return (free(tmp), 1);
 		}
 		free(tmp);
-		free(tmp2);
 	}
 	return (0);
 }

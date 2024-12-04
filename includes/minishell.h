@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/04 15:29:08 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/04 17:02:10 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int		check_builtin(char *s);
 char	*get_rid_of(char *s);
 /// Utils Tokens
 int	    handle_sc(t_main *main, char **split, int i);
+// char	*replace_dollar_baby(char *s, char *next);
 
 //EXEC
 void	ft_exec(t_main *main, char **split, char *cmd);
