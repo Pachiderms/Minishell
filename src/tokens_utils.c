@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-char	*get_rid_of(char *s, char supr)
+char	*get_rid_of(char *s)
 {
 	int		i;
 	int		len;
@@ -22,8 +22,8 @@ char	*get_rid_of(char *s, char supr)
 	len = 0;
 	while (s[++i])
 	{
-		if (s[i] != supr)
-		len++;
+		if (s[i] != 34 && s[i] != 39)
+			len++;
 	}
 	dest = malloc(len * sizeof(char) + 1);
 	if (!dest)
@@ -32,26 +32,40 @@ char	*get_rid_of(char *s, char supr)
 	len = 0;
 	while (s[++i])
 	{
-		if (s[i] != supr)
-		dest[len++] = s[i];
+		if (s[i] != 34 && s[i] != 39)
+			dest[len++] = s[i];
 	}
 	dest[len++] = '\0';
 	return (dest);
 }
 
-int	ft_quote(char **s, char **split, int q)
+void	ft_free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		if (split[i])
+			free(split[i]);
+		i++;
+	}
+}
+
+int	ft_quote(char **s, char **split)
 {
 	int		i;
 	char	*tmp;
 
-	i = 0;
+	i = 1;
+	*s = get_rid_of(split[0]);
 	tmp = NULL;
 	while (split[i])
 	{
-		tmp = get_rid_of(split[i], q);
-		if (ft_strchr(split[i], q))
+		tmp = get_rid_of(split[i]);
+		if (ft_strchr(split[i], 34) || ft_strchr(split[i], 39))
 		{
-			*s = tmp;
+			*s = ft_strjoin(*s, tmp);
 			break ;
 		}
 		*s = ft_strjoin(tmp, " ");
@@ -122,9 +136,9 @@ int	handle_sc(t_main *main, char **split, int i)
 	{
 		tmp = ft_strjoin("export ", &split[i][1]);
 		tmp2 = ft_strjoin(tmp, "=");
-		if (check_var_exists(main, tmp2) != -1)
+		if (check_var_exists(main->env, main->env_len, tmp2) != -1)
 		{
-			split[i] = &ft_strchr(main->env[check_var_exists(main, tmp2)], '=')[1];
+			split[i] = &ft_strchr(main->env[check_var_exists(main->env, main->env_len, tmp2)], '=')[1];
 			main->tokens[i].type = argument;
 			return (free(tmp), free(tmp2), 1);
 		}
@@ -132,4 +146,25 @@ int	handle_sc(t_main *main, char **split, int i)
 		free(tmp2);
 	}
 	return (0);
+}
+char	*ft_strendchr(char *s, char end)
+{
+	int		i;
+	int		len;
+	char	*res;
+
+	i = 0;
+	len = 0;
+	while (s[len] && s[len] != end)
+		len++;
+	res = malloc(len * sizeof(char) + 1);
+	if (!res)
+		return (0);
+	while (i < len)
+	{
+		res[i] = s[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
 }

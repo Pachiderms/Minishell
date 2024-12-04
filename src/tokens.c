@@ -37,7 +37,7 @@ char	**ft_double_array_clean(char **split)
 	return (res);
 }
 
-char	**clean_split(char **split)
+char	**clean_split(t_main *main, char **split)
 {
 	int		i;
 	int		len;
@@ -50,10 +50,8 @@ char	**clean_split(char **split)
 		return (NULL);
 	while (split[i])
 	{
-		if (ft_strchr(split[i], 34))
-			i += ft_quote(&res[len], &split[i], 34);
-		else if (ft_strchr(split[i], 39))
-			i += ft_quote(&res[len], &split[i], 39);
+		if (ft_strchr(split[i], 34) || ft_strchr(split[i], 39))
+			i += ft_quote(&res[len], &split[i]);
 		else
 		{
 			res[len] = split[i];
@@ -62,6 +60,8 @@ char	**clean_split(char **split)
 		len++;
 	}
 	res[len] = NULL;
+	main->split_len = len;
+	free(split);
 	return (res);
 }
 
@@ -73,6 +73,7 @@ int	init_tokens(char **split, t_main *main)
 		return (0);
 	while (split[i] != NULL)
 		i++;
+	main->tokens_len = i;
 	main->tokens = malloc(i * sizeof(t_token));
 	if (!main->tokens)
 		return (0);

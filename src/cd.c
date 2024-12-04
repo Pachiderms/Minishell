@@ -6,7 +6,7 @@ void	update_oldpwd_pwd(t_main *main)
 	char	*pwd;
 	char	*newpwd;
 
-	pwd_line = check_var_exists(main, "export PWD=");
+	pwd_line = check_var_exists(main->env, main->env_len, "export PWD=");
 	pwd = ft_strdup(&ft_strchr(main->env[pwd_line], '=')[1]);
 	export(main, ft_strjoin("export OLDPWD=", pwd));
 	free(pwd);
