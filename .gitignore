@@ -1,7 +1,0 @@
-*.o
-*.d
-*.a
-*.txt
-.vscode/
-minishell
-objs/
