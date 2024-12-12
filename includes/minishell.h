@@ -97,6 +97,7 @@ int		cd(t_main *main, char **cmd);
 int		pwd(t_main *main, char **cmd);
 /// Utils BuiltIns
 int		check_var_exists(char **env, int len, char *cmd);
+int	check_var_exists2(char **env, int len, char *arg)
 void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos);
 
 //Utils
