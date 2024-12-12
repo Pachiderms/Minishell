@@ -92,11 +92,12 @@ void	ft_echo(char **cmd);
 int		get_fd(char **cmd);
 // Cd
 void	update_oldpwd_pwd(t_main *main);
-int		cd(t_main *main, char *cmd);
+int		cd(t_main *main, char **cmd);
 // Pwd
-int		pwd(void);
+int		pwd(t_main *main, char **cmd);
 /// Utils BuiltIns
 int		check_var_exists(char **env, int len, char *cmd);
+void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos);
 
 //Utils
 int		only_space_line(char *cmd);

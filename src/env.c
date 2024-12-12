@@ -22,18 +22,57 @@ void	free_env(char **tab, int tablen)
 		free(tab[i]);
 		i--;
 	}
-	free(tab);
+	//free(tab);
 	tab = NULL;
 	return ;
 }
 
+void	print_ascii_order(t_main *main)
+{
+	int		i;
+	char	*tmp;
+	char	**sort_env;
+
+	i = 0;
+	sort_env = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	while (i < main->export_len)
+	{
+		sort_env[i] = ft_strdup(main->export[i]);
+		i++;
+	}
+	i = 0;
+	while (i < main->export_len - 1)
+	{
+		if (ft_strncmp(sort_env[i], sort_env[i + 1], -1) > 0)
+		{
+			tmp = sort_env[i + 1];
+			sort_env[i + 1] = sort_env[i];
+			sort_env[i] = tmp;
+			i = 0;
+		}
+		i++;
+	}
+	tmp = sort_env[1];
+	sort_env[1] = sort_env[0];
+	sort_env[0] = tmp;
+	i = 0;
+	while (i < main->export_len)
+	{
+		printf("%s\n", sort_env[i]);
+		i++;
+	}
+	free_env(sort_env, main->export_len);
+}
+
 int	check_syntax_env(t_main *main, char **split)
 {
+	int i;
+
+	i = 1;
 	if (ft_strcmp(split[0], "env") == 0 && split[1] == NULL)
 		return (1);
 	if (ft_strcmp(split[0], "env") == 0 && split[1] != NULL)
 	{
-		int i = 1;
 		while (i < main->split_len)
 		{
 			if (ft_strcmp(split[i], "env") == 0)

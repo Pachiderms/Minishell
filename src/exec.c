@@ -41,7 +41,7 @@ int    ft_exec(t_main *main, char **split, char *cmd)
     {
         if (check_builtin(main->tokens[0].value))
         {
-            if (ft_strcmp(main->tokens[0].value, "env") == 0)
+            if (ft_strcmp(main->tokens[0].value, "env") == 0 || ft_strcmp(main->tokens[0].value, "/bin/env") == 0)
 			    print_env(main, 0, split);
 		    if (ft_strcmp(main->tokens[0].value, "export") == 0)
                 prep_export(main, split);
@@ -50,9 +50,9 @@ int    ft_exec(t_main *main, char **split, char *cmd)
 		    if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 			    ft_echo(split);
             if (ft_strcmp(main->tokens[0].value, "cd") == 0)
-                cd(main, prep_cmd(cmd));
+                cd(main, split);
             if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
-                pwd();
+                pwd(main, split);
         }
         else
         {

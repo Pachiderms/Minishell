@@ -34,7 +34,9 @@ $(LIBFT_LIB):
 	make -sC $(LIBFT_PATH)
 
 $(NAME): $(LIBFT_LIB) $(OBJS)
+	mkdir -p objs
 	$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
+	mv src/*.o objs
 
 clean:
 	make clean -sC $(LIBFT_PATH)

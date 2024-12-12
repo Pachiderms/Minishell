@@ -12,21 +12,23 @@
 
 #include "../includes/minishell.h"
 
-char	*sizeup_k_q_s(char const *s)
+int	sizeup_no_space(char const *s)
 {
-	int	i = 0;
-	int size = 0;
-	char *no_space;
+	int	i;
+	int	size;
 
+	i = 0;
+	size = 0;
 	while (ft_isspace(s[i]) == 1)
 			i++;
 	while (s[i])
 	{
 		if (ft_isspace(s[i]) == 1)
 		{
-			size++;
 			while (ft_isspace(s[i]) == 1)
 				i++;
+			if (s[i])
+				size++;
 		}
 		if (s[i] == 34 || s[i] == 39)
 		{
@@ -44,18 +46,30 @@ char	*sizeup_k_q_s(char const *s)
 			size++;
 		i++;
 	}
+	return (size);
+}
+
+char	*sizeup_k_q_s(char const *s)
+{
+	int	i = 0;
+	int	j;
+	int size;
+	char *no_space;
+
+	size = sizeup_no_space(s);
 	no_space = malloc(sizeof(char) * size + 1);
 	i = 0;
-	int j = 0;
+	j = 0;
 	while (ft_isspace(s[i]) == 1)
 			i++;
 	while (j < size)
 	{
 		if (ft_isspace(s[i]) == 1)
 		{
-			no_space[j++] = ' ';
 			while (ft_isspace(s[i]) == 1)
 				i++;
+			if (s[i])
+				no_space[j++] = ' ';
 		}
 		if (s[i] == 34 || s[i] == 39)
 		{
@@ -74,6 +88,7 @@ char	*sizeup_k_q_s(char const *s)
 		i++;
 	}
 	no_space[j] = '\0';
+	printf("no_space: %s|\n", no_space);
 	return (no_space);
 }
 
@@ -103,11 +118,8 @@ int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s)
 			{
 				quotes = 1;
 				while (_s[j] && quotes)
-				{
-					quotes = ft_strchr(&_s[j], 34) || ft_strchr(&_s[j], 39);
-					j++;
-				}
-				i = j;
+					quotes = ft_strchr(&_s[++j], 34) || ft_strchr(&_s[++j], 39);
+				i = j - 1;
 			}
 			else
 				i++;
@@ -156,7 +168,7 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c)
 	x = 0;
 	j = 0;
 	char *no_space = sizeup_k_q_s(s);
-	dest = malloc((main->split_len + 1) * sizeof(char *));
+	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (0);
 	while (no_space[i])

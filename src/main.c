@@ -155,12 +155,10 @@ int	main(int argc, char **argv, char **env)
 			for(int i=0;split[i];i++)
 				printf("split : %s\n", split[i]);
 			printf("\n");
-			//return (0);
 			if (init_tokens(split, &main) == 0)
 				return (free_all_data(&main), 1);
 			if (ft_exec(&main, split, cmd) == 0)
 				return (free_all_data(&main), 1);
-			//ft_putendl_fd("end of while", 1);
 		}
 	}
 	free_all_data(&main);
