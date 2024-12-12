@@ -20,7 +20,7 @@ char    *prep_cmd(char *cmd)
     i = 0;
     while (cmd[i] && cmd[i] != '|')
         i++;
-    res = malloc((ft_strlen(cmd) - i) * sizeof(char) + 1);
+    res = malloc(i * sizeof(char) + 1);
     if (!res)
         return (NULL);
     i = 0;
@@ -29,6 +29,7 @@ char    *prep_cmd(char *cmd)
         res[i] = cmd[i];
         i++;
     }
+    res[i] = '\0';
     return (res);
 }
 

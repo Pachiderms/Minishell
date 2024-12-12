@@ -94,3 +94,4 @@ int	init_tokens(char **split, t_main *main)
 	main->nb_cmd = get_cmd_number(main, split);
 	return (1);
 }
+

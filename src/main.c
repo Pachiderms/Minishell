@@ -12,19 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void	free_tokens(t_token *tokens, int tokens_len)
-{
-	int	i;
-
-	i = tokens_len - 1;
-	while (i >= 0)
-	{
-		free(tokens[i].value);
-		i--;
-	}
-	return ;
-}
-
 void	free_all_data(t_main *main)
 {
 	if (main->env)
@@ -152,11 +139,10 @@ int	main(int argc, char **argv, char **env)
 		{
 			add_history(cmd);
 			split = ft_split_k_q_s(&main, cmd, ' ');
-			for(int i=0;split[i];i++)
-				printf("split : %s\n", split[i]);
-			printf("\n");
 			if (init_tokens(split, &main) == 0)
 				return (free_all_data(&main), 1);
+			for(int i=0;split[i];i++)
+				printf("split : %s\n", split[i]);
 			if (ft_exec(&main, split, cmd) == 0)
 				return (free_all_data(&main), 1);
 		}

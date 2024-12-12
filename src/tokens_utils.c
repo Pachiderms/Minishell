@@ -73,6 +73,7 @@ int	ft_quote(char **s, char **split)
 	}
 	return (i + 1);
 }
+
 int	check_builtin(char *s)
 {
 	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1))
@@ -147,6 +148,7 @@ int	handle_sc(t_main *main, char **split, int i)
 	}
 	return (0);
 }
+
 char	*ft_strendchr(char *s, char end)
 {
 	int		i;

@@ -103,6 +103,7 @@ void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos);
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
+int	closed_quotes(const char *s);
 
 /// Tokens
 int		init_tokens(char **split, t_main *main);

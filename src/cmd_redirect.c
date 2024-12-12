@@ -55,4 +55,3 @@ int	get_fd(char **cmd)
 	}
 	return (1);
 }
-
