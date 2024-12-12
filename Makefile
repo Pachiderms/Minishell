@@ -40,7 +40,7 @@ $(NAME): $(LIBFT_LIB) $(OBJS)
 
 clean:
 	make clean -sC $(LIBFT_PATH)
-	rm -rf $(OBJS)
+	rm -rf objs
 
 fclean: clean
 	make fclean -sC $(LIBFT_PATH)
