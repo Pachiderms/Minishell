@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/10 14:56:56 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/18 17:18:14 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_free(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strrchr(const char *s, int c);
 char	*ft_substr(char const *str, unsigned int start, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
@@ -109,7 +111,7 @@ int		is_cmd(char *s, char *path);
 int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
-char	*get_rid_of(char *s);
+char	*get_rid_of_quotes(char *s);
 /// Utils Tokens
 int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
@@ -124,9 +126,11 @@ void	pipex(t_main *main, char **split);
 // FREE
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);
-void	free_tokens(t_token *tokens, int tokens_len);
-
+void	free_tokens(t_main *main);
+void    free_end_cmd(t_main *main, char **split);
+void    free_split(char **split);
 
 char	*ft_strendchr(char *s, char end);
-
+int	    check_var_exists2(t_main *main, char *arg);
+char	*ft_strchrb(const char *s, int c);
 #endif

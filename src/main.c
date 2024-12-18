@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/10 15:16:46 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/18 14:42:10 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	free_tokens(t_token *tokens, int tokens_len)
-{
-	int	i;
-
-	i = tokens_len - 1;
-	while (i >= 0)
-	{
-		free(tokens[i].value);
-		i--;
-	}
-	return ;
-}
-
-void	free_all_data(t_main *main)
-{
-	if (main->env)
-		free_env(main->env, main->env_len);
-	if (main->export)
-		free_env(main->export, main->export_len);
-	/* if (main->tokens)
-		free_tokens(main->tokens, main->tokens_len); */
-}
 
 void	init_main(t_main *main)
 {

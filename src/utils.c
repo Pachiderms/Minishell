@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/10 15:58:17 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/18 15:53:40 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ char	**ft_split_k_q_s(char const *s, char c)
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
-		dest[x] = get_rid_of(ft_substr(no_space, i, j - i));
+		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
 		if (dest[x] == NULL)
 			return (ft_free_split_k_q_s(dest, x));
 		x++;

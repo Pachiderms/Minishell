@@ -122,6 +122,29 @@ void	unset_env(t_main *main, char *cmd)
 	return ;
 }
 
+int	check_var_exists2(t_main *main, char *arg)
+{
+	int		i;
+	int		j;
+	char	*actual_var;
+
+	i = 0;
+	j = 0;
+	if (!arg)
+		return (-1);
+	while (i < main->env_len)
+	{
+		actual_var = ft_strchrb(main->env[i], '=');
+		if (ft_strcmp(arg, actual_var) == 0)
+			return (free(actual_var), i);
+		free(actual_var);
+		actual_var = NULL;
+		j = 0;
+		i++;
+	}
+	return (-1);
+}
+
 void	unset_export(t_main *main, char *cmd)
 {
 	int		i;
