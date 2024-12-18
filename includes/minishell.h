@@ -60,14 +60,16 @@ char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_free(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strrchr(const char *s, int c);
 char	*ft_substr(char const *str, unsigned int start, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
-int	ft_isdigit(int c);
+int	    ft_isdigit(int c);
 
 // MINISHELL
 /// Env
@@ -97,39 +99,37 @@ int		cd(t_main *main, char **cmd);
 int		pwd(t_main *main, char **cmd);
 /// Utils BuiltIns
 int		check_var_exists(char **env, int len, char *cmd);
-int	check_var_exists2(char **env, int len, char *arg)
 void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos);
-
 //Utils
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int	closed_quotes(const char *s);
-
 /// Tokens
 int		init_tokens(char **split, t_main *main);
 int		is_cmd(char *s, char *path);
 int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
-char	*get_rid_of(char *s);
+char	*get_rid_of_quotes(char *s);
+char	*replace_dollar(char *s, t_main *main);
 /// Utils Tokens
 int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
-
 //EXEC
 int	ft_exec(t_main *main, char **split, char *cmd);
-
 //PIPEX
 void	pipex(t_main *main, char **split);
-
 // FREE
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);
-void	free_tokens(t_token *tokens, int tokens_len);
+void	free_tokens(t_main *main);
+void    free_end_cmd(t_main *main, char **split);
+void    free_split(char **split);
 
 
 char	*ft_strendchr(char *s, char end);
-
+int	    check_var_exists2(t_main *main, char *arg);
+char	*ft_strchrb(const char *s, int c);
 #endif

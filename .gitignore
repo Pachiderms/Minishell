@@ -1,6 +1,7 @@
 *.o
 *.d
 *.a
-minishell
-test.txt
+*.txt
 .vscode/
+minishell
+objs/

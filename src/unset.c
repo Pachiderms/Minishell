@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-/* int	check_var_exists(char **env, int len, char *cmd)
+int	check_var_exists(char **env, int len, char *cmd)
 {
 	int		i;
 	int		j;
@@ -47,9 +47,9 @@
 	}
 	free(arg);
 	return (-1);
-} */
+}
 
-int	check_var_exists2(char **env, int len, char *arg)
+int	check_var_exists2(t_main *main, char *arg)
 {
 	int		i;
 	int		j;
@@ -57,9 +57,9 @@ int	check_var_exists2(char **env, int len, char *arg)
 
 	i = 0;
 	j = 0;
-	while (i < len)
+	while (i < main->env_len)
 	{
-		actual_var = ft_strdup(env[i]);
+		actual_var = ft_strdup(main->env[i]);
 		while (actual_var[j] != '=')
 			j++;
 		actual_var[j] = '\0';

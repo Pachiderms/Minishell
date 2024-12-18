@@ -12,16 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void	free_all_data(t_main *main)
-{
-	if (main->env)
-		free_env(main->env, main->env_len);
-	if (main->export)
-		free_env(main->export, main->export_len);
-	/* if (main->tokens)
-		free_tokens(main->tokens, main->tokens_len); */
-}
-
 void	init_main(t_main *main)
 {
 	main->env = NULL;

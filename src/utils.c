@@ -205,7 +205,7 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c)
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
-		dest[x] = get_rid_of(ft_substr(no_space, i, j - i));
+		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
 		if (dest[x] == NULL)
 			return (ft_free_split_k_q_s(dest, x));
 		x++;
