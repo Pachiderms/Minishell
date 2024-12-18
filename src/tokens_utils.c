@@ -88,18 +88,6 @@ int	is_sc(char *s)
 	return (0);
 }
 
-char	*find_last_dollar(char *s)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	tmp = ft_strrchr(s, '$');
-	if (ft_strchr(tmp, '=') != 0)
-		tmp = ft_strchrb(s, '=');
-	return (tmp);
-}
-
 char	*replace_dollar(char *s, t_main *main)
 {
 	int		i;
