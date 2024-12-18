@@ -39,33 +39,6 @@ char	*get_rid_of_quotes(char *s)
 	return (dest);
 }
 
-char	*get_rid_of(char *s, char c)
-{
-	int		i;
-	int		len;
-	char	*dest;
-
-	i = -1;
-	len = 0;
-	while (s[++i])
-	{
-		if (s[i] != c)
-			len++;
-	}
-	dest = malloc(len * sizeof(char) + 1);
-	if (!dest)
-		return (0);
-	i = -1;
-	len = 0;
-	while (s[++i])
-	{
-		if (s[i] != c)
-			dest[len++] = s[i];
-	}
-	dest[len++] = '\0';
-	return (dest);
-}
-
 int	check_builtin(char *s)
 {
 	if (!ft_strncmp(s, "echo", -1) || !ft_strncmp(s, "cd", -1)
