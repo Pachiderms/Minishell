@@ -22,7 +22,7 @@ void	free_env(char **tab, int tablen)
 		free(tab[i]);
 		i--;
 	}
-	//free(tab);
+	free(tab);
 	tab = NULL;
 	return ;
 }
