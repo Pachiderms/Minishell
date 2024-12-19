@@ -1,6 +1,0 @@
-*.o
-*.d
-*.a
-minishell
-test.txt
-.vscode/
