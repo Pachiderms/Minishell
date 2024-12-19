@@ -51,9 +51,9 @@ void    ft_exec(t_main *main, char **split, char *cmd)
 		    if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 			    ft_echo(split);
             if (ft_strcmp(main->tokens[0].value, "cd") == 0)
-                cd(main, prep_cmd(cmd));
+                cd(main, split);
             if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
-                pwd();
+                pwd(main, split);
         }
         else
             pipex(main, split);

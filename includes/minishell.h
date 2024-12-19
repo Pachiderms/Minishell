@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/19 14:37:29 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos);
 //Utils
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
-char	**ft_split_k_q_s(t_main *main, char const *s, char c);
+char	**ft_split_k_q_s(char const *s, char c);
 int	closed_quotes(const char *s);
 /// Tokens
 int		init_tokens(char **split, t_main *main);
@@ -118,7 +118,7 @@ int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 //EXEC
-int	ft_exec(t_main *main, char **split, char *cmd);
+void    ft_exec(t_main *main, char **split, char *cmd);
 //PIPEX
 void	pipex(t_main *main, char **split);
 // FREE
