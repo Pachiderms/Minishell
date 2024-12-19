@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/18 14:42:10 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/19 15:23:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,42 @@ void	init_main(t_main *main)
 	main->nb_cmd = 0;
 	main->path = NULL;
 }
+char	*get_var_name(char *cmd) // export aaa=aaa
+{
+	int i;
+	int j;
+	char *var_name;
+
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		j++;
+		i++;
+	}
+	var_name = (char *)malloc(sizeof(char) * (j + 2));
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		var_name[j] = cmd[i];
+		j++;
+		i++;
+	}
+	var_name[j] = cmd[i];
+	var_name[j + 1] = '\0';
+	return (var_name);
+}
 
 int	init_env(char **env, t_main *main)
 {
 	int	i;
+	char *save_value;
+	char *temp;
 
 	i = -1;
 	while (env[++i] != NULL)
@@ -49,7 +81,11 @@ int	init_env(char **env, t_main *main)
 	i = 0;
 	while (i < main->export_len)
 	{
-		main->export[i] = ft_strdup(env[i]);
+		save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(env[i], '=')[1])), "\"");
+		temp = save_value;
+		save_value = ft_strjoin("export ", ft_strjoin(get_var_name(env[i]), temp));
+		free(temp);
+		main->export[i] = save_value;
 		i++;
 	}
 	return (1);

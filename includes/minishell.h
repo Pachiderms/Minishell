@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/18 17:18:14 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/19 15:23:20 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,4 +133,5 @@ void    free_split(char **split);
 char	*ft_strendchr(char *s, char end);
 int	    check_var_exists2(t_main *main, char *arg);
 char	*ft_strchrb(const char *s, int c);
+char	*get_var_name(char *cmd);
 #endif
