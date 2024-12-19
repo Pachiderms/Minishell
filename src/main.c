@@ -6,11 +6,42 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/19 14:37:35 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/19 14:42:49 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char	*get_var_name(char *cmd) // export aaa=aaa
+{
+	int i;
+	int j;
+	char *var_name;
+
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		j++;
+		i++;
+	}
+	var_name = (char *)malloc(sizeof(char) * (j + 2));
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		var_name[j] = cmd[i];
+		j++;
+		i++;
+	}
+	var_name[j] = cmd[i];
+	var_name[j + 1] = '\0';
+	return (var_name);
+}
 
 void	init_main(t_main *main)
 {
