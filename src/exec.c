@@ -12,27 +12,6 @@
 
 #include "../includes/minishell.h"
 
-char    *prep_cmd(char *cmd)
-{
-    int     i;
-    char    *res;
-
-    i = 0;
-    while (cmd[i] && cmd[i] != '|')
-        i++;
-    res = malloc(i * sizeof(char) + 1);
-    if (!res)
-        return (NULL);
-    i = 0;
-    while (cmd[i] && cmd[i] != '|')
-    {
-        res[i] = cmd[i];
-        i++;
-    }
-    res[i] = '\0';
-    return (res);
-}
-
 void    ft_exec(t_main *main, char **split, char *cmd)
 {
     //for (int i=0; split[i];i++)
@@ -51,7 +30,7 @@ void    ft_exec(t_main *main, char **split, char *cmd)
 		    if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 			    ft_echo(split);
             if (ft_strcmp(main->tokens[0].value, "cd") == 0)
-                cd(main, prep_cmd(cmd));
+                cd(main, cmd);
             if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
                 pwd();
         }
