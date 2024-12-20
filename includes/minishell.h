@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/19 15:23:20 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/20 14:50:13 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int	    handle_sc(t_main *main, char **split, int i);
 void	ft_exec(t_main *main, char **split, char *cmd);
 
 //PIPEX
+void    prep_cmd_pipex(char **split);
 void	pipex(t_main *main, char **split);
 
 // FREE

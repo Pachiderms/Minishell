@@ -12,35 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int get_cmd_number(t_main *main, char **split)
-{
-    int i;
-    int j;
-    int cmd;
-
-    cmd = 0;
-    i = 0;
-    while (split[i])
-    {
-        if (is_cmd(split[i], main->path))
-        {
-            cmd++;
-            j = i + 1;
-            while (split[j])
-            {
-                if (ft_strcmp(split[j], "|") == 0)
-                    break ;
-                if (main->tokens[j].type == command)
-                    main->tokens[j].type = argument;
-                j++;
-            }
-            i += (j - i - 1);
-        }
-        i++;
-    }
-    return (cmd);
-}
-
 void    ft_fork(t_main *main, char **split)
 {
     pid_t   fork_id;
@@ -50,7 +21,7 @@ void    ft_fork(t_main *main, char **split)
     fork_id = fork();
     if (fork_id == 0)
     {
-        cmd = ft_strjoin("/bin/", split[0]);
+        cmd = ft_strjoin("usr/bin/", split[0]);
         printf("child cmd: %s\n", cmd);
         execve(cmd, split, main->env);
     }
@@ -60,12 +31,6 @@ void    ft_fork(t_main *main, char **split)
         waitpid(fork_id, &status, 0);
         ft_putendl_fd("on attend plus", 1);
     }
-}
-
-void    prep_cmd_pipex(char **split)
-{
-    (void)split;
-    return ;
 }
 
 void    ft_pipe(t_main *main, char **split)

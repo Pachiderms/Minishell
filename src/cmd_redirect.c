@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/19 16:40:57 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/20 15:07:14 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,33 @@ int	get_fd(char **cmd)
 		i++;
 	}
 	return (1);
+}
+
+int get_cmd_number(t_main *main, char **split)
+{
+    int i;
+    int j;
+    int cmd;
+
+    cmd = 0;
+    i = 0;
+    while (split[i])
+    {
+        if (is_cmd(split[i], main->path))
+        {
+            cmd++;
+            j = i + 1;
+            while (split[j])
+            {
+                if (ft_strcmp(split[j], "|") == 0)
+                    break ;
+                if (main->tokens[j].type == command)
+                    main->tokens[j].type = argument;
+                j++;
+            }
+            i += (j - i - 1);
+        }
+        i++;
+    }
+    return (cmd);
 }
