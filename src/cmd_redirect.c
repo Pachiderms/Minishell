@@ -6,13 +6,13 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/20 15:07:14 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/20 16:03:13 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	handle_opening_file(char *file, int append)
+int	handle_opening_outfile(char *file, int append)
 {
 	int	fd;
 
@@ -32,6 +32,23 @@ int	handle_opening_file(char *file, int append)
 	return (fd);
 }
 
+int	handle_opening_infile(char *file, int append)
+{
+	int	fd;
+
+	fd = -1;
+	if (append)
+	{
+		return (-1);
+	}
+	else
+	{
+		if (access(file, W_OK | R_OK) != 0)
+			return (-1);
+	}
+	return (fd);
+}
+
 int	get_fd(char **cmd)
 {
 	int	i;
@@ -42,13 +59,19 @@ int	get_fd(char **cmd)
 		if (ft_strcmp(cmd[i], ">>") == 0)
 		{
 			if (cmd[i + 1])
-				return (handle_opening_file(cmd[i + 1], 1));
+				return (handle_opening_outfile(cmd[i + 1], 1));
 			return (-1);
 		}
 		if (ft_strcmp(cmd[i], ">") == 0)
 		{
 			if (cmd[i + 1])
-				return (handle_opening_file(cmd[i + 1], 0));
+				return (handle_opening_outfile(cmd[i + 1], 0));
+			return (-1);
+		}
+		if (ft_strcmp(cmd[i], "<") == 0)
+		{
+			if (cmd[i + 1])
+				return (handle_opening_outfile(cmd[i + 1], 0));
 			return (-1);
 		}
 		i++;
