@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-char	*get_rid_of(char *s)
+char	*get_rid_of_quotes(char *s)
 {
 	int		i;
 	int		len;
@@ -39,40 +39,6 @@ char	*get_rid_of(char *s)
 	return (dest);
 }
 
-void	ft_free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		if (split[i])
-			free(split[i]);
-		i++;
-	}
-}
-
-int	ft_quote(char **s, char **split)
-{
-	int		i;
-	char	*tmp;
-
-	i = 1;
-	*s = get_rid_of(split[0]);
-	tmp = NULL;
-	while (split[i])
-	{
-		tmp = get_rid_of(split[i]);
-		if (ft_strchr(split[i], 34) || ft_strchr(split[i], 39))
-		{
-			*s = ft_strjoin(*s, tmp);
-			break ;
-		}
-		*s = ft_strjoin(tmp, " ");
-		i++;
-	}
-	return (i + 1);
-}
 int	check_builtin(char *s)
 {
 	if (!ft_strncmp(s, "echo", -1) || !ft_strncmp(s, "cd", -1)
@@ -111,20 +77,66 @@ int	is_cmd(char *s, char *path)
 
 int	is_sc(char *s)
 {
+	if (!s)
+		return (0);
 	if (ft_strcmp(s, "|") == 0 || ft_strcmp(s, "<") == 0
 		|| ft_strcmp(s, ">") == 0 || ft_strcmp(s, "<<") == 0
 		|| ft_strcmp(s, ">>") == 0)
 		return (1);
-	if (s[0] == '$')
+	if (ft_strchr(s, '$'))
 		return (2);
 	return (0);
+}
+
+char	*replace_dollar(char *s, t_main *main)
+{
+	int		i;
+	int		j;
+	int		l;
+	char	*res;
+	char	*tmp;
+
+	i = 0;
+	res = 0;
+	while (s[i])
+	{
+		j = i;
+		while (s[j] && s[j] != '$')
+			j++;
+		if (j != i)
+		{
+			tmp = ft_substr(s, i, j - i);
+			res = ft_strjoin(res, tmp);
+			free(tmp);
+			tmp = NULL;
+			// printf("i=%d\tj=%d\n", i, j);
+		}
+		i = j;
+		// printf("res before $: %s\n" ,res);
+		if (s[i] == '$')
+		{
+			i = j;
+			while (s[j] && s[j] != '=')
+				j++;
+			tmp = ft_substr(s, i, j - i);
+			l = check_var_exists2(main, &tmp[1]);
+			// printf("index=%d\n", l);
+			if (l >= 0)
+				res = ft_strjoin_free(res, &ft_strchr(main->env[l], '=')[1]);
+			free(tmp);
+			tmp = NULL;
+			// printf("res after $: %s\n" ,res);
+			// printf("i=%d\tj=%d\n", i, j);
+			i = j;
+		}
+	}
+	// printf("final res: %s\n", res);
+	return (res);
 }
 
 int	handle_sc(t_main *main, char **split, int i)
 {
 	int		sc_type;
-	char	*tmp;
-	char	*tmp2;
 
 	sc_type = is_sc(split[i]);
 	if (sc_type == 1)
@@ -134,37 +146,9 @@ int	handle_sc(t_main *main, char **split, int i)
 	}
 	if (sc_type == 2)
 	{
-		tmp = ft_strjoin("export ", &split[i][1]);
-		tmp2 = ft_strjoin(tmp, "=");
-		if (check_var_exists(main->env, main->env_len, tmp2) != -1)
-		{
-			split[i] = &ft_strchr(main->env[check_var_exists(main->env, main->env_len, tmp2)], '=')[1];
-			main->tokens[i].type = argument;
-			return (free(tmp), free(tmp2), 1);
-		}
-		free(tmp);
-		free(tmp2);
+		split[i] = replace_dollar(split[i], main);
+		main->tokens[i].type = argument;
+		return (1);
 	}
 	return (0);
-}
-char	*ft_strendchr(char *s, char end)
-{
-	int		i;
-	int		len;
-	char	*res;
-
-	i = 0;
-	len = 0;
-	while (s[len] && s[len] != end)
-		len++;
-	res = malloc(len * sizeof(char) + 1);
-	if (!res)
-		return (0);
-	while (i < len)
-	{
-		res[i] = s[i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
 }

@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/02 19:29:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/19 15:23:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	free_tokens(t_token *tokens, int tokens_len)
-{
-	int	i;
-
-	i = tokens_len - 1;
-	while (i >= 0)
-	{
-		free(tokens[i].value);
-		i--;
-	}
-	return ;
-}
-
-void	free_all_data(t_main *main)
-{
-	if (main->env)
-		free_env(main->env, main->env_len);
-	if (main->export)
-		free_env(main->export, main->export_len);
-	/* if (main->tokens)
-		free_tokens(main->tokens, main->tokens_len); */
-}
 
 void	init_main(t_main *main)
 {
@@ -47,10 +24,42 @@ void	init_main(t_main *main)
 	main->nb_cmd = 0;
 	main->path = NULL;
 }
+char	*get_var_name(char *cmd) // export aaa=aaa
+{
+	int i;
+	int j;
+	char *var_name;
+
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		j++;
+		i++;
+	}
+	var_name = (char *)malloc(sizeof(char) * (j + 2));
+	i = 0;
+	j = 0;
+	if (ft_strncmp(cmd, "export ", 7) == 0)
+		i = 7;
+	while (cmd[i] != '=')
+	{
+		var_name[j] = cmd[i];
+		j++;
+		i++;
+	}
+	var_name[j] = cmd[i];
+	var_name[j + 1] = '\0';
+	return (var_name);
+}
 
 int	init_env(char **env, t_main *main)
 {
 	int	i;
+	char *save_value;
+	char *temp;
 
 	i = -1;
 	while (env[++i] != NULL)
@@ -72,7 +81,11 @@ int	init_env(char **env, t_main *main)
 	i = 0;
 	while (i < main->export_len)
 	{
-		main->export[i] = ft_strdup(env[i]);
+		save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(env[i], '=')[1])), "\"");
+		temp = save_value;
+		save_value = ft_strjoin("export ", ft_strjoin(get_var_name(env[i]), temp));
+		free(temp);
+		main->export[i] = save_value;
 		i++;
 	}
 	return (1);
@@ -114,14 +127,12 @@ int	main(int argc, char **argv, char **env)
 		if (only_space_line(cmd) == 0 && cmd)
 		{
 			add_history(cmd);
-			split = ft_split_k_q_s(cmd, ' ');
-			for(int i=0;split[i];i++)
-				printf("split : %s\n", split[i]);
-			// return (0);
+			split = ft_split_k_q_s(&main, cmd, ' ');
 			if (init_tokens(split, &main) == 0)
 				return (free_all_data(&main), 1);
+			//for(int i=0;split[i];i++)
+			//	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			ft_exec(&main, split, cmd);
-			// ft_putendl_fd("end of while", 1);
 		}
 	}
 	free_all_data(&main);

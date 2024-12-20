@@ -12,34 +12,14 @@
 
 #include "../includes/minishell.h"
 
-char    *prep_cmd(char *cmd)
-{
-    int     i;
-    char    *res;
-
-    i = 0;
-    while (cmd[i] && cmd[i] != '|')
-        i++;
-    res = malloc((ft_strlen(cmd) - i) * sizeof(char) + 1);
-    if (!res)
-        return (NULL);
-    i = 0;
-    while (cmd[i] && cmd[i] != '|')
-    {
-        res[i] = cmd[i];
-        i++;
-    }
-    return (res);
-}
-
 void    ft_exec(t_main *main, char **split, char *cmd)
 {
     //for (int i=0; split[i];i++)
     //    printf("token type=%d\t val: %s\n", main->tokens[i].type, main->tokens[i].value);
      //printf("nb_cmd=%d\n", main->nb_cmd);
-    if (main->tokens[0].type == command)
+    if (main->nb_cmd >= 1)
     {
-        if (check_builtin(main->tokens[0].value))
+        if (check_builtin(main->tokens[0].value) && main->nb_cmd == 1)
         {
             if (ft_strcmp(main->tokens[0].value, "env") == 0)
 			    print_env(main, 0, split);
@@ -50,15 +30,16 @@ void    ft_exec(t_main *main, char **split, char *cmd)
 		    if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 			    ft_echo(split);
             if (ft_strcmp(main->tokens[0].value, "cd") == 0)
-                cd(main, prep_cmd(cmd));
+                cd(main, cmd);
             if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
                 pwd();
         }
         else
-            pipex(main, split);
+            prep_cmd_pipex(main, split);
         main->nb_cmd--;
     }
     else if (cmd[0] != '\0')
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
      //printf("nb_cmd=%d\n", main->nb_cmd);
+    free_end_cmd(main, split);
 }

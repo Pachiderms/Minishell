@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2024/12/04 13:58:05 by tzizi            ###   ########.fr        #
+#    Updated: 2024/12/20 14:49:47 by tzizi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,12 @@ LIBFT_NAME = libft.a
 
 LIBFT_LIB = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
 
-SRC = src/main.c src/env.c src/exec.c src/utils.c src/pipex.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c src/cd.c src/pwd.c src/cmd_redirect.c
+SRC = src/main.c src/prep_pipex.c src/free.c src/env.c src/exec.c src/utils.c src/pipex.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c src/cd.c src/pwd.c src/cmd_redirect.c
 
 OBJS := $(SRC:%.c=%.o)
 
-CC = gcc
-FLAGS = -Wall -Wextra -Werror -I ./includes
+CC = clang
+FLAGS = -Wall -Wextra -Werror -gdwarf-4 -I ./includes
 
 .c.o:
 	$(CC) $(FLAGS) -c $< -o $@

@@ -27,6 +27,30 @@ void	prep_unset(t_main *main, char **split)
 	}
 }
 
+int	check_var_exists2(t_main *main, char *arg)
+{
+	int		i;
+	int		j;
+	char	*actual_var;
+
+	i = 0;
+	j = 0;
+	while (i < main->env_len)
+	{
+		actual_var = ft_strdup(main->env[i]);
+		while (actual_var[j] != '=')
+			j++;
+		actual_var[j] = '\0';
+		if (ft_strcmp(arg, actual_var) == 0)
+			return (free(actual_var), i);
+		free(actual_var);
+		actual_var = NULL;
+		j = 0;
+		i++;
+	}
+	return (-1);
+}
+
 int	check_var_exists(char **env, int len, char *cmd)
 {
 	int		i;
@@ -46,7 +70,10 @@ int	check_var_exists(char **env, int len, char *cmd)
 	i = 0;
 	while (i < len)
 	{
-		actual_var = ft_strdup(env[i]);
+		if (ft_strncmp(env[i], "export ", 7) == 0)
+			actual_var = ft_strdup(&ft_strchr(env[i], ' ')[1]);
+		else
+			actual_var = ft_strdup(env[i]);
 		while (actual_var[j] != '=' && actual_var[j])
 			j++;
 		actual_var[j] = '\0';
@@ -67,21 +94,30 @@ int	check_syntax_unset(char *cmd)
 	char	*arg;
 
 	i = 0;
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-	if (ft_strncmp(arg, "_", -1) == 0)
-		return (free(arg), 0);
-	if (ft_isdigit(arg[0]) == 1)
-		return (printf("bash: export: '%c': not a valid identifier\n", arg[0]), free(arg), 0);
+	arg = &ft_strchr(cmd, ' ')[1];
+	printf("arg : %s\n", arg);
+	if (arg[0] == '_' && arg[1] == '\0')
+		return (0);
+	if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
+		return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), 0);
+	if (arg[0] == '-' && arg[1])
+		return (printf("bash: unset: -%c: invalid option\n", arg[1]), 0);
 	while (arg[i])
 	{
 		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.'
 		|| arg[i] == '+' || arg[i] == '{' || arg[i] == '}'
 		|| arg[i] == '-' || arg[i] == '*' || arg[i] == '#'
 		|| arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
-			return (printf("bash: export: '%c': not a valid identifier\n", arg[i]), free(arg), 0);
+			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), 0);
 		i++;
 	}
-	free(arg);
+	i = 0;
+	while (arg[i])
+	{
+		if (arg[i] == '!')
+			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!')), 0);
+		i++;
+	}
 	return (1);
 }
 
