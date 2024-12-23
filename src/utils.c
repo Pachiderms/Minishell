@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/02 19:37:06 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/23 14:04:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	sizeup_no_space(char const *s)
 	return (size);
 }
 
-char	*sizeup_k_q_s(char const *s)
+char	*get_rid_of_spaces(char const *s)
 {
 	int	i = 0;
 	int	j;
@@ -167,7 +167,7 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c)
 	i = 0;
 	x = 0;
 	j = 0;
-	char *no_space = sizeup_k_q_s(s);
+	char *no_space = get_rid_of_spaces(s);
 	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (0);

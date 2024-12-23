@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_pipex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/20 14:50:37 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/23 14:09:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,36 @@ void    prep_cmd_pipex(t_main *main, char **split)
         k = i;
         while (main->tokens[i].type != 0 && i <= main->tokens_len - 1)
             i++;
-        split_pipex = ft_strjoin(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
+        split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
         i++;
         while (main->tokens[i].type == 1 && i <= main->tokens_len - 1)
         {
-            split_pipex = ft_strjoin(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
+            split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
             i++;
         }
-        if (main->tokens[k].type == 2)
-            split_pipex = ft_strjoin(ft_strjoin_free(split_pipex, main->tokens[k + 1].value), " ");
-        else if (main->tokens[i].type == 2 && ft_strcmp(main->tokens[i].value, "|") != 0)
+        if (k <= main->tokens_len - 1
+            && (ft_strcmp(main->tokens[k].value, "<") == 0 || ft_strcmp(main->tokens[k].value, "<<") == 0))
         {
-            split_pipex = ft_strjoin(ft_strjoin_free(split_pipex, main->tokens[i + 1].value), " ");
+            split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[k].value), " ");
+            split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[k + 1].value), " ");
+        }
+        else if (i <= main->tokens_len - 1
+            && (ft_strcmp(main->tokens[i].value, ">") == 0 || ft_strcmp(main->tokens[i].value, ">>") == 0))
+        {
+            split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
+            split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i + 1].value), " ");
             i += 2;
         }
         if (i <= main->tokens_len - 1)
         {
-            printf("ici : %s\n", main->tokens[i].value);
+            // printf("ici : %s\n", main->tokens[i].value);
             if (ft_strcmp(main->tokens[i].value, "|") == 0)
-                split_pipex = ft_strjoin(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
+                split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
         }
         i++;
     }
-    split_pipex[ft_strlen(split_pipex) - 1] = '\0';
     printf("split pipex : '%s'\n", split_pipex);
     pipex(main, split_pipex);
-    //pipex(main, split_pipex);
     return ;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/20 14:50:13 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/12/23 14:41:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int	    closed_quotes(const char *s);
+char	*get_rid_of_spaces(char const *s);
+char	*cut_str(char *str, char *cut);
 
 /// Tokens
 int		init_tokens(char **split, t_main *main);
@@ -112,6 +114,8 @@ int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
+char	*get_rid_of(char *s, char c);
+
 /// Utils Tokens
 int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
