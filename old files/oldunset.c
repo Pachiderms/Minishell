@@ -27,30 +27,6 @@ void	prep_unset(t_main *main, char **split)
 	}
 }
 
-int	check_var_exists2(t_main *main, char *arg)
-{
-	int		i;
-	int		j;
-	char	*actual_var;
-
-	i = 0;
-	j = 0;
-	while (i < main->env_len)
-	{
-		actual_var = ft_strdup(main->env[i]);
-		while (actual_var[j] != '=')
-			j++;
-		actual_var[j] = '\0';
-		if (ft_strcmp(arg, actual_var) == 0)
-			return (free(actual_var), i);
-		free(actual_var);
-		actual_var = NULL;
-		j = 0;
-		i++;
-	}
-	return (-1);
-}
-
 int	check_var_exists(char **env, int len, char *cmd)
 {
 	int		i;
@@ -85,6 +61,30 @@ int	check_var_exists(char **env, int len, char *cmd)
 		i++;
 	}
 	free(arg);
+	return (-1);
+}
+
+int	check_var_exists2(t_main *main, char *arg)
+{
+	int		i;
+	int		j;
+	char	*actual_var;
+
+	i = 0;
+	j = 0;
+	while (i < main->env_len)
+	{
+		actual_var = ft_strdup(main->env[i]);
+		while (actual_var[j] != '=')
+			j++;
+		actual_var[j] = '\0';
+		if (ft_strcmp(arg, actual_var) == 0)
+			return (free(actual_var), i);
+		free(actual_var);
+		actual_var = NULL;
+		j = 0;
+		i++;
+	}
 	return (-1);
 }
 
