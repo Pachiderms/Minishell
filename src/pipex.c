@@ -12,27 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void    ft_fork(t_main *main, char **split)
-{
-    pid_t   fork_id;
-    char    *cmd;
-
-    int status = 0;
-    fork_id = fork();
-    if (fork_id == 0)
-    {
-        cmd = ft_strjoin("/usr/bin/", split[0]);
-        printf("child cmd: %s\n", cmd);
-        execve(cmd, split, main->env);
-    }
-    else
-    {
-        ft_putendl_fd("on attend", 1);
-        waitpid(fork_id, &status, 0);
-        ft_putendl_fd("on attend plus", 1);
-    }
-}
-
 char    *prep_process(char *s)
 {
     char    *res=NULL;
@@ -52,6 +31,47 @@ char    *prep_process(char *s)
     return (get_rid_of_spaces(s));
 }
 
+void    ft_fork(t_main *main, char *cmd)
+{
+    pid_t   fork_id;
+    int     fileout;
+    char    **process;
+    char    *_cmd;
+    char    *tmp;
+
+    int status = 0;
+    tmp = NULL;
+    _cmd = get_rid_of(cmd, '<');
+    process = ft_split(_cmd, ' ');
+    tmp = prep_process(_cmd);
+    printf("tmp:%s\n", tmp);
+    fileout = get_fd(process);
+    if (fileout < 0)
+    {
+        free_split(process);
+        free(tmp);
+        perror("fd");
+        exit (-1);
+    }
+    fork_id = fork();
+    if (fork_id == 0)
+    {
+        process = ft_split(tmp, ' ');
+        free(tmp);
+        dup2(fileout, STDOUT_FILENO);
+        tmp = ft_strjoin("/usr/bin/", process[0]);
+        printf("child cmd: %s\n", tmp);
+        execve(tmp, process, main->env);
+    }
+    else
+    {
+        ft_putendl_fd("on attend", 1);
+        waitpid(fork_id, &status, 0);
+        free(tmp);
+        ft_putendl_fd("on attend plus", 1);
+    }
+}
+
 void    parent_process(t_main *main, char *cmd, int *fd)
 {
     char    **tmp;
@@ -64,6 +84,7 @@ void    parent_process(t_main *main, char *cmd, int *fd)
     if (fileout < 0)
     {
         free_split(tmp);
+        free(_cmd);
         perror("fd");
         exit (-1);
     }
@@ -90,6 +111,7 @@ void    child_process(t_main *main, char *cmd, int *fd)
     if (filein < 0)
     {
         free_split(tmp);
+        free(_cmd);
         perror("fd");
         exit (-1);
     }
@@ -156,9 +178,9 @@ void    ft_pipe(t_main *main, char *split_pipex)
 
 void    pipex(t_main *main, char *split)
 {
-    // if (main->nb_cmd < 2)
-    //     return (ft_fork(main, split));
-    // else
-    ft_pipe(main, split);
+    if (main->nb_cmd < 2)
+        return (ft_fork(main, split));
+    else
+        ft_pipe(main, split);
     //ft_pipe2(main, split);
 }
