@@ -30,9 +30,7 @@ void    builtin(t_main *main, char **split, char *cmd)
 
 void    ft_exec(t_main *main, char **split, char *cmd)
 {
-    //for (int i=0; split[i];i++)
-    //    printf("token type=%d\t val: %s\n", main->tokens[i].type, main->tokens[i].value);
-     //printf("nb_cmd=%d\n", main->nb_cmd);
+    //printf("nb_cmd=%d\n", main->nb_cmd);
     if (main->nb_cmd >= 1)
     {
         if (check_builtin(main->tokens[0].value) && main->nb_cmd == 1)
