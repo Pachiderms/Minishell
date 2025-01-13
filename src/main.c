@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/12/19 15:23:01 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/13 14:49:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ int	only_space_line(char *cmd)
 	int	i;
 
 	i = 0;
+	if (!cmd)
+		return (1);
 	while (cmd[i] && ft_isspace(cmd[i]))
 		i++;
 	if (i == (int)ft_strlen(cmd))
@@ -130,8 +132,8 @@ int	main(int argc, char **argv, char **env)
 			split = ft_split_k_q_s(&main, cmd, ' ');
 			if (init_tokens(split, &main) == 0)
 				return (free_all_data(&main), 1);
-			//for(int i=0;split[i];i++)
-			//	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
+			for(int i=0;split[i];i++)
+				printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			ft_exec(&main, split, cmd);
 		}
 	}
