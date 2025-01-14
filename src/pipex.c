@@ -62,7 +62,7 @@ int    ft_fork(t_main *main, char *cmd)
     }
     else
     {
-        waitpid(fork_id, NULL, 0);
+        wait(0);
         free(tmp);    
     }
     return (0);
