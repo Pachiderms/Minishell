@@ -115,6 +115,7 @@ int ft_pipe2(t_main *main, char *split_pipex)
         i++;
     }
     ft_fork(main, cmd[i]);
+    close(fdin);
     return (0);
 }
 

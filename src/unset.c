@@ -156,7 +156,6 @@ void	unset_env(t_main *main, char *cmd)
 	main->env[j] = NULL;
 	free_env(tmp, main->env_len);
 	main->env_len -= 1;
-	return ;
 }
 
 void	unset_export(t_main *main, char *cmd)
@@ -193,7 +192,6 @@ void	unset_export(t_main *main, char *cmd)
 	main->export[j] = NULL;
 	free_env(tmp, main->export_len);
 	main->export_len -= 1;
-	return ;
 }
 
 void	unset(t_main *main, char *cmd)
@@ -203,5 +201,4 @@ void	unset(t_main *main, char *cmd)
 	unset_env(main, cmd);
 	unset_export(main, cmd);
 	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
-	return ;
 }
