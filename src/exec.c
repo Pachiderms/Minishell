@@ -42,5 +42,4 @@ void    ft_exec(t_main *main, char **split, char *cmd)
     else if (cmd[0] != '\0')
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
      //printf("nb_cmd=%d\n", main->nb_cmd);
-    free_end_cmd(main, split);
 }

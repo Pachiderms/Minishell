@@ -36,7 +36,7 @@ int	check_var_exists2(t_main *main, char *arg)
 
 	i = 0;
 	j = 0;
-	while (i < main->env_len)
+	while (main->env[i])
 	{
 		actual_var = ft_strdup(main->env[i]);
 		while (actual_var[j] != '=')

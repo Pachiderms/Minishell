@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/14 13:00:48 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 14:19:26 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	init_env(char **env, t_main *main)
 		main->env[i] = ft_strdup(env[i]);
 		i++;
 	}
+	main->env[i - 1] = NULL;
 	i = 0;
 	while (i < main->export_len)
 	{
@@ -88,6 +89,7 @@ int	init_env(char **env, t_main *main)
 		main->export[i] = save_value;
 		i++;
 	}
+	main->export[i - 1] = NULL;
 	return (1);
 }
 
@@ -115,6 +117,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	cmd = NULL;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
@@ -135,6 +138,7 @@ int	main(int argc, char **argv, char **env)
 			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			ft_exec(&main, split, cmd);
 			//printf("exit code %d\n", main.last_exit_code);
+		free_end_cmd(&main, split);
 		}
 	}
 	free_all_data(&main);

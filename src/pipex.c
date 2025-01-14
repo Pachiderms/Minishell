@@ -42,7 +42,6 @@ int    ft_fork(t_main *main, char *cmd)
     _cmd = get_rid_of(cmd, '<');
     process = ft_split(_cmd, ' ');
     tmp = prep_process(_cmd);
-    // printf("tmp:%s\n", tmp);
     fileout = get_fd(process);
     if (fileout < 0)
     {

@@ -180,7 +180,7 @@ char	*replace_dollar(char *s, t_main *main)
 			if (l >= 0)
 				res = ft_strjoin_free(res, &ft_strchr(main->env[l], '=')[1]);
 			else
-				res = ft_strjoin_free(res, &s[i + 1]);
+				res = ft_strjoin_free(res, &s[i]);
 			free(tmp);
 			tmp = NULL;
 			// printf("res after $: %s\n" ,res);

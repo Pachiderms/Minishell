@@ -49,6 +49,15 @@ void	echo_file(char **cmd, int fd, int nl)
 	close(fd);
 }
 
+int	echo_dollar(t_main *main, char **cmd)
+{
+	if (ft_strlen(cmd[1]) == 1)
+		ft_putchar_fd('$', 1);
+	else if (cmd[1][1] == '?')
+		ft_putnbr_fd(main->last_exit_code, 1);
+	return (ft_putchar_fd('\n', 1), 0);
+}
+
 int	ft_echo(t_main *main, char **cmd)
 {
 	int	fd;
@@ -64,11 +73,8 @@ int	ft_echo(t_main *main, char **cmd)
 		nl = 0;
 	if (fd > 1)
 		echo_file(cmd, fd, nl);
-	if (!ft_strcmp(cmd[1], "?"))
-	{
-		ft_putnbr_fd(main->last_exit_code, 1);
-		return (ft_putchar_fd('\n', 1), 0);
-	}
+	if (cmd[1][0] == '$')
+		return (echo_dollar(main, cmd));
 	else
 		echo_prompt(cmd, nl);
 	return (0);

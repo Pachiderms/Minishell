@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/14 12:49:02 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 15:20:00 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	sizeup_no_space(char const *s)
 {
-	int	i;
-	int	size;
+	size_t	i;
+	int		size;
 
 	i = 0;
 	size = 0;
 	while (ft_isspace(s[i]) == 1)
 			i++;
-	while (s[i])
+	while (i < ft_strlen(s))
 	{
 		if (ft_isspace(s[i]) == 1)
 		{
