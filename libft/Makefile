@@ -6,11 +6,12 @@
 #    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/01/14 12:31:46 by tzizi            ###   ########.fr        #
+#    Updated: 2025/01/14 16:07:13 by tzizi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC =	ft_atoi.c \
+	ft_calloc.c	\
 	ft_isspace.c \
 	ft_split.c \
 	ft_strjoin.c \
@@ -28,6 +29,7 @@ SRC =	ft_atoi.c \
 	ft_isdigit.c
 
 BFILES =	ft_atoi.o \
+		ft_calloc.o	\
 		ft_isspace.o \
 		ft_split.o \
 		ft_strjoin.o \

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/20 15:07:14 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 16:39:35 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,33 @@ int	handle_opening_outfile(char *file, int append)
 	return (fd);
 }
 
+char	*her_doc(char *eof)
+{
+	char	*tmp;
+	char	*res=NULL;
+	char	*buf;
+
+	while (ft_strcmp(eof, buf))
+	{
+		tmp = readline("heredoc> ");
+		buf = get_next_line(0);
+		ft_putstr_fd(buf, 1);
+		res = ft_strjoin_free(res, buf);
+		add_history(tmp);
+		free(buf);
+	}
+	printf("res:|%s|\n", res);
+	return (NULL);
+}
+
 int	handle_opening_infile(char *file, int append)
 {
-	int	fd;
+	int		fd;
 
 	fd = -1;
-	if (append)
+	if (append) // heredoc
 	{
+		her_doc(file);
 		return (-1);
 	}
 	else
@@ -65,7 +85,7 @@ int	handle_opening_infile(char *file, int append)
 	return (fd);
 }
 
-int	get_fd(char **cmd)
+int	get_fd_out(char **cmd)
 {
 	int	i;
 
@@ -84,10 +104,28 @@ int	get_fd(char **cmd)
 				return (handle_opening_outfile(cmd[i + 1], 0));
 			return (-1);
 		}
+		i++;
+	}
+	return (1);
+}
+
+int	get_fd_in(char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
+	{
 		if (ft_strcmp(cmd[i], "<") == 0)
 		{
 			if (cmd[i + 1])
 				return (handle_opening_infile(cmd[i + 1], 0));
+			return (-1);
+		}
+		if (ft_strcmp(cmd[i], "<<") == 0)
+		{
+			if (cmd[i + 1])
+				return (handle_opening_infile(cmd[i + 1], 1));
 			return (-1);
 		}
 		i++;

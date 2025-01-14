@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/14 12:31:14 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 16:08:30 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+
 enum e_type {command, argument, sc, end};
 
 typedef struct token_t
@@ -53,9 +57,12 @@ typedef struct s_main {
     int     last_exit_code;
 }	t_main;
 
+//GNL
+char	*get_next_line(int fd);
 
 // LIBFT
 size_t	ft_atoi(const char *str);
+void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_isspace(int c);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
@@ -91,7 +98,8 @@ int	    prep_export(t_main *main, char **split);
 void	print_ascii_order(t_main *main);
 /// Echo
 int	    ft_echo(t_main *main, char **cmd);
-int		get_fd(char **cmd);
+int		get_fd_in(char **cmd);
+int		get_fd_out(char **cmd);
 // Cd
 void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char *cmd);

@@ -37,9 +37,9 @@ void    ft_exec(t_main *main, char **split, char *cmd)
             builtin(main, split, cmd);
         else
             main->last_exit_code = prep_cmd_pipex(main, split);
-        main->nb_cmd--;
+        main->nb_cmd = 0;
     }
-    else if (cmd[0] != '\0')
+    else if (cmd[0] != '\0' && get_fd_in(split) < 0)
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
      //printf("nb_cmd=%d\n", main->nb_cmd);
 }

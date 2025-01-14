@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/14 14:19:26 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 15:39:20 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int	main(int argc, char **argv, char **env)
 			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			ft_exec(&main, split, cmd);
 			//printf("exit code %d\n", main.last_exit_code);
-		free_end_cmd(&main, split);
+			free_end_cmd(&main, split);
 		}
 	}
 	free_all_data(&main);
