@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/14 10:36:55 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 10:52:37 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ char	*get_rid_of_spaces(char const *s)
 
 	size = sizeup_no_space(s);
 	no_space = malloc(sizeof(char) * size + 1);
+	if (!no_space)
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (ft_isspace(s[i]) == 1)
@@ -172,7 +174,7 @@ int	count_words(char *no_space)
 		}
 		i++;
 	}
-	return (word);
+	return (word + 1);
 }
 
 char	**ft_split_k_q_s(t_main *main, char const *s, char c)

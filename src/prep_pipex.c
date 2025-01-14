@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_pipex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/23 14:09:26 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/14 10:50:24 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ void    prep_cmd_pipex(t_main *main, char **split)
             i++;
         split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
         i++;
-        while (main->tokens[i].type == 1 && i <= main->tokens_len - 1)
+        while (i <= main->tokens_len - 1)
         {
+            if (main->tokens[i].type != 1)
+                break ;
             split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
             i++;
         }
