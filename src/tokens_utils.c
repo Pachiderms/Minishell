@@ -20,6 +20,8 @@ char	*get_rid_of_quotes(char *s)
 
 	i = -1;
 	len = 0;
+	if (!s)
+		return (NULL);
 	while (s[++i])
 	{
 		if (s[i] != 34 && s[i] != 39)
