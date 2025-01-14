@@ -6,13 +6,13 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/14 10:50:24 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 12:39:30 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void    prep_cmd_pipex(t_main *main, char **split)
+int prep_cmd_pipex(t_main *main, char **split)
 {
     int i;
     int k;
@@ -20,7 +20,7 @@ void    prep_cmd_pipex(t_main *main, char **split)
 
     i = 0;
     (void)split;
-    printf("split_len %d token_len %d\n", main->split_len, main->tokens_len);
+    // printf("split_len %d token_len %d\n", main->split_len, main->tokens_len);
     split_pipex = NULL;
     while (i <= main->tokens_len - 1)
     {
@@ -57,9 +57,8 @@ void    prep_cmd_pipex(t_main *main, char **split)
         }
         i++;
     }
-    printf("split pipex : '%s'\n", split_pipex);
-    pipex(main, split_pipex);
-    return ;
+    // printf("split pipex : '%s'\n", split_pipex);
+    return(pipex(main, split_pipex));
 }
 
 // < infile.txt cat -l -p  | grep "ok" > outfile.txt | < infile.txt cat -l -p  | grep "ok" > outfile.txt

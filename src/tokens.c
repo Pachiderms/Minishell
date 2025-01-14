@@ -32,7 +32,6 @@ int	init_tokens(char **split, t_main *main)
 			main->tokens[i].type = command;
 		else if (is_sc(split[i]) > 0)
 		{
-			printf("split i: %s\n", split[i]);
 			if (!handle_sc(main, split, i))
 				return (0);
 		}

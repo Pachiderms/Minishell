@@ -25,6 +25,6 @@ int	cd(t_main *main, char *cmd)
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	chdir_value = chdir(arg);
 	if (chdir_value == 0)
-		return (free(arg), update_oldpwd_pwd(main), 1);
+		return (free(arg), update_oldpwd_pwd(main), 0);
 	return (free(arg), 0);
 }

@@ -15,17 +15,17 @@
 void    builtin(t_main *main, char **split, char *cmd)
 {
     if (ft_strcmp(main->tokens[0].value, "env") == 0)
-		print_env(main, 0, split);
+		main->last_exit_code = print_env(main, 0, split);
 	if (ft_strcmp(main->tokens[0].value, "export") == 0)
-        prep_export(main, split);
+        main->last_exit_code = prep_export(main, split);
 	if (ft_strcmp(main->tokens[0].value, "unset") == 0)
-        prep_unset(main, split);
+        main->last_exit_code = prep_unset(main, split);
 	if (ft_strcmp(main->tokens[0].value, "echo") == 0)
-	    ft_echo(split);
+	    main->last_exit_code = ft_echo(main, split);
     if (ft_strcmp(main->tokens[0].value, "cd") == 0)
-        cd(main, cmd);
+        main->last_exit_code = cd(main, cmd);
     if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
-        pwd();
+        main->last_exit_code = pwd();
 }
 
 void    ft_exec(t_main *main, char **split, char *cmd)
@@ -36,7 +36,7 @@ void    ft_exec(t_main *main, char **split, char *cmd)
         if (check_builtin(main->tokens[0].value) && main->nb_cmd == 1)
             builtin(main, split, cmd);
         else
-            prep_cmd_pipex(main, split);
+            main->last_exit_code = prep_cmd_pipex(main, split);
         main->nb_cmd--;
     }
     else if (cmd[0] != '\0')

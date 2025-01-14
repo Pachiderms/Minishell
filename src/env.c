@@ -84,7 +84,7 @@ int	check_syntax_env(char **split)
 	return (1);
 }
 
-void	print_env(t_main *main, int check, char **split)
+int	print_env(t_main *main, int check, char **split)
 {
 	int	i;
 
@@ -92,7 +92,7 @@ void	print_env(t_main *main, int check, char **split)
 	if (check == 0)
 	{
 		if (check_syntax_env(split) == 0)
-			return ;
+			return (1);
 		while (i < main->env_len)
 		{
 			printf("%s\n", main->env[i]);
@@ -105,5 +105,5 @@ void	print_env(t_main *main, int check, char **split)
 		print_ascii_order(main);
 		printf("Export Len : %d\n", main->export_len);
 	}
-	return ;
+	return (0);
 }

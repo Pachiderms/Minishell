@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/14 10:42:58 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 12:44:41 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	main(int argc, char **argv, char **env)
 		main.path = env[check_var_exists(main.env, main.env_len, "export PATH=")];
 	else
 		return (free_all_data(&main), 1);
-	while (1)
+	while (ft_strcmp(cmd, "exit") != 0)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
@@ -134,6 +134,7 @@ int	main(int argc, char **argv, char **env)
 			// for(int i=0;split[i];i++)
 			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			ft_exec(&main, split, cmd);
+			//printf("exit code %d\n", main.last_exit_code);
 		}
 	}
 	free_all_data(&main);

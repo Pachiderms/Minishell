@@ -263,7 +263,7 @@ void	export(t_main *main, char *cmd)
 	return ;
 }
 
-void	prep_export(t_main *main, char **split)
+int	prep_export(t_main *main, char **split)
 {
 	int i;
 	char *tmp;
@@ -272,7 +272,7 @@ void	prep_export(t_main *main, char **split)
 	if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
 	{
 		print_env(main, 1, split);
-		return ;
+		return (0);
 	}
 	while (split[i] && is_sc(split[i]) != 1)
 	{
@@ -282,5 +282,5 @@ void	prep_export(t_main *main, char **split)
 		free(tmp);
 		i++;
 	}
-	return ;
+	return (0);
 }

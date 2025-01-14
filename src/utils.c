@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/14 10:52:37 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/14 12:49:02 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ char	*get_rid_of_spaces(char const *s)
 		i++;
 	}
 	no_space[j] = '\0';
-	printf("no_space: %s|\n", no_space);
 	return (no_space);
 }
 
@@ -118,7 +117,6 @@ int	check_quotes(char const *s, char q)
 			quotes++;
 		i++;
 	}
-	// printf("quotes %% 2 = %d\n", quotes % 2);
 	return (quotes % 2 == 0);
 }
 
@@ -143,7 +141,6 @@ int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s)
 			else
 				i++;
 		}
-		ft_putendl_fd((char *)&_s[i], 1);
 	}
 	else if (diff == 0)
 	{

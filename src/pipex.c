@@ -20,8 +20,7 @@ char    *prep_process(char *s)
     if (ft_strchr(s, '<') || ft_strchr(s, '>'))
     {
         res = get_rid_of_spaces(s);
-        tmp = cut_str(res, &ft_strrchr(res, ' ')[1]);
-        tmp = get_rid_of(tmp, '<');
+        tmp = get_rid_of(res, '<');
         free(res);
         res = get_rid_of(tmp, '>');
         free(tmp);
@@ -31,7 +30,7 @@ char    *prep_process(char *s)
     return (get_rid_of_spaces(s));
 }
 
-void    ft_fork(t_main *main, char *cmd)
+int    ft_fork(t_main *main, char *cmd)
 {
     pid_t   fork_id;
     int     fileout;
@@ -39,19 +38,18 @@ void    ft_fork(t_main *main, char *cmd)
     char    *_cmd;
     char    *tmp;
 
-    int status = 0;
     tmp = NULL;
     _cmd = get_rid_of(cmd, '<');
     process = ft_split(_cmd, ' ');
     tmp = prep_process(_cmd);
-    printf("tmp:%s\n", tmp);
+    // printf("tmp:%s\n", tmp);
     fileout = get_fd(process);
     if (fileout < 0)
     {
         free_split(process);
         free(tmp);
         perror("fd");
-        exit (-1);
+        return (1);
     }
     fork_id = fork();
     if (fork_id == 0)
@@ -60,72 +58,17 @@ void    ft_fork(t_main *main, char *cmd)
         free(tmp);
         dup2(fileout, STDOUT_FILENO);
         tmp = ft_strjoin("/usr/bin/", process[0]);
-        printf("child cmd: %s\n", tmp);
         execve(tmp, process, main->env);
     }
     else
     {
-        ft_putendl_fd("on attend", 1);
-        waitpid(fork_id, &status, 0);
-        free(tmp);
-        ft_putendl_fd("on attend plus", 1);
+        waitpid(fork_id, NULL, 0);
+        free(tmp);    
     }
+    return (0);
 }
 
-void    parent_process(t_main *main, char *cmd, int *fd)
-{
-    char    **tmp;
-    char    *_cmd;
-    int     fileout;
-    
-    tmp = ft_split(cmd, ' ');
-    _cmd = prep_process(cmd);
-    fileout = get_fd(tmp);
-    if (fileout < 0)
-    {
-        free_split(tmp);
-        free(_cmd);
-        perror("fd");
-        exit (-1);
-    }
-    printf("_cmd:%s|\nexecuting on fd %d\n", _cmd, fileout);
-    tmp = ft_split(_cmd, ' ');
-    char *cm = ft_strjoin("/usr/bin/", tmp[0]);
-    close(STDIN_FILENO);
-    dup2(fd[0], STDIN_FILENO);
-    dup2(fileout, STDOUT_FILENO);
-    close(fd[0]);
-    close(fd[1]);
-    execve(cm, tmp, main->env);
-}
-
-void    child_process(t_main *main, char *cmd, int *fd)
-{
-    char    **tmp;
-    char    *_cmd;
-    int     filein;
-
-    tmp = ft_split(cmd, ' ');
-    _cmd = prep_process(cmd);
-    filein = get_fd(tmp);
-    if (filein < 0)
-    {
-        free_split(tmp);
-        free(_cmd);
-        perror("fd");
-        exit (-1);
-    }
-    printf("_cmd:%s|\n", _cmd);
-    tmp = ft_split(_cmd, ' ');
-    char *cm = ft_strjoin("/usr/bin/", tmp[0]);
-    dup2(fd[1], STDOUT_FILENO);
-    dup2(filein, STDIN_FILENO);
-    close(fd[1]);
-    close(fd[0]);
-    execve(cm, tmp, main->env);
-}
-
-void    child_process2(t_main *main, char *cmd)
+int    child_process2(t_main *main, char *cmd)
 {
     char    **tmp;
     char    *_cmd;
@@ -135,27 +78,27 @@ void    child_process2(t_main *main, char *cmd)
     if (pipe(fd) < 0)
     {
         perror("pipe fail");
-        exit (-1);
+        return (1);
     }
     child_pid = fork();
     if (child_pid == 0)
     {
+        close(fd[0]);
         _cmd = prep_process(cmd);
-        printf("_cmd:%s|\n", _cmd);
         tmp = ft_split(_cmd, ' ');
         char *cm = ft_strjoin("/usr/bin/", tmp[0]);
         dup2(fd[1], STDOUT_FILENO);
-        close(fd[0]);
         execve(cm, tmp, main->env);
     }
     else
     {
-        dup2(fd[0], STDIN_FILENO);
         close(fd[1]);
+        dup2(fd[0], STDIN_FILENO);    
     }
+    return (0);
 }
 
-void    ft_pipe2(t_main *main, char *split_pipex)
+int ft_pipe2(t_main *main, char *split_pipex)
 {
     int     i;
     char    **cmd;
@@ -167,53 +110,18 @@ void    ft_pipe2(t_main *main, char *split_pipex)
     dup2(fdin, STDIN_FILENO);
     while (i < main->nb_cmd - 1)
     {
-        child_process2(main, cmd[i]);
+        if (child_process2(main, cmd[i]))
+            return (1);
         i++;
     }
     ft_fork(main, cmd[i]);
+    return (0);
 }
 
-void    ft_pipe(t_main *main, char *split_pipex)
-{
-    int     fd[2];
-    int     child_pid;
-    char    **cmd;
-
-    cmd = ft_split(split_pipex, '|');
-    if (pipe(fd) < 0)
-    {
-        perror("pipe fail");
-        exit (-1);
-    }
-    child_pid = fork();
-    if (child_pid < 0)
-    {
-        perror ("fork fail");
-        exit (-1);
-    }
-    if (child_pid == 0)
-        child_process(main, cmd[0], fd);
-    waitpid(child_pid, NULL, 0);
-    parent_process(main ,cmd[1], fd);
-}
-
-void    pipex(t_main *main, char *split)
+int   pipex(t_main *main, char *split)
 {
     if (main->nb_cmd < 2)
         return (ft_fork(main, split));
     else
-        ft_pipe2(main, split);
-    //ft_pipe2(main, split);
+        return (ft_pipe2(main, split));
 }
-
-// cmd1 | cmd2 | cmd3
-//  fd1 -> fd0 -> fd02(=fd0)
-/*
-test.txt = "test\n"
-
-cat test.txt | wc outfile
-
-fd1 = "test\n"
-fd0 = "test\n"
-
-wc -> fd0;*/

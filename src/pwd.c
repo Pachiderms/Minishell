@@ -9,5 +9,5 @@ int    pwd(void)
         return (free(pwd), 0);
     printf("%s\n", pwd);
     free(pwd);
-    return (1);
+    return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/13 14:26:15 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/14 12:31:14 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_main {
     int     split_len;
     int		nb_cmd;
     char	*path;
+    int     last_exit_code;
 }	t_main;
 
 
@@ -69,27 +70,27 @@ char	*ft_substr(char const *str, unsigned int start, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+void    ft_putnbr_fd(int n, int fd);
 int	    ft_isdigit(int c);
 
 // MINISHELL
 /// Env
 int		init_env(char **env, t_main *main);
 int     check_syntax_env(char **split);
-void	print_env(t_main *main, int check, char **split);
+int	    print_env(t_main *main, int check, char **split);
 /// Unset
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
-void	prep_unset(t_main *main, char **split);
+int 	prep_unset(t_main *main, char **split);
 /// Export
 void	export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
 void	fill_export(t_main *main, char *cmd);
 void	fill_env_export(t_main *main, char *cmd);
-void	prep_export(t_main *main, char **split);
+int	    prep_export(t_main *main, char **split);
 void	print_ascii_order(t_main *main);
-void	prep_export(t_main *main, char **split);
 /// Echo
-void	ft_echo(char **cmd);
+int	    ft_echo(t_main *main, char **cmd);
 int		get_fd(char **cmd);
 // Cd
 void	update_oldpwd_pwd(t_main *main);
@@ -125,8 +126,8 @@ int	    handle_sc(t_main *main, char **split, int i);
 void	ft_exec(t_main *main, char **split, char *cmd);
 
 //PIPEX
-void    prep_cmd_pipex(t_main *main, char **split);
-void	pipex(t_main *main, char *split_pipex);
+int     prep_cmd_pipex(t_main *main, char **split);
+int 	pipex(t_main *main, char *split_pipex);
 
 // FREE
 void	free_all_data(t_main *main);

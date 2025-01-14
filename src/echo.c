@@ -49,7 +49,7 @@ void	echo_file(char **cmd, int fd, int nl)
 	close(fd);
 }
 
-void	ft_echo(char **cmd)
+int	ft_echo(t_main *main, char **cmd)
 {
 	int	fd;
 	int	nl;
@@ -57,13 +57,19 @@ void	ft_echo(char **cmd)
 	nl = 1;
 	fd = get_fd(cmd);
 	if (fd < 0 || !cmd[1])
-		return ;
+		return (perror(GREY"minishell"), 1);
 	if (ft_strcmp(cmd[0], "echo") != 0)
-		return ;
+		return (-1);
 	if (ft_strcmp(cmd[1], "-n") == 0)
 		nl = 0;
 	if (fd > 1)
 		echo_file(cmd, fd, nl);
+	if (!ft_strcmp(cmd[1], "?"))
+	{
+		ft_putnbr_fd(main->last_exit_code, 1);
+		return (ft_putchar_fd('\n', 1), 0);
+	}
 	else
 		echo_prompt(cmd, nl);
+	return (0);
 }

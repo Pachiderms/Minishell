@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	prep_unset(t_main *main, char **split)
+int	prep_unset(t_main *main, char **split)
 {
 	int i;
 	char *tmp;
@@ -25,6 +25,7 @@ void	prep_unset(t_main *main, char **split)
 		free(tmp);
 		i++;	
 	}
+	return (0);
 }
 
 int	check_var_exists2(t_main *main, char *arg)
