@@ -25,7 +25,7 @@ void	init_main(t_main *main)
 	main->path = NULL;
 }
 
-char	*get_var_name(char *cmd) // export aaa=aaa
+char	*get_var_name(char *cmd)
 {
 	int i;
 	int j;
@@ -69,8 +69,8 @@ int	init_env(char **env, t_main *main)
 	printf("Basic env len : %d\n", main->env_len);
 	main->export_len = i - 1;
 	printf("Basic export len : %d\n", main->export_len);
-	main->env = (char **)malloc(sizeof(char *) * main->env_len + 1);
-	main->export = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	main->env = (char **)malloc(sizeof(char *) * (main->env_len + 1));
+	main->export = (char **)malloc(sizeof(char *) * (main->export_len + 1));
 	if (!main->env || !main->export)
 		return (0);
 	i = 0;
@@ -79,6 +79,7 @@ int	init_env(char **env, t_main *main)
 		main->env[i] = ft_strdup(env[i]);
 		i++;
 	}
+	main->env[i] = NULL;
 	i = 0;
 	while (i < main->export_len)
 	{
@@ -89,6 +90,7 @@ int	init_env(char **env, t_main *main)
 		main->export[i] = save_value;
 		i++;
 	}
+	main->export[i] = NULL;
 	return (1);
 }
 
@@ -97,6 +99,8 @@ int	only_space_line(char *cmd)
 	int	i;
 
 	i = 0;
+	if (!cmd)
+		return (1);
 	while (cmd[i] && ft_isspace(cmd[i]))
 		i++;
 	if (i == (int)ft_strlen(cmd))
@@ -114,7 +118,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	(void)cmd;
+	cmd = NULL;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
@@ -122,21 +126,31 @@ int	main(int argc, char **argv, char **env)
 		main.path = env[check_var_exists(main.env, main.env_len, "export PATH=")];
 	else
 		return (free_all_data(&main), 1);
+	init_signals();
 	while (1)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
+		if (cmd == NULL || ft_strcmp(cmd, "exit") == 0)
+		{
+			if (cmd == NULL)
+				printf("exit\n");
+			break ;
+		}
 		if (only_space_line(cmd) == 0 && cmd)
 		{
 			add_history(cmd);
 			split = ft_split_k_q_s(&main, cmd, ' ');
 			if (init_tokens(split, &main) == 0)
-				return (free_all_data(&main), 1);
-			for(int i=0;split[i];i++)
-				printf("split : %s\n", split[i]);
+				break ;
+			// for(int i=0;split[i];i++)
+			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			if (ft_exec(&main, split, cmd) == 0)
-				return (free_all_data(&main), 1);
+				break ;
+			//printf("exit code %d\n", main.last_exit_code);
+			free_end_cmd(&main, split);
 		}
 	}
 	free_all_data(&main);
+	rl_clear_history();
 	return (0);
 }

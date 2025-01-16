@@ -12,59 +12,44 @@
 
 #include "../includes/minishell.h"
 
-void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos)
+void	remake_env(char	**tmp, t_main *main, int which, int replace_pos)
 {
 	int i;
 
 	i = 0;
-	while (i < env_len)
-	{
-		tmp[i] = ft_strdup(env[i]);
-		i++;
-	}
-	free_env(env, env_len);
-	if (replace_pos >= 0)
-		env = (char **)malloc(sizeof(char *) * ((env_len) + 1));
-	else if (replace_pos == -1)
-		env = (char **)malloc(sizeof(char *) * ((env_len + 1) + 1));
-	else if (replace_pos == -2)
-		env = (char **)malloc(sizeof(char *) * ((env_len - 1) + 1));
-	return ;
-}
-
-/* void	fill_env(char **tmp, t_main *main, int replace_pos, int check)
-{
-	int i;
-
-	i = 0;
-	if (check == 1)
+	if (which == 0)
 	{
 		while (i < main->env_len)
 		{
-			if (i == replace_pos)
-				i++;
-			main->env[i] = ft_strdup(tmp[i]);
+			tmp[i] = ft_strdup(main->env[i]);
 			i++;
-			if (i == replace_pos)
-				i++;
 		}
-		main->env[i] = NULL;
+		free_env(main->env, main->env_len);
+		if (replace_pos >= 0)
+			main->env = (char **)malloc(sizeof(char *) * ((main->env_len) + 1));
+		else if (replace_pos == -1)
+			main->env = (char **)malloc(sizeof(char *) * ((main->env_len + 1) + 1));
+		else if (replace_pos == -2)
+			main->env = (char **)malloc(sizeof(char *) * ((main->env_len - 1) + 1));
+
 	}
-	else if (check == 2)
+	if (which == 1)
 	{
 		while (i < main->export_len)
 		{
-			if (i == replace_pos)
-				i++;
-			main->export[i] = ft_strdup(tmp[i]);
+			tmp[i] = ft_strdup(main->export[i]);
 			i++;
-			if (i == replace_pos)
-				i++;
 		}
-		main->export[i] = NULL;
+		free_env(main->export, main->export_len);
+		if (replace_pos >= 0)
+			main->export = (char **)malloc(sizeof(char *) * ((main->export_len) + 1));
+		else if (replace_pos == -1)
+			main->export = (char **)malloc(sizeof(char *) * ((main->export_len + 1) + 1));
+		else if (replace_pos == -2)
+			main->export = (char **)malloc(sizeof(char *) * ((main->export_len - 1) + 1));
 	}
 	return ;
-} */
+} // trop de ligne
 
 char	*create_replace_pos(char *cmd)
 {
@@ -81,7 +66,23 @@ char	*create_replace_pos(char *cmd)
 	}
 	else
 		return (ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
+}
 
+void	add_pos(t_main *main, char *cmd, int i, int which)
+{
+	if (which == 0)
+	{
+		main->env[i] = main->env[i - 1];
+		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+		main->env_len += 1;
+	}
+	else if (which == 1)
+	{
+		main->export[i] = main->export[i - 1];
+		main->export[i - 1] = create_replace_pos(cmd);
+		main->export_len += 1;
+	}
+	return ;
 }
 
 void	fill_env_export(t_main *main, char *cmd)
@@ -92,11 +93,10 @@ void	fill_env_export(t_main *main, char *cmd)
 
 	i = 0;
 	replace_pos = check_var_exists(main->env, main->env_len, cmd);
-	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);
-	remake_env(tmp, main->env, main->env_len, replace_pos);
+	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
+	remake_env(tmp, main, 0, replace_pos);
 	if (replace_pos >= 0)
 		main->env[replace_pos] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-	//fill_env(tmp, main, replace_pos, 1);
 	while (i < main->env_len)
 	{
 		if (i == replace_pos)
@@ -109,13 +109,9 @@ void	fill_env_export(t_main *main, char *cmd)
 	main->env[i] = NULL;
 	free_env(tmp, main->env_len);
 	if (replace_pos == -1)
-	{
-		main->env[i] = main->env[i - 1];
-		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-		main->env_len += 1;
-	}
+		add_pos(main, cmd, i, 0);
 	fill_export(main, cmd);
-} // trop de ligne
+}
 
 void	fill_export(t_main *main, char *cmd)
 {
@@ -125,11 +121,10 @@ void	fill_export(t_main *main, char *cmd)
 
 	i = 0;
 	replace_pos = check_var_exists(main->export, main->export_len, cmd);
-	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
-	remake_env(tmp, main->export, main->export_len, replace_pos); //
+	tmp = (char **)malloc(sizeof(char *) * (main->export_len + 1));
+	remake_env(tmp, main, 1, replace_pos);
 	if (replace_pos >= 0)
 		main->export[replace_pos] = create_replace_pos(cmd);
-	//fill_env(tmp, main, replace_pos, 2);
 	while (i < main->export_len)
 	{
 		if (i == replace_pos)
@@ -142,12 +137,8 @@ void	fill_export(t_main *main, char *cmd)
 	main->export[i] = NULL;
 	free_env(tmp, main->export_len);
 	if (replace_pos == -1)
-	{
-		main->export[i] = main->export[i - 1];
-		main->export[i - 1] = create_replace_pos(cmd);
-		main->export_len += 1;
-	}
-} // trop de ligne
+		add_pos(main, cmd, i, 1);
+}
 
 int	check_ko_export(char *arg)
 {
@@ -203,7 +194,7 @@ int check_plus(char *cmd)
 	char	*arg;
 
 	i = 0;
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+	arg = &ft_strchr(cmd, ' ')[1];
 	while (arg[i] != '=')
 		i++;
 	if (arg[i - 1] == '+')
@@ -220,7 +211,7 @@ char	*get_without_plus(char *cmd)
 
 	i = 0;
 	j = 0;
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+	arg = &ft_strchr(cmd, ' ')[1];
 	str = (char *)malloc(sizeof(char) * ft_strlen(arg));
 	while (arg[i])
 	{
@@ -232,7 +223,7 @@ char	*get_without_plus(char *cmd)
 		i++;
 	}
 	str[j] = '\0';
-	return (free(arg), str);
+	return (str);
 }
 
 char	*get_plus_str(t_main *main, char *cmd)
@@ -277,7 +268,7 @@ void	export(t_main *main, char *cmd)
 	return ;
 }
 
-void	prep_export(t_main *main, char **split)
+int	prep_export(t_main *main, char **split)
 {
 	int i;
 	char *tmp;
@@ -286,7 +277,7 @@ void	prep_export(t_main *main, char **split)
 	if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
 	{
 		print_env(main, 1, split);
-		return ;
+		return (0);
 	}
 	while (split[i] && is_sc(split[i]) != 1)
 	{
@@ -296,5 +287,5 @@ void	prep_export(t_main *main, char **split)
 		free(tmp);
 		i++;
 	}
-	return ;
+	return (0);
 }

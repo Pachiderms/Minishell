@@ -20,6 +20,8 @@ char	*get_rid_of_quotes(char *s)
 
 	i = -1;
 	len = 0;
+	if (!s)
+		return (NULL);
 	while (s[++i])
 	{
 		if (s[i] != 34 && s[i] != 39)
@@ -37,6 +39,60 @@ char	*get_rid_of_quotes(char *s)
 	}
 	dest[len++] = '\0';
 	return (dest);
+}
+
+char	*cut_str(char *str, char *cut)
+{
+	int		i;
+	unsigned char *s;
+
+	i = 0;
+	s = (unsigned char *)str;
+	printf("str:%s|cut:%s\n", str, cut);
+	while (s[i])
+	{
+		if (ft_strcmp((char *)(s + i), cut) == 0)
+		{
+			s[i] = '\0';
+			i--;
+			while (ft_isspace(s[i]))
+			{
+				s[i] = '\0';
+				i--;
+			}	
+			printf("s:%s|\n", s);
+			return ((char *)s);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char	*get_rid_of(char *s, char c)
+{
+	int		i;
+	int		len;
+	char	*tmp;
+
+	i = -1;
+	len = 0;
+	while (s[++i])
+	{
+		if (s[i] != c)
+			len++;
+	}
+	tmp = malloc(len * sizeof(char) + 1);
+	if (!tmp)
+		return (0);
+	i = -1;
+	len = 0;
+	while (s[++i])
+	{
+		if (s[i] != c)
+			tmp[len++] = s[i];
+	}
+	tmp[len++] = '\0';
+	return (tmp);
 }
 
 int	check_builtin(char *s)
@@ -123,6 +179,8 @@ char	*replace_dollar(char *s, t_main *main)
 			// printf("index=%d\n", l);
 			if (l >= 0)
 				res = ft_strjoin_free(res, &ft_strchr(main->env[l], '=')[1]);
+			else
+				res = ft_strjoin_free(res, &s[i]);
 			free(tmp);
 			tmp = NULL;
 			// printf("res after $: %s\n" ,res);
