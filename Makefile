@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/01/14 16:10:13 by tzizi            ###   ########.fr        #
+#    Updated: 2024/11/18 21:19:32 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,11 @@ LIBFT_NAME = libft.a
 
 LIBFT_LIB = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
 
-SRC = src/main.c src/get_next_line.c src/prep_pipex.c src/free.c src/env.c src/exec.c src/utils.c src/pipex.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c src/cd.c src/pwd.c src/cmd_redirect.c
+SRC = src/main.c src/env.c src/exec.c src/pipex.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c src/cd.c src/pwd.c src/cmd_redirect.c src/utils.c src/free.c src/prep_pipex.c src/signals.c src/get_next_line.c
 
 OBJS := $(SRC:%.c=%.o)
 
-CC = clang
+CC = clang #gcc?
 FLAGS = -Wall -Wextra -Werror -gdwarf-4 -I ./includes
 
 .c.o:

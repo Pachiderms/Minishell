@@ -34,7 +34,7 @@ void	print_ascii_order(t_main *main)
 	char	**sort_env;
 
 	i = 0;
-	sort_env = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	sort_env = (char **)malloc(sizeof(char *) * (main->export_len + 1));
 	while (i < main->export_len)
 	{
 		sort_env[i] = ft_strdup(main->export[i]);

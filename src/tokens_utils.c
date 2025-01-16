@@ -97,9 +97,9 @@ char	*get_rid_of(char *s, char c)
 
 int	check_builtin(char *s)
 {
-	if (!ft_strncmp(s, "echo", -1) || !ft_strncmp(s, "cd", -1)
+	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1))
 		|| !ft_strncmp(s, "pwd", -1) || !ft_strncmp(s, "export", -1)
-		|| !ft_strncmp(s, "unset", -1) || !ft_strncmp(s, "env", -1)
+		|| !ft_strncmp(s, "unset", -1) || (!ft_strncmp(s, "env", -1) || !ft_strncmp(s, "/bin/env", -1))
 		|| !ft_strncmp(s, "exit", -1))
 		return (1);
 	return (0);

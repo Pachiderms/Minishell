@@ -12,6 +12,79 @@
 
 #include "../includes/minishell.h"
 
+void	remake_env(char	**tmp, t_main *main, int which, int replace_pos)
+{
+	int i;
+
+	i = 0;
+	if (which == 0)
+	{
+		while (i < main->env_len)
+		{
+			tmp[i] = ft_strdup(main->env[i]);
+			i++;
+		}
+		free_env(main->env, main->env_len);
+		if (replace_pos >= 0)
+			main->env = (char **)malloc(sizeof(char *) * ((main->env_len) + 1));
+		else if (replace_pos == -1)
+			main->env = (char **)malloc(sizeof(char *) * ((main->env_len + 1) + 1));
+		else if (replace_pos == -2)
+			main->env = (char **)malloc(sizeof(char *) * ((main->env_len - 1) + 1));
+
+	}
+	if (which == 1)
+	{
+		while (i < main->export_len)
+		{
+			tmp[i] = ft_strdup(main->export[i]);
+			i++;
+		}
+		free_env(main->export, main->export_len);
+		if (replace_pos >= 0)
+			main->export = (char **)malloc(sizeof(char *) * ((main->export_len) + 1));
+		else if (replace_pos == -1)
+			main->export = (char **)malloc(sizeof(char *) * ((main->export_len + 1) + 1));
+		else if (replace_pos == -2)
+			main->export = (char **)malloc(sizeof(char *) * ((main->export_len - 1) + 1));
+	}
+	return ;
+} // trop de ligne
+
+char	*create_replace_pos(char *cmd)
+{
+	char *save_value;
+	char *temp;
+
+	if (ft_strchr(cmd, '='))
+	{
+		save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(cmd, '=')[1])), "\"");
+		temp = save_value;
+		save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
+		free(temp);
+		return (save_value);
+	}
+	else
+		return (ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
+}
+
+void	add_pos(t_main *main, char *cmd, int i, int which)
+{
+	if (which == 0)
+	{
+		main->env[i] = main->env[i - 1];
+		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+		main->env_len += 1;
+	}
+	else if (which == 1)
+	{
+		main->export[i] = main->export[i - 1];
+		main->export[i - 1] = create_replace_pos(cmd);
+		main->export_len += 1;
+	}
+	return ;
+}
+
 void	fill_env_export(t_main *main, char *cmd)
 {
 	int		i;
@@ -20,41 +93,23 @@ void	fill_env_export(t_main *main, char *cmd)
 
 	i = 0;
 	replace_pos = check_var_exists(main->env, main->env_len, cmd);
-	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);
-	while (i < main->env_len)
-	{
-		tmp[i] = ft_strdup(main->env[i]);
-		i++;
-	}
-	free_env(main->env, main->env_len);
+	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
+	remake_env(tmp, main, 0, replace_pos);
 	if (replace_pos >= 0)
-		main->env = (char **)malloc(sizeof(char *) * ((main->env_len) + 1));
-	else
-		main->env = (char **)malloc(sizeof(char *) * ((main->env_len + 1) + 1));
-	i = 0;
+		main->env[replace_pos] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	while (i < main->env_len)
 	{
 		if (i == replace_pos)
-		{
-			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
-		}
 		main->env[i] = ft_strdup(tmp[i]);
 		i++;
 		if (i == replace_pos)
-		{
-			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 			i++;
-		}
 	}
 	main->env[i] = NULL;
 	free_env(tmp, main->env_len);
 	if (replace_pos == -1)
-	{
-		main->env[i] = main->env[i - 1];
-		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-		main->env_len += 1;
-	}
+		add_pos(main, cmd, i, 0);
 	fill_export(main, cmd);
 }
 
@@ -63,75 +118,57 @@ void	fill_export(t_main *main, char *cmd)
 	int		i;
 	int		replace_pos;
 	char	**tmp;
-	char *save_value;
-	char *temp;
 
 	i = 0;
 	replace_pos = check_var_exists(main->export, main->export_len, cmd);
-	printf("replace_pos : %d\n", replace_pos);
-	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
-	while (i < main->export_len)
-	{
-		tmp[i] = ft_strdup(main->export[i]);
-		i++;
-	}
-	free_env(main->export, main->export_len);
+	tmp = (char **)malloc(sizeof(char *) * (main->export_len + 1));
+	remake_env(tmp, main, 1, replace_pos);
 	if (replace_pos >= 0)
-		main->export = (char **)malloc(sizeof(char *) * ((main->export_len) + 1));
-	else
-		main->export = (char **)malloc(sizeof(char *) * ((main->export_len + 1) + 1));
-	i = 0;
+		main->export[replace_pos] = create_replace_pos(cmd);
 	while (i < main->export_len)
 	{
 		if (i == replace_pos)
-		{
-			if (ft_strchr(cmd, '='))
-			{
-				save_value = ft_strjoin(ft_strjoin("\"", &ft_strchr(cmd, '=')[1]), "\"");
-				temp = save_value;
-				save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
-				free(temp);
-				main->export[i] = save_value;
-			}
-			else
-				main->export[i] = ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]);
 			i++;
-		}
 		main->export[i] = ft_strdup(tmp[i]);
 		i++;
 		if (i == replace_pos)
-		{
-			if (ft_strchr(cmd, '='))
-			{
-				save_value = ft_strjoin(ft_strjoin("\"", &ft_strchr(cmd, '=')[1]), "\"");
-				temp = save_value;
-				save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
-				free(temp);
-				main->export[i] = save_value;
-			}
-			else
-				main->export[i] = ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]);
 			i++;
-		}
 	}
 	main->export[i] = NULL;
 	free_env(tmp, main->export_len);
 	if (replace_pos == -1)
-	{
-		main->export[i] = main->export[i - 1];
-		if (ft_strchr(cmd, '='))
-		{
-			save_value = ft_strjoin(ft_strjoin("\"", &ft_strchr(cmd, '=')[1]), "\"");
-			temp = save_value;
-			save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
-			free(temp);
-			main->export[i - 1] = save_value;
-		}
-		else
-			main->export[i - 1] = ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]);
-		main->export_len += 1;
-	}
+		add_pos(main, cmd, i, 1);
 }
+
+int	check_ko_export(char *arg)
+{
+	int i;
+
+	i = 0;
+	if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
+		return (0);
+	if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
+		return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
+	if (arg[0] == '-' && arg[1])
+		return (printf("bash: export: -%c: invalid option\n", arg[1]), 0);
+	while (arg[i++])
+	{
+		if (arg[i] == '!' && arg[i + 1] != '=')
+			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!')), 0);
+	}
+	i = 0;
+	while (arg[i] != '=' && arg[i])
+	{
+		if (arg[i] == '%' || arg[i] == '?' || arg[i] == '@'
+			|| arg[i] == '\\' || arg[i] == '~' || arg[i] == '-'
+			|| arg[i] == '.' || arg[i] == '}' || arg[i] == '{'
+			|| arg[i] == '*' || arg[i] == '#' ||
+			(arg[i] == '+' && arg[i + 1] != '=') || arg[i] == ' ' || arg[i] == '!')
+			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
+		i++;
+	}
+	return (1);
+} // trop de lignes
 
 int	check_syntax_export(char *cmd)
 {
@@ -140,47 +177,15 @@ int	check_syntax_export(char *cmd)
 
 	i = 0;
 	arg = &ft_strchr(cmd, ' ')[1];
-	if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
+	if (check_ko_export(arg) == 0)
 		return (0);
-	if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
-		return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
-	if (arg[0] == '-' && arg[1])
-		return (printf("bash: export: -%c: invalid option\n", arg[1]), 0);
-	while (arg[i])
-	{
-		if (arg[i] == '!' && arg[i + 1] != '=')
-			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!')), 0);
-		else if (arg[i] == '!')
-			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
-		i++;
-	}
-	i = 0;
 	while (arg[i] != '=' && arg[i])
-	{
-		if (arg[i] == '%' || arg[i] == '?' || arg[i] == '@'
-			|| arg[i] == '\\' || arg[i] == '~' || arg[i] == '-'
-			|| arg[i] == '.' || arg[i] == '}' || arg[i] == '{'
-			|| arg[i] == '*' || arg[i] == '#'
-			|| (arg[i] == '+' && arg[i + 1] != '='))
-			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
-		i++;																																		
-	}
-	while (arg[i])
-	{
-		if (arg[i] == '=')
-		{
-			if (arg[i - 1] == ' ' || i == 0 || arg[i] == '\0')
-				return (printf("HERE0"), 0);
-			else
-				return (1); // 1 pour mettre dans env et export
-		}
 		i++;
-	}
-	if (i == 0)
-		return (printf("HERE"), 0);
-	/* if (arg[i - 1] == ' ')
-		return (printf("HERE2"), free(arg), 0); */
-	return (2); // 2 pour mettre seulement dans export
+	if (arg[i] == '=')
+		return (1);
+	else
+		return (2);
+	return (2);
 }
 
 int check_plus(char *cmd)
