@@ -37,7 +37,7 @@
 #  define BUFFER_SIZE 1024
 # endif
 
-enum e_type {command, argument, sc, end};
+enum e_type {command, argument, sc};
 
 typedef struct token_t
 {
@@ -55,6 +55,7 @@ typedef struct s_main {
     int     split_len;
     int		nb_cmd;
     char	*path;
+    int     hc_pos;
     int     last_exit_code;
 }	t_main;
 
@@ -82,6 +83,10 @@ int	    ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
 
 // MINISHELL
+
+//HERE_DOC
+int     her_doc(t_main *main, char **split);
+
 /// ENV
 int		init_env(char **env, t_main *main);
 int     check_syntax_env(char **split);

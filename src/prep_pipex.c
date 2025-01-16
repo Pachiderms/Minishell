@@ -57,7 +57,7 @@ int prep_cmd_pipex(t_main *main, char **split)
         }
         i++;
     }
-    // printf("split pipex : '%s'\n", split_pipex);
+    printf("split pipex : '%s'\n", split_pipex);
     return(pipex(main, split_pipex));
 }
 

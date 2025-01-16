@@ -31,8 +31,10 @@ void    builtin(t_main *main, char **split, char *cmd)
 
 int    ft_exec(t_main *main, char **split, char *cmd)
 {
+    if (main->hc_pos >= 0)
+        her_doc(main, split);
      //printf("nb_cmd=%d\n", main->nb_cmd);
-    if (main->nb_cmd >= 1)
+    else if (main->nb_cmd >= 1)
     {
         if (check_builtin(main->tokens[0].value) && main->nb_cmd == 1)
             builtin(main, split, cmd);
@@ -44,7 +46,7 @@ int    ft_exec(t_main *main, char **split, char *cmd)
         }
         main->nb_cmd = 0;
     }
-    else if (cmd[0] != '\0' && get_fd_in(split) < 0)
+    else if (cmd[0] != '\0')
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
     //printf("nb_cmd=%d\n", main->nb_cmd);
     return (1);

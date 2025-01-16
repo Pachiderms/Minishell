@@ -42,35 +42,13 @@ int	handle_opening_outfile(char *file, int append)
 	return (fd);
 }
 
-char	*her_doc(char *eof)
-{
-	char	*tmp;
-	char	*res=NULL;
-	char	*buf;
-
-	while (ft_strcmp(eof, buf))
-	{
-		tmp = readline("heredoc> ");
-		buf = get_next_line(0);
-		ft_putstr_fd(buf, 1);
-		res = ft_strjoin_free(res, buf);
-		add_history(tmp);
-		free(buf);
-	}
-	printf("res:|%s|\n", res);
-	return (NULL);
-}
-
 int	handle_opening_infile(char *file, int append)
 {
 	int		fd;
 
 	fd = -1;
 	if (append) // heredoc
-	{
-		her_doc(file);
 		return (-1);
-	}
 	else
 	{
 		fd = open(file, O_RDONLY);
@@ -88,24 +66,30 @@ int	handle_opening_infile(char *file, int append)
 int	get_fd_out(char **cmd)
 {
 	int	i;
+	int	fd;
 
 	i = 0;
+	fd = -1;
 	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
 	{
 		if (ft_strcmp(cmd[i], ">>") == 0)
 		{
 			if (cmd[i + 1])
-				return (handle_opening_outfile(cmd[i + 1], 1));
-			return (-1);
+				fd = handle_opening_outfile(cmd[i + 1], 1);
+			else
+				return (-1);
 		}
 		if (ft_strcmp(cmd[i], ">") == 0)
 		{
 			if (cmd[i + 1])
-				return (handle_opening_outfile(cmd[i + 1], 0));
-			return (-1);
+				fd = handle_opening_outfile(cmd[i + 1], 0);
+			else
+				return (-1);
 		}
 		i++;
 	}
+	if (fd > 0)
+		return (fd);
 	return (1);
 }
 
@@ -120,12 +104,6 @@ int	get_fd_in(char **cmd)
 		{
 			if (cmd[i + 1])
 				return (handle_opening_infile(cmd[i + 1], 0));
-			return (-1);
-		}
-		if (ft_strcmp(cmd[i], "<<") == 0)
-		{
-			if (cmd[i + 1])
-				return (handle_opening_infile(cmd[i + 1], 1));
 			return (-1);
 		}
 		i++;

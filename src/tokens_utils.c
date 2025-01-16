@@ -113,6 +113,8 @@ int	is_cmd(char *s, char *path)
 	char	**split;
 
 	i = 0;
+	if (!ft_strncmp(s, "./", 2))
+		return (1);
 	s1 = ft_strjoin("/", s);
 	split = ft_split(path, ':');
 	if (check_builtin(s))
@@ -162,33 +164,27 @@ char	*replace_dollar(char *s, t_main *main)
 		if (j != i)
 		{
 			tmp = ft_substr(s, i, j - i);
-			res = ft_strjoin(res, tmp);
+			res = ft_strjoin_free(res, tmp);
 			free(tmp);
 			tmp = NULL;
-			// printf("i=%d\tj=%d\n", i, j);
 		}
+		if (s[i + 1] && (s[i + 1] == '$' || s[i + 1] == '?'))
+			return (ft_strdup(s));
 		i = j;
-		// printf("res before $: %s\n" ,res);
 		if (s[i] == '$')
 		{
-			i = j;
 			while (s[j] && s[j] != '=')
 				j++;
 			tmp = ft_substr(s, i, j - i);
 			l = check_var_exists2(main, &tmp[1]);
-			// printf("index=%d\n", l);
 			if (l >= 0)
 				res = ft_strjoin_free(res, &ft_strchr(main->env[l], '=')[1]);
-			else
-				res = ft_strjoin_free(res, &s[i]);
 			free(tmp);
 			tmp = NULL;
-			// printf("res after $: %s\n" ,res);
-			// printf("i=%d\tj=%d\n", i, j);
 			i = j;
 		}
 	}
-	// printf("final res: %s\n", res);
+	printf("final res: %s\n", res);
 	return (res);
 }
 

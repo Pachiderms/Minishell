@@ -56,7 +56,7 @@ int    ft_fork(t_main *main, char *cmd)
     }
     else
     {
-        wait(0);
+        waitpid(fork_id, NULL, 0);
         free(tmp);
     }
     return (0);
@@ -85,6 +85,7 @@ int    child_process2(t_main *main, char *cmd)
     {
         close(fd[1]);
         dup2(fd[0], STDIN_FILENO);
+        waitpid(child_pid, NULL, 0);
     }
     return (0);
 }
@@ -107,7 +108,7 @@ int ft_pipe2(t_main *main, char *split_pipex)
             return (1);
         i++;
     }
-    return ft_fork(main, cmd[i]);
+    return (ft_fork(main, cmd[i]));
 }
 
 int   pipex(t_main *main, char *split)

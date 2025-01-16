@@ -22,6 +22,7 @@ void	init_main(t_main *main)
 	main->tokens_len = 0;
 	main->split_len = 0;
 	main->nb_cmd = 0;
+	main->hc_pos = -1;
 	main->path = NULL;
 }
 
@@ -130,6 +131,7 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
+		printf("cmd0: %s\n", cmd);
 		if (cmd == NULL || ft_strcmp(cmd, "exit") == 0)
 		{
 			if (cmd == NULL)
@@ -149,6 +151,7 @@ int	main(int argc, char **argv, char **env)
 			//printf("exit code %d\n", main.last_exit_code);
 			free_end_cmd(&main, split);
 		}
+		printf("cmd: %s\n", cmd);
 	}
 	free_all_data(&main);
 	rl_clear_history();

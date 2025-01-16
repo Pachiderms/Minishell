@@ -34,6 +34,8 @@ int	init_tokens(char **split, t_main *main)
 		{
 			if (!handle_sc(main, split, i))
 				return (0);
+			if (!ft_strcmp(split[i], "<<"))
+				main->hc_pos = i;
 		}
 		else
 			main->tokens[i].type = argument;
