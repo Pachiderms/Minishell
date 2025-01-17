@@ -27,7 +27,7 @@ void	free_env(char **tab, int tablen)
 	return ;
 }
 
-void	print_ascii_order(t_main *main)
+void	print_ascii_order(t_main *main) // trop de lignes
 {
 	int		i;
 	char	*tmp;
@@ -66,7 +66,7 @@ void	print_ascii_order(t_main *main)
 
 int	check_syntax_env(char **split)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (ft_strcmp(split[0], "env") == 0 && split[1] == NULL)
@@ -78,7 +78,8 @@ int	check_syntax_env(char **split)
 			if (ft_strcmp(split[i], "env") == 0)
 				i++;
 			else
-				return (printf("env: ‘%s’: No such file or directory\n", split[i]), 0);
+				return (printf("env: ‘%s’: No such file or directory\n"
+						, split[i]), 0);
 		}
 	}
 	return (1);

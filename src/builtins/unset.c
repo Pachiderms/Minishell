@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	check_var_exists(char **env, int len, char *cmd)
+int	check_var_exists(char **env, int len, char *cmd) // trop de lignes
 {
 	int		i;
 	int		j;
@@ -47,7 +47,7 @@ int	check_var_exists(char **env, int len, char *cmd)
 	}
 	free(arg);
 	return (-1);
-} // trop de lignes
+}
 
 int	check_var_exists2(t_main *main, char *arg)
 {
@@ -73,67 +73,7 @@ int	check_var_exists2(t_main *main, char *arg)
 	return (-1);
 }
 
-void	unset_env(t_main *main, char *cmd)
-{
-	int		i;
-	int		j;
-	int		var_to_unset;
-	char	**tmp;
-
-	i = 0;
-	j = 0;
-	var_to_unset = check_var_exists(main->env, main->env_len, cmd);
-	if (var_to_unset == -1)
-		return ;
-	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
-	remake_env(tmp, main, 0, -2);
-	i = 0;
-	while (i < main->env_len)
-	{
-		if (i == var_to_unset)
-			i++;
-		main->env[j] = ft_strdup(tmp[i]);
-		i++;
-		j++;
-		if (i == var_to_unset)
-			i++;
-	}
-	main->env[j] = NULL;
-	free_env(tmp, main->env_len);
-	main->env_len -= 1;
-} // trop de lignes
-
-void	unset_export(t_main *main, char *cmd)
-{
-	int		i;
-	int		j;
-	int		var_to_unset;
-	char	**tmp;
-
-	i = 0;
-	j = 0;
-	var_to_unset = check_var_exists(main->export, main->export_len, cmd);
-	if (var_to_unset == -1)
-		return ;
-	tmp = (char **)malloc(sizeof(char *) * (main->export_len + 1));
-	remake_env(tmp, main, 1, -2);
-	i = 0;
-	while (i < main->export_len)
-	{
-		if (i == var_to_unset)
-			i++;
-		main->export[j] = ft_strdup(tmp[i]);
-		i++;
-		j++;
-		if (i == var_to_unset)
-			i++;
-	}
-	main->export[j] = NULL;
-	free_env(tmp, main->export_len);
-	main->export_len -= 1;
-} // trop de lignes
-
-int	check_syntax_unset(char *cmd)
+int	check_syntax_unset(char *cmd) // trop de lignes
 {
 	int		i;
 	char	*arg;
@@ -149,19 +89,21 @@ int	check_syntax_unset(char *cmd)
 	while (arg[i++])
 	{
 		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.'
-		|| arg[i] == '+' || arg[i] == '{' || arg[i] == '}'
-		|| arg[i] == '-' || arg[i] == '*' || arg[i] == '#'
-		|| arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
-			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), 0);
+			|| arg[i] == '+' || arg[i] == '{' || arg[i] == '}'
+			|| arg[i] == '-' || arg[i] == '*' || arg[i] == '#'
+			|| arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
+			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg)
+				, 0);
 	}
 	i = 0;
 	while (arg[i++])
 	{
 		if (arg[i] == '!')
-			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!')), 0);
+			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!'))
+				, 0);
 	}
 	return (1);
-} // trop de lignes
+}
 
 void	unset(t_main *main, char *cmd)
 {
@@ -175,8 +117,8 @@ void	unset(t_main *main, char *cmd)
 
 int	prep_unset(t_main *main, char **split)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 1;
 	while (split[i] && is_sc(split[i]) != 1)
@@ -184,7 +126,7 @@ int	prep_unset(t_main *main, char **split)
 		tmp = ft_strjoin("unset ", split[i]);
 		unset(main, tmp);
 		free(tmp);
-		i++;	
+		i++;
 	}
 	return (0);
 }
