@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/20 15:07:14 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/17 18:57:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	handle_opening_outfile(char *file, int append) // trop de lignes
+int	handle_opening_outfile(char *file, int append)
 {
 	int	fd;
 
@@ -63,7 +63,7 @@ int	handle_opening_infile(char *file, int append)
 	return (fd);
 }
 
-int	get_fd_out(char **cmd) // trop de lignes
+int	get_fd_out(char **cmd)
 {
 	int	i;
 	int	fd;
@@ -108,7 +108,7 @@ int	get_fd_in(char **cmd)
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 int	get_cmd_number(t_main *main, char **split)
