@@ -20,7 +20,7 @@ int	sizeup_no_space(char const *s)
 	i = 0;
 	size = 0;
 	while (ft_isspace(s[i]) == 1)
-			i++;
+		i++;
 	while (i < ft_strlen(s))
 	{
 		if (ft_isspace(s[i]) == 1)
@@ -36,7 +36,7 @@ int	sizeup_no_space(char const *s)
 			size++;
 			while (s[i] && (s[i] != 34 && s[i] != 39))
 			{
-                size++;
+				size++;
 				i++;
 			}
 			if (s[i] == 34 || s[i] == 39)
@@ -51,10 +51,10 @@ int	sizeup_no_space(char const *s)
 
 char	*get_rid_of_spaces(char const *s)
 {
-	int	i = 0;
-	int	j;
-	int size;
-	char *no_space;
+	int		i;
+	int		j;
+	int		size;
+	char	*no_space;
 
 	size = sizeup_no_space(s);
 	no_space = malloc(sizeof(char) * size + 1);
@@ -63,7 +63,7 @@ char	*get_rid_of_spaces(char const *s)
 	i = 0;
 	j = 0;
 	while (ft_isspace(s[i]) == 1)
-			i++;
+		i++;
 	while (j < size)
 	{
 		if (ft_isspace(s[i]) == 1)
@@ -79,7 +79,7 @@ char	*get_rid_of_spaces(char const *s)
 			i++;
 			while (s[i] && (s[i] != 34 && s[i] != 39))
 			{
-                no_space[j++] = s[i];
+				no_space[j++] = s[i];
 				i++;
 			}
 			if (s[i] == 34 || s[i] == 39)
@@ -152,9 +152,11 @@ int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s)
 
 int	count_words(char *no_space)
 {
-	int i = 0;
-	int word=0;
+	int	i;
+	int	word;
 
+	i = 0;
+	word = 0;
 	while (no_space[i])
 	{
 		if (ft_isspace(no_space[i]) == 1)
@@ -179,12 +181,13 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c)
 	int		i;
 	int		j;
 	int		x;
+	char	*no_space;
 	char	**dest;
 
 	i = 0;
 	x = 0;
 	j = 0;
-	char *no_space = get_rid_of_spaces(s);
+	no_space = get_rid_of_spaces(s);
 	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (0);

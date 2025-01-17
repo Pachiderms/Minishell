@@ -43,8 +43,8 @@ char	*get_rid_of_quotes(char *s)
 
 char	*cut_str(char *str, char *cut)
 {
-	int		i;
-	unsigned char *s;
+	int				i;
+	unsigned char	*s;
 
 	i = 0;
 	s = (unsigned char *)str;
@@ -59,7 +59,7 @@ char	*cut_str(char *str, char *cut)
 			{
 				s[i] = '\0';
 				i--;
-			}	
+			}
 			printf("s:%s|\n", s);
 			return ((char *)s);
 		}
@@ -118,7 +118,7 @@ int	is_cmd(char *s, char *path)
 	s1 = ft_strjoin("/", s);
 	split = ft_split(path, ':');
 	if (check_builtin(s))
-			return (free(split), free(s1), 1);
+		return (free(split), free(s1), 1);
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);
@@ -184,7 +184,6 @@ char	*replace_dollar(char *s, t_main *main)
 			i = j;
 		}
 	}
-	printf("final res: %s\n", res);
 	return (res);
 }
 
