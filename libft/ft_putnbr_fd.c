@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 14:57:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:08 by tzizi            ###   ########.fr       */
+/*   Created: 2025/01/14 12:29:19 by tzizi             #+#    #+#             */
+/*   Updated: 2025/01/14 12:29:58 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	ft_putnbr_fd(int n, int fd)
 {
-	int	i;
-
-	i = 0;
-	if (s1 == NULL || s2 == NULL)
-		return (!(s1 == NULL && s2 == NULL));
-	while (s1[i] || s2[i])
+	if (n == -2147483648)
 	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
+		write(fd, &"-2147483648", 11);
+		return ;
 	}
-	return (s1[i] - s2[i]);
+	if (n < 0)
+	{
+		n *= -1;
+		ft_putchar_fd('-', fd);
+		ft_putnbr_fd(n, fd);
+	}
+	else if (n > 9)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else
+		ft_putchar_fd(n + 48, fd);
 }

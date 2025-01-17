@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 SRC =	ft_atoi.c \
+	ft_calloc.c	\
 	ft_isspace.c \
 	ft_split.c \
 	ft_strjoin.c \
@@ -24,14 +25,17 @@ SRC =	ft_atoi.c \
 	ft_putendl_fd.c \
 	ft_putchar_fd.c \
 	ft_isdigit.c \
-	ft_strrchr.c
+	ft_strrchr.c \
+	ft_putnbr_fd.c
 
 BFILES =	ft_atoi.o \
+		ft_calloc.o	\
 		ft_isspace.o \
 		ft_split.o \
 		ft_strjoin.o \
 		ft_strdup.o \
 		ft_strncmp.o \
+		ft_strcmp.o \
 		ft_strchr.o \
 		ft_substr.o \
 		ft_strlen.o \
@@ -39,7 +43,8 @@ BFILES =	ft_atoi.o \
 		ft_putendl_fd.o \
 		ft_putchar_fd.o \
 		ft_isdigit.o \
-		ft_strrchr.o
+		ft_strrchr.o \
+		ft_putnbr_fd.o
 
 OBJS = ${SRC:.c=.o}
 

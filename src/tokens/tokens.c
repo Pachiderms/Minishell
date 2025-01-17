@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	init_tokens(char **split, t_main *main)
+int	init_tokens(char **split, t_main *main) // trop de lignes
 {
 	int		i;
 
@@ -32,9 +32,10 @@ int	init_tokens(char **split, t_main *main)
 			main->tokens[i].type = command;
 		else if (is_sc(split[i]) > 0)
 		{
-			printf("split i: %s\n", split[i]);
 			if (!handle_sc(main, split, i))
 				return (0);
+			if (!ft_strcmp(split[i], "<<"))
+				main->hc_pos = i;
 		}
 		else
 			main->tokens[i].type = argument;
