@@ -12,7 +12,49 @@
 
 #include "../includes/minishell.h"
 
-void	unset_env(t_main *main, char *cmd) // trop de lignes
+void	ok(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i] != '=' && arg[i])
+		i++;
+	if (arg [i - 1] == '+')
+		arg[i - 1] = '\0';
+	else
+		arg[i] = '\0';
+}
+
+int	check_var_exists(char **env, int len, char *cmd)
+{
+	int		i;
+	int		j;
+	char	*arg;
+	char	*actual_var;
+
+	i = 0;
+	j = 0;
+	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+	ok(arg);
+	while (i < len)
+	{
+		if (ft_strncmp(env[i], "export ", 7) == 0)
+			actual_var = ft_strdup(&ft_strchr(env[i], ' ')[1]);
+		else
+			actual_var = ft_strdup(env[i]);
+		while (actual_var[j] != '=' && actual_var[j])
+			j++;
+		actual_var[j] = '\0';
+		if (ft_strcmp(arg, actual_var) == 0)
+			return (free(arg), free(actual_var), i);
+		free(actual_var);
+		j = 0;
+		i++;
+	}
+	return (free(arg), -1);
+}
+
+void	unset_env(t_main *main, char *cmd)
 {
 	int		i;
 	int		j;
@@ -26,7 +68,6 @@ void	unset_env(t_main *main, char *cmd) // trop de lignes
 		return ;
 	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
 	remake_env(tmp, main, 0, -2);
-	i = 0;
 	while (i < main->env_len)
 	{
 		if (i == var_to_unset)
@@ -42,7 +83,7 @@ void	unset_env(t_main *main, char *cmd) // trop de lignes
 	main->env_len -= 1;
 }
 
-void	unset_export(t_main *main, char *cmd) // trop de lignes
+void	unset_export(t_main *main, char *cmd)
 {
 	int		i;
 	int		j;
@@ -56,7 +97,6 @@ void	unset_export(t_main *main, char *cmd) // trop de lignes
 		return ;
 	tmp = (char **)malloc(sizeof(char *) * (main->export_len + 1));
 	remake_env(tmp, main, 1, -2);
-	i = 0;
 	while (i < main->export_len)
 	{
 		if (i == var_to_unset)

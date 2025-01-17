@@ -36,11 +36,8 @@ char	*get_var_name(char *cmd)
 	j = 0;
 	if (ft_strncmp(cmd, "export ", 7) == 0)
 		i = 7;
-	while (cmd[i] != '=')
-	{
+	while (cmd[i++] != '=')
 		j++;
-		i++;
-	}
 	var_name = (char *)malloc(sizeof(char) * (j + 2));
 	i = 0;
 	j = 0;
@@ -57,7 +54,7 @@ char	*get_var_name(char *cmd)
 	return (var_name);
 }
 
-int	init_env(char **env, t_main *main)
+int	init_env(char **env, t_main *main) // trop de lignes
 {
 	int	i;
 	char *save_value;
@@ -111,7 +108,7 @@ int	only_space_line(char *cmd)
 
 ////////////////////////////////////////////////////////////
 
-int	main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env) // trop de lignes
 {
 	static t_main	main;
 	char	*cmd;
@@ -151,7 +148,7 @@ int	main(int argc, char **argv, char **env)
 			//printf("exit code %d\n", main.last_exit_code);
 			free_end_cmd(&main, split);
 		}
-		printf("cmd: %s\n", cmd);
+		//printf("cmd: %s\n", cmd);
 	}
 	free_all_data(&main);
 	rl_clear_history();

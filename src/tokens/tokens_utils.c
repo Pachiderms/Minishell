@@ -12,6 +12,58 @@
 
 #include "../includes/minishell.h"
 
+int	check_builtin(char *s)
+{
+	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1))
+		|| !ft_strncmp(s, "pwd", -1) || !ft_strncmp(s, "export", -1)
+		|| !ft_strncmp(s, "unset", -1) || (!ft_strncmp(s, "env", -1)
+			|| !ft_strncmp(s, "/bin/env", -1))
+		|| !ft_strncmp(s, "exit", -1))
+		return (1);
+	return (0);
+}
+
+int	is_cmd(char *s, char *path)
+{
+	int		i;
+	char	*s1;
+	char	*tmp;
+	char	**split;
+
+	i = 0;
+	if (!ft_strncmp(s, "./", 2))
+		return (1);
+	s1 = ft_strjoin("/", s);
+	split = ft_split(path, ':');
+	if (check_builtin(s))
+		return (free(split), free(s1), 1);
+	while (split[i])
+	{
+		tmp = ft_strjoin(split[i], s1);
+		if (access(tmp, R_OK) == 0)
+		{
+			return (free(tmp), free(split), free(s1), 1);
+		}
+		tmp = NULL;
+		free(tmp);
+		i++;
+	}
+	return (free(split), free(s1), 0);
+}
+
+int	is_sc(char *s)
+{
+	if (!s)
+		return (0);
+	if (ft_strcmp(s, "|") == 0 || ft_strcmp(s, "<") == 0
+		|| ft_strcmp(s, ">") == 0 || ft_strcmp(s, "<<") == 0
+		|| ft_strcmp(s, ">>") == 0)
+		return (1);
+	if (ft_strchr(s, '$'))
+		return (2);
+	return (0);
+}
+
 char	*replace_dollar(char *s, t_main *main)
 {
 	int		i;
@@ -50,6 +102,7 @@ char	*replace_dollar(char *s, t_main *main)
 			i = j;
 		}
 	}
+	printf("final res: %s\n", res);
 	return (res);
 }
 

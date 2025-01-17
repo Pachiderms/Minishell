@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/17 18:32:03 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ char	*get_var_name(char *cmd);
 int     check_plus(char *cmd);
 char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
+void	remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
 int     ft_echo(t_main *main, char **cmd);
 int		get_fd_in(char **cmd);
@@ -120,6 +121,7 @@ int		cd(t_main *main, char **cmd);
 /// PWD
 int		pwd(t_main *main, char **cmd);
 /// UTILS BUILTINS
+int     basic_verif(char *arg, int which);
 int		check_var_exists(char **env, int len, char *cmd);
 void	remake_env(char	**tmp, t_main *main, int which, int replace_pos);
 /// UTILS
@@ -128,6 +130,7 @@ int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int	    closed_quotes(const char *s);	
 char    *get_rid_of_spaces(char const *s);
+char    *cut_str(char *str, char *cut);
 
 /// TOKENS
 int		init_tokens(char **split, t_main *main);

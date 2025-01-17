@@ -12,43 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	check_var_exists(char **env, int len, char *cmd) // trop de lignes
-{
-	int		i;
-	int		j;
-	char	*arg;
-	char	*actual_var;
-
-	i = 0;
-	j = 0;
-	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
-	while (arg[i] != '=' && arg[i])
-		i++;
-	if (arg [i - 1] == '+')
-		arg[i - 1] = '\0';
-	else
-		arg[i] = '\0';
-	i = 0;
-	while (i < len)
-	{
-		if (ft_strncmp(env[i], "export ", 7) == 0)
-			actual_var = ft_strdup(&ft_strchr(env[i], ' ')[1]);
-		else
-			actual_var = ft_strdup(env[i]);
-		while (actual_var[j] != '=' && actual_var[j])
-			j++;
-		actual_var[j] = '\0';
-		if (ft_strcmp(arg, actual_var) == 0)
-			return (free(arg), free(actual_var), i);
-		free(actual_var);
-		actual_var = NULL;
-		j = 0;
-		i++;
-	}
-	free(arg);
-	return (-1);
-}
-
 int	check_var_exists2(t_main *main, char *arg)
 {
 	int		i;
@@ -73,25 +36,43 @@ int	check_var_exists2(t_main *main, char *arg)
 	return (-1);
 }
 
-int	check_syntax_unset(char *cmd) // trop de lignes
+int	basic_verif(char *arg, int which)
+{
+	if (which == 0)
+	{
+		if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
+			return (0);
+		if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
+			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
+		if (arg[0] == '-' && arg[1])
+			return (printf("bash: export: -%c: invalid option\n", arg[1]), 0);
+	}
+	if (which == 1)
+	{
+		if (arg[0] == '_' && arg[1] == '\0')
+			return (0);
+		if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
+			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), 0);
+		if (arg[0] == '-' && arg[1])
+			return (printf("bash: unset: -%c: invalid option\n", arg[1]), 0);
+	}
+	return (1);
+}
+
+int	check_syntax_unset(char *cmd)
 {
 	int		i;
 	char	*arg;
 
 	i = 0;
 	arg = &ft_strchr(cmd, ' ')[1];
-	if (arg[0] == '_' && arg[1] == '\0')
+	if (basic_verif(arg, 1) == 0)
 		return (0);
-	if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
-		return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), 0);
-	if (arg[0] == '-' && arg[1])
-		return (printf("bash: unset: -%c: invalid option\n", arg[1]), 0);
 	while (arg[i++])
 	{
-		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.'
-			|| arg[i] == '+' || arg[i] == '{' || arg[i] == '}'
-			|| arg[i] == '-' || arg[i] == '*' || arg[i] == '#'
-			|| arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
+		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.' || arg[i] == '+'
+			|| arg[i] == '{' || arg[i] == '}' || arg[i] == '-' || arg[i] == '*'
+			|| arg[i] == '#' || arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
 			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg)
 				, 0);
 	}

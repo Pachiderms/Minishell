@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	init_tokens(char **split, t_main *main)
+int	init_tokens(char **split, t_main *main) // trop de lignes
 {
 	int		i;
 

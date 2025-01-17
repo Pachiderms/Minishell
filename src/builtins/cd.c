@@ -34,7 +34,6 @@ int	check_syntax_cd(t_main *main, char *arg) // trop de lignes
 	int		special_case;
 
 	i = 0;
-	chdir_value = 0;
 	if (arg[0] == '-' && arg[1] && ft_strcmp(arg, "--") != 0)
 		return (printf("bash: cd: -%c: invalid option\n", arg[1]), free(arg), 0);
 	while (arg[i])

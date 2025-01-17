@@ -12,17 +12,36 @@
 
 #include "../includes/minishell.h"
 
-int	check_ko_export(char *arg) // trop de lignes
+void	remake_env_fill(char **tmp, t_main *main, int which)
 {
 	int	i;
 
 	i = 0;
-	if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
+	if (which == 0)
+	{
+		while (i < main->env_len)
+		{
+			tmp[i] = ft_strdup(main->env[i]);
+			i++;
+		}
+	}
+	if (which == 1)
+	{
+		while (i < main->export_len)
+		{
+			tmp[i] = ft_strdup(main->export[i]);
+			i++;
+		}
+	}
+}
+
+int	check_ko_export(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (basic_verif(arg, 0) == 0)
 		return (0);
-	if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
-		return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
-	if (arg[0] == '-' && arg[1])
-		return (printf("bash: export: -%c: invalid option\n", arg[1]), 0);
 	while (arg[i++])
 	{
 		if (arg[i] == '!' && arg[i + 1] != '=')

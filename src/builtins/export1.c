@@ -12,19 +12,13 @@
 
 #include "../includes/minishell.h"
 
-void	remake_env(char	**tmp, t_main *main, int which, int replace_pos) // trop de ligne
+void	remake_env(char	**tmp, t_main *main, int which, int replace_pos)
 {
-	int	i;
-
-	i = 0;
 	if (which == 0)
 	{
-		while (i < main->env_len)
-		{
-			tmp[i] = ft_strdup(main->env[i]);
-			i++;
-		}
-		free_env(main->env, main->env_len);
+		remake_env_fill(tmp, main, 0);
+		if (replace_pos != -3)
+			free_env(main->env, main->env_len);
 		if (replace_pos >= 0)
 			main->env = malloc(sizeof(char *) * ((main->env_len) + 1));
 		else if (replace_pos == -1)
@@ -34,12 +28,9 @@ void	remake_env(char	**tmp, t_main *main, int which, int replace_pos) // trop de
 	}
 	if (which == 1)
 	{
-		while (i < main->export_len)
-		{
-			tmp[i] = ft_strdup(main->export[i]);
-			i++;
-		}
-		free_env(main->export, main->export_len);
+		remake_env_fill(tmp, main, 1);
+		if (replace_pos != -3)
+			free_env(main->export, main->export_len);
 		if (replace_pos >= 0)
 			main->export = malloc(sizeof(char *) *((main->export_len) + 1));
 		else if (replace_pos == -1)
@@ -47,7 +38,6 @@ void	remake_env(char	**tmp, t_main *main, int which, int replace_pos) // trop de
 		else if (replace_pos == -2)
 			main->export = malloc(sizeof(char *) *((main->export_len - 1) + 1));
 	}
-	return ;
 }
 
 char	*create_replace_pos(char *cmd)

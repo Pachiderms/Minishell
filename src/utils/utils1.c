@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils1.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/17 18:30:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/26 17:15:49 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	sizeup_no_space(char const *s) // trop de lignes
 	i = 0;
 	size = 0;
 	while (ft_isspace(s[i]) == 1)
-		i++;
+			i++;
 	while (i < ft_strlen(s))
 	{
 		if (ft_isspace(s[i]) == 1)
@@ -64,7 +64,7 @@ char	*get_rid_of_spaces(char const *s) // trop de lignes
 	i = 0;
 	j = 0;
 	while (ft_isspace(s[i]) == 1)
-		i++;
+			i++;
 	while (j < size)
 	{
 		if (ft_isspace(s[i]) == 1)
