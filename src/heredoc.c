@@ -12,8 +12,8 @@ int her_doc(t_main *main, char **split)
 	while (ft_strcmp(eof, tmp) != 0)
 	{
 		tmp = readline("heredoc> ");
-		res = ft_strjoin_free(res, tmp);
-        res = ft_strjoin_free(res, "\n");
+		res = ft_strjoin_free(res, tmp, 0);
+        res = ft_strjoin_free(res, "\n", 0);
 		add_history(tmp);
     }
     int fdout = get_fd_out(split);

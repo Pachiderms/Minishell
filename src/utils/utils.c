@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/26 17:15:49 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/19 16:38:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,5 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	}
 	dest[x] = 0;
 	main->split_len = x;
-	return (dest);
+	return (free(no_space), dest);
 }

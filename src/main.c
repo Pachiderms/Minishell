@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:33:45 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/19 17:19:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,15 @@ char	*get_var_name(char *cmd)
 int	init_env(char **env, t_main *main)
 {
 	int	i;
-	char *save_value;
 	char *temp;
 
 	i = -1;
 	while (env[++i] != NULL)
 		continue ;
 	main->env_len = i;
-	printf("Basic env len : %d\n", main->env_len);
+	// printf("Basic env len : %d\n", main->env_len);
 	main->export_len = i - 1;
-	printf("Basic export len : %d\n", main->export_len);
+	// printf("Basic export len : %d\n", main->export_len);
 	main->env = (char **)malloc(sizeof(char *) * (main->env_len + 1));
 	main->export = (char **)malloc(sizeof(char *) * (main->export_len + 1));
 	if (!main->env || !main->export)
@@ -84,11 +83,9 @@ int	init_env(char **env, t_main *main)
 	i = 0;
 	while (i < main->export_len)
 	{
-		save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(env[i], '=')[1])), "\"");
-		temp = save_value;
-		save_value = ft_strjoin("export ", ft_strjoin(get_var_name(env[i]), temp));
+		temp = ft_strjoin_free(ft_strjoin("\"", &ft_strchr(env[i], '=')[1]), "\"", 0);
+		main->export[i] = ft_strjoin_free("export ", ft_strjoin_free(get_var_name(env[i]), temp, 0), 1);
 		free(temp);
-		main->export[i] = save_value;
 		i++;
 	}
 	main->export[i] = NULL;
@@ -128,30 +125,24 @@ int	main(int argc, char **argv, char **env)
 	else
 		return (free_all_data(&main), 1);
 	init_signals();
-	while (1)
+	while (ft_strcmp(cmd, "exit") != 0)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
-		printf("cmd0: %s\n", cmd);
-		if (cmd == NULL || ft_strcmp(cmd, "exit") == 0)
+		if (cmd == NULL)
 		{
-			if (cmd == NULL)
-				printf("exit\n");
+			printf("exit\n");
 			break ;
 		}
-		if (only_space_line(cmd) == 0 && cmd)
+		else if (only_space_line(cmd) == 0 && cmd)
 		{
 			add_history(cmd);
 			split = ft_split_k_q_s(&main, cmd, ' ');
 			if (init_tokens(split, &main) == 0)
 				break ;
-			// for(int i=0;split[i];i++)
-			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
-			if (ft_exec(&main, split, cmd) == 0)
+			if (ft_process(&main, split, cmd) == 0)
 				break ;
-			//printf("exit code %d\n", main.last_exit_code);
 			free_end_cmd(&main, split);
 		}
-		printf("cmd: %s\n", cmd);
 	}
 	free_all_data(&main);
 	rl_clear_history();

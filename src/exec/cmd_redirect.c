@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/17 18:57:46 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/19 11:27:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	get_fd_out(char **cmd)
 			else
 				return (-1);
 		}
-		if (ft_strcmp(cmd[i], ">") == 0)
+		else if (ft_strcmp(cmd[i], ">") == 0)
 		{
 			if (cmd[i + 1])
 				fd = handle_opening_outfile(cmd[i + 1], 0);

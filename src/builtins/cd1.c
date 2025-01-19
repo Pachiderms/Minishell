@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/17 18:33:50 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/19 17:17:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	*handle_home_case(t_main *main, char *actual_arg)
 		home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
 		if (home_pos == -1)
 		{
-			printf("bash: cd: HOME not set\n");
+			printf("minishell: cd: HOME not set\n");
 			return (NULL);
 		}
 		actual_arg = ft_strdup(&ft_strchr(main->env[home_pos], '=')[1]);

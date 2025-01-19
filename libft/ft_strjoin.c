@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 16:33:23 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:40:51 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/19 14:35:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (ft_dup(s1, s2));
 }
 
-char	*ft_dup_free(char const *s1, char const *s2)
+char	*ft_dup_free(char const *s1, char const *s2, int last)
 {
 	int		i;
 	int		j;
@@ -73,15 +73,17 @@ char	*ft_dup_free(char const *s1, char const *s2)
 		j++;
 	}
 	res[j + i] = '\0';
+	if (last)
+		return (free((char *)s2), res);
 	return (free((char *)s1), res);
 }
 
-char	*ft_strjoin_free(char const *s1, char const *s2)
+char	*ft_strjoin_free(char const *s1, char const *s2, int last)
 {
 	if (!s1)
 		return (ft_strdup(s2));
 	else if (!s2)
 		return (ft_strdup(s1));
 	else
-		return (ft_dup_free(s1, s2));
+		return (ft_dup_free(s1, s2, last));
 }

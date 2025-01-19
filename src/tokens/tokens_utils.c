@@ -30,7 +30,7 @@ char	*replace_dollar(char *s, t_main *main)
 		if (j != i)
 		{
 			tmp = ft_substr(s, i, j - i);
-			res = ft_strjoin_free(res, tmp);
+			res = ft_strjoin_free(res, tmp, 0);
 			free(tmp);
 			tmp = NULL;
 		}
@@ -44,7 +44,7 @@ char	*replace_dollar(char *s, t_main *main)
 			tmp = ft_substr(s, i, j - i);
 			l = check_var_exists2(main, &tmp[1]);
 			if (l >= 0)
-				res = ft_strjoin_free(res, &ft_strchr(main->env[l], '=')[1]);
+				res = ft_strjoin_free(res, &ft_strchr(main->env[l], '=')[1], 0);
 			free(tmp);
 			tmp = NULL;
 			i = j;

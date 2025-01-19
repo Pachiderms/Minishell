@@ -83,23 +83,23 @@ int	check_syntax_unset(char *cmd) // trop de lignes
 	if (arg[0] == '_' && arg[1] == '\0')
 		return (0);
 	if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
-		return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), 0);
+		return (printf("minishell: unset: ‘%s’: not a valid identifier\n", arg), 0);
 	if (arg[0] == '-' && arg[1])
-		return (printf("bash: unset: -%c: invalid option\n", arg[1]), 0);
+		return (printf("minishell: unset: -%c: invalid option\n", arg[1]), 0);
 	while (arg[i++])
 	{
 		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.'
 			|| arg[i] == '+' || arg[i] == '{' || arg[i] == '}'
 			|| arg[i] == '-' || arg[i] == '*' || arg[i] == '#'
 			|| arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
-			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg)
+			return (printf("minishell: unset: ‘%s’: not a valid identifier\n", arg)
 				, 0);
 	}
 	i = 0;
 	while (arg[i++])
 	{
 		if (arg[i] == '!')
-			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!'))
+			return (printf("minishell: %s: event not found\n", ft_strchr(arg, '!'))
 				, 0);
 	}
 	return (1);

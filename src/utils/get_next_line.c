@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:24:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/14 16:07:43 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/19 12:17:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*ft_read(int _fd, char *_stash)
 		if (readb <= 0)
 			return (ft_free_gnl(_stash, buffer));
 		buffer[readb] = '\0';
-		_stash = ft_strjoin_free(_stash, buffer);
+		_stash = ft_strjoin_free(_stash, buffer, 0);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}

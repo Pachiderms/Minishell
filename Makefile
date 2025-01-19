@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2024/11/18 21:19:32 by marvin           ###   ########.fr        #
+#    Updated: 2025/01/19 16:48:55 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,9 @@ $(NAME): $(LIBFT_LIB) $(OBJS)
 	@echo "$(NAME): $(GREEN)$(NAME) compiled.$(RESET)"
 	@echo ".o files in directory 'objs'"
 
+valgrind:
+	valgrind --leak-check=full ./minishell
+
 clean:
 	make clean -sC $(LIBFT_PATH)
 	rm -rf objs
@@ -54,4 +57,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all valgrind clean fclean re
