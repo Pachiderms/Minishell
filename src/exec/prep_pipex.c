@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-
-// < test.txt grep ligne | cat > outfile.txt
 int	prep_cmd_exec(t_main *main)
 {
 	int		i;
