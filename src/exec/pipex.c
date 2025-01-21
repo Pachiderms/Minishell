@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int PROCESS_NUM;
+int PROCESSES;
 
 char	*prep_process(char *s)
 {
@@ -77,12 +77,12 @@ int	ft_fork(t_main *main, char **cmd)
 	return (exit_code);
 }
 
-void    close_pipes(int pipes[PROCESS_NUM][2], int me)
+void    close_pipes(int pipes[PROCESSES][2], int me)
 {
     int i;
 
     i = 0;
-    while (i < PROCESS_NUM)
+    while (i < PROCESSES)
     {
         if (i != me)
             close(pipes[i][0]);
@@ -92,12 +92,12 @@ void    close_pipes(int pipes[PROCESS_NUM][2], int me)
     }
 }
 
-void	close_all_pipes(int pipes[PROCESS_NUM + 1][2])
+void	close_all_pipes(int pipes[PROCESSES][2])
 {
 	int i;
 
     i = 0;
-    while (i < PROCESS_NUM)
+    while (i < PROCESSES)
     {
         close(pipes[i][0]);
         close(pipes[i][1]);
@@ -105,85 +105,85 @@ void	close_all_pipes(int pipes[PROCESS_NUM + 1][2])
     }
 }
 
-void	ft_wait(int pids[PROCESS_NUM])
+void	ft_wait(int pids[PROCESSES])
 {
 	int	i;
 
 	i = 0;
-	while (i < PROCESS_NUM)
+	while (i < PROCESSES)
 		waitpid(pids[i], NULL, 0);
 }
 
-void	child_process(t_main *main, char *cmd, int pipes[PROCESS_NUM + 1][2], int i)
+void	child_process(t_main *main, char *cmd, int pipes[PROCESSES][2], int i)
 {
 	dup2(pipes[i + 1][1], STDOUT_FILENO);
 	// close_pipes(pipes, i, i + 1, 1);
 	ft_exec(main, &cmd);
 }
 
-int	ft_pipe2(t_main *main, char **processes)
+int	ft_pipe(t_main *main, char **processes)
 {
-	pid_t	child_pid[main->nb_cmd];
+	pid_t	child_pid[PROCESSES];
 	pid_t	fork_id;
-	int		fd[main->nb_cmd][2];
+	int		fd[PROCESSES][2];
 	int		fdin;
 	int		fdout;
 	int		i;
 
 	i = -1;
-	while (++i < main->nb_cmd){
-		if (pipe(fd) < 0)
+	while (++i < PROCESSES)
+	{
+		if (pipe(fd[i]) < 0)
 			return (perror("pipe fail"), 1);
 	}
 	fdin = get_fd_in(&processes[0]);
-	fdout = get_fd_out(&processes[main->nb_cmd - 1]);
 	dup2(fdin, STDIN_FILENO);
 	i = -1;
-	while (++i < PROCESS_NUM)
+	while (++i < PROCESSES - 1)
 	{
 		child_pid[i] = fork();
-		if (child_pid < 0)
+		if (child_pid[i] < 0)
 			return (perror("fork fail"), 1);
 		if (child_pid[i] == 0)
 		{
-			dup2(fd[1], STDOUT_FILENO);
-			close(fd[0]);
-			close(fd[1]);
-			close(fdout);
+			for(int k=i;k<3;k++)
+				printf("cmd %d : %s\n", k, processes[k]);
+			dup2(fd[i][1], STDOUT_FILENO);
+			close_all_pipes(fd);
 			ft_exec(main, &processes[i]);
 			exit(EXIT_FAILURE);
 		}
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-	}
-	i = -1;
-	while (++i < main->nb_cmd){
-		waitpid(child_pid[i], NULL, 0);
+		else
+		{
+			dup2(fd[i][0], STDIN_FILENO);
+			close(fd[i][1]);
+		}
 	}
 	fork_id = fork();
 	if (fork_id == 0)
 	{
+		fdout = get_fd_out(&processes[PROCESSES - 1]);
 		dup2(fdout, STDOUT_FILENO);
-		close(fdout);
-		close(fd[0]);
-		close(fd[1]);
-		ft_exec(main, &processes[i]);
+		close_all_pipes(fd);
+		ft_exec(main, &processes[PROCESSES - 1]);
 	}
-	close(fd[0]);
-	close(fd[1]);
-	close(fdout);
+	close_all_pipes(fd);
+	i = -1;
+	while (++i < PROCESSES)
+		waitpid(child_pid[i], NULL, 0);
 	waitpid(fork_id, NULL, 0);
 	return (1);
 }
+//pourquoi ca marche tout seul mais pas la ?????
 
 int	launch_process(t_main *main, char **processes)
 {
 	int	exit_code;
-	PROCESS_NUM = main->nb_cmd;
+
+	PROCESSES = main->nb_cmd;
 	if (main->nb_cmd < 2)
 		exit_code = ft_fork(main, processes);
 	else
-		exit_code = ft_pipe2(main, processes);
+		exit_code = ft_pipe(main, processes);
 	return (free_split(processes), exit_code);
 }
