@@ -574,10 +574,12 @@ int	ft_pipe(char **processes, int argc)
 		printf("last:%s\n", processes[argc - 3]);
 		fdout = get_fd_out(&processes[argc - 3]);
 		printf("fdout=%d\n", fdout);
-		dup2(fdout, STDOUT_FILENO);
+		printf("dup=%d\n", dup2(fdout, STDOUT_FILENO));
 		close_all_pipes(fd);
 		ft_exec(&processes[argc - 3]);
 	}
+	dup2(0, fd[j][0]);
+	dup2(1, fd[j][1]);
 	close_all_pipes(fd);
 	i = -1;
 	while (++i < PROCESSES)
@@ -602,5 +604,17 @@ int	main(int argc, char **argv)
 	if (PROCESSES == 0)
 		PROCESSES = 1;
 	printf("argv 0 %s %d\n", argv[0], PROCESSES);
-	return launch_process(&argv[1], argc);
+	int exit_code = 0;
+	char *cmd;
+	while (1)
+	{
+		cmd = readline("enter something ");
+		exit_code = launch_process(&argv[1], argc);
+		if (cmd == NULL){
+			printf("exit\n");
+			break ;
+		}
+	}
+	free(cmd);
+	return (exit_code);
 }
