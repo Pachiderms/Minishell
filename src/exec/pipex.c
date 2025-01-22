@@ -14,8 +14,6 @@
 
 void	child_process(t_main *main, char **cmd, int *pip);
 
-int PROCESSES;
-
 char	*prep_process(char *s)
 {
 	char	*res;
@@ -85,10 +83,10 @@ static void	wait_all(t_main *data)
 				data->last_exit_code = WEXITSTATUS(status);
 		}
 	}
-	// if (data->outfile >= 0)
-	// 	close(data->outfile);
-	// if (data->infile >= 0)
-	// 	close(data->infile);
+	if (data->outfile >= 0)
+		close(data->outfile);
+	if (data->infile >= 0)
+		close(data->infile);
 }
 
 int 	exec(t_main *data)
@@ -198,7 +196,6 @@ int	launch_process(t_main *main, char **processes)
 {
 	int	exit_code;
 
-	PROCESSES = main->nb_cmd;
 	if (main->nb_cmd < 2)
 		exit_code = ft_fork(main, processes);
 	else
