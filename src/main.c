@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/19 17:19:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/22 14:18:38 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,19 @@ void	init_main(t_main *main)
 	main->nb_cmd = 0;
 	main->hc_pos = -1;
 	main->path = NULL;
+	main->fdin = 0;
+	main->fdout = 1;
+	main->pids = malloc(sizeof(int));
+	if (!main->pids)
+		exit (1);
+	main->pids[0] = -1;
 }
 
 char	*get_var_name(char *cmd)
 {
-	int i;
-	int j;
-	char *var_name;
+	int		i;
+	int		j;
+	char	*var_name;
 
 	i = 0;
 	j = 0;
@@ -59,8 +65,8 @@ char	*get_var_name(char *cmd)
 
 int	init_env(char **env, t_main *main)
 {
-	int	i;
-	char *temp;
+	int		i;
+	char	*temp;
 
 	i = -1;
 	while (env[++i] != NULL)
@@ -127,13 +133,17 @@ int	main(int argc, char **argv, char **env)
 	init_signals();
 	while (ft_strcmp(cmd, "exit") != 0)
 	{
+		// char **lcmd = ft_split("wc -l", ' ');
+		// for (int i=0;lcmd[i];i++)
+		// 	printf("child command %d: %s\n", i, lcmd[i]);
+		// break ;
 		cmd = readline(GREEN"minishell> "RESET);
 		if (cmd == NULL)
 		{
 			printf("exit\n");
 			break ;
 		}
-		else if (only_space_line(cmd) == 0 && cmd)
+		if (only_space_line(cmd) == 0 && cmd)
 		{
 			add_history(cmd);
 			split = ft_split_k_q_s(&main, cmd, ' ');

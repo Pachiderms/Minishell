@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/19 16:34:34 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/22 14:41:20 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ typedef struct s_main {
     char	*path;
     int     hc_pos;
     int     last_exit_code;
+    int     *pids;
+    int     fdin;
+    int     fdout;
 }	t_main;
 
 //GNL
@@ -113,7 +116,7 @@ int     ft_echo(t_main *main, char **cmd);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
-int	is_special_case(char *actual_arg);
+int	    is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
 void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char **cmd);
@@ -128,6 +131,7 @@ int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int	    closed_quotes(const char *s);	
 char    *get_rid_of_spaces(char const *s);
+void	in_and_out(t_main *main, char **cmd, int *fd);
 
 /// TOKENS
 int		init_tokens(char **split, t_main *main);
@@ -136,7 +140,7 @@ int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
-char     *get_rid_of(char *s, char c);
+char    *get_rid_of(char *s, char c);
 
 /// UTILS TOKENS
 int		ft_quote(char **s, char **split);

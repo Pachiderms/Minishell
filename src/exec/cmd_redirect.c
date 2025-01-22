@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/19 11:27:08 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/22 13:43:41 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handle_opening_outfile(char *file, int append)
 	fd = -1;
 	if (append)
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND | __O_CLOEXEC, 0777);
 		if (fd < 0)
 			return (-1);
 		if (access(file, W_OK) != 0)
@@ -30,7 +30,7 @@ int	handle_opening_outfile(char *file, int append)
 	}
 	else
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC | __O_CLOEXEC, 0777);
 		if (fd < 0)
 			return (-1);
 		if (access(file, W_OK) != 0)
@@ -51,7 +51,7 @@ int	handle_opening_infile(char *file, int append)
 		return (-1);
 	else
 	{
-		fd = open(file, O_RDONLY);
+		fd = open(file, O_RDONLY | __O_CLOEXEC);
 		if (fd < 0)
 			return (-1);
 		if (access(file, R_OK) != 0)
