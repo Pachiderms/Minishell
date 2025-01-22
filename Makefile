@@ -22,7 +22,7 @@ LIBFT_NAME = libft.a
 
 LIBFT_LIB = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
 
-SRC = src/main.c src/env.c src/exec.c src/pipex.c src/export.c src/unset.c src/tokens.c src/tokens_utils.c src/echo.c src/cd.c src/pwd.c src/cmd_redirect.c src/utils.c src/free.c src/prep_pipex.c src/signals.c src/get_next_line.c src/heredoc.c
+SRC = src/main.c src/builtins/env.c src/exec/exec.c src/exec/pipex.c src/builtins/export.c src/builtins/export1.c src/builtins/export+=.c src/builtins/unset.c src/builtins/unset1.c src/tokens/tokens.c src/tokens/tokens_utils.c src/tokens/tokens_utils1.c src/builtins/echo.c src/builtins/cd.c src/builtins/cd1.c src/builtins/pwd.c src/exec/cmd_redirect.c src/utils/utils.c src/utils/utils1.c src/utils/free.c src/exec/prep_pipex.c src/utils/signals.c src/utils/get_next_line.c src/heredoc.c
 
 OBJS := $(SRC:%.c=%.o)
 
@@ -40,9 +40,12 @@ $(LIBFT_LIB):
 $(NAME): $(LIBFT_LIB) $(OBJS)
 	mkdir -p objs
 	$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
-	mv src/*.o objs
+	mv src/*.o src/builtins/*.o src/tokens/*.o src/exec/*.o src/utils/*.o objs
 	@echo "$(NAME): $(GREEN)$(NAME) compiled.$(RESET)"
 	@echo ".o files in directory 'objs'"
+
+valgrind:
+	valgrind --leak-check=full ./minishell
 
 clean:
 	make clean -sC $(LIBFT_PATH)
@@ -54,4 +57,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all valgrind clean fclean re

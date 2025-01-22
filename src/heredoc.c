@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
+/*   Updated: 2024/11/19 16:33:45 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int her_doc(t_main *main, char **split)
@@ -12,8 +24,8 @@ int her_doc(t_main *main, char **split)
 	while (ft_strcmp(eof, tmp) != 0)
 	{
 		tmp = readline("heredoc> ");
-		res = ft_strjoin_free(res, tmp);
-        res = ft_strjoin_free(res, "\n");
+		res = ft_strjoin_free(res, tmp, 0);
+        res = ft_strjoin_free(res, "\n", 0);
 		add_history(tmp);
     }
     int fdout = get_fd_out(split);

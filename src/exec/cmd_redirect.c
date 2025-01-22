@@ -79,7 +79,7 @@ int	get_fd_out(char **cmd)
 			else
 				return (-1);
 		}
-		if (ft_strcmp(cmd[i], ">") == 0)
+		else if (ft_strcmp(cmd[i], ">") == 0)
 		{
 			if (cmd[i + 1])
 				fd = handle_opening_outfile(cmd[i + 1], 0);
@@ -108,7 +108,7 @@ int	get_fd_in(char **cmd)
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 int	get_cmd_number(t_main *main, char **split)

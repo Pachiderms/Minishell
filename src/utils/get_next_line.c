@@ -77,7 +77,7 @@ char	*ft_read(int _fd, char *_stash)
 		if (readb <= 0)
 			return (ft_free_gnl(_stash, buffer));
 		buffer[readb] = '\0';
-		_stash = ft_strjoin_free(_stash, buffer);
+		_stash = ft_strjoin_free(_stash, buffer, 0);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
