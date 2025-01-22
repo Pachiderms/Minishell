@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/19 17:21:05 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/23 14:09:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	prep_cmd_exec(t_main *main)
 	res[k] = NULL;
 	// for (int l=0;l<main->nb_cmd;l++)
 	// 	printf("prep cmd res: %s\n", res[l]);
+	main->split = res;
 	return (launch_process(main, res));
 }
 /*

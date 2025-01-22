@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>              +#+  +:+       +#+          */
+/*   By: tzizi <tzizi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/17 17:23:24 by tzizi            #+#    #+#              */
-/*   Updated: 2025/01/17 17:23:24 by tzizi           ###   ########.fr        */
+/*   Created: 2024/11/18 20:26:30 by tzizi            #+#    #+#             */
+/*   Updated: 2024/11/18 20:26:30 by tzizi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	builtin(t_main *main, char **split, char *cmd)
 		return (prep_unset(main, split));
 	if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 		return (ft_echo(main, split));
-	if (ft_strcmp(main->tokens[0].value, "cd") == 0)
+	if (ft_strcmp(main->tokens[0].value, "cd") == 0
+		|| ft_strcmp(main->tokens[0].value, "/bin/cd") == 0)
 		return (cd(main, split));
 	if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
 		return (pwd(main, split));

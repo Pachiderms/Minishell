@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/01/22 14:08:52 by tzizi            ###   ########.fr        #
+#    Updated: 2024/11/18 21:19:32 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,6 @@ $(NAME): $(LIBFT_LIB) $(OBJS)
 	mkdir -p objs
 	$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
 	mv src/*.o src/builtins/*.o src/tokens/*.o src/exec/*.o src/utils/*.o objs
-	clear
 	@echo "$(NAME): $(GREEN)$(NAME) compiled.$(RESET)"
 	@echo ".o files in directory 'objs'"
 

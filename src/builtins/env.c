@@ -27,7 +27,19 @@ void	free_env(char **tab, int tablen)
 	return ;
 }
 
-void	print_ascii_order(t_main *main) // trop de lignes
+void	print_sort_env(char **sort_env, int len)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		printf("%s\n", sort_env[i]);
+		i++;
+	}
+}
+
+void	print_ascii_order(t_main *main)
 {
 	int		i;
 	char	*tmp;
@@ -35,12 +47,7 @@ void	print_ascii_order(t_main *main) // trop de lignes
 
 	i = 0;
 	sort_env = (char **)malloc(sizeof(char *) * (main->export_len + 1));
-	while (i < main->export_len)
-	{
-		sort_env[i] = ft_strdup(main->export[i]);
-		i++;
-	}
-	i = 0;
+	remake_env(sort_env, main, 1, -3);
 	while (i < main->export_len - 1)
 	{
 		if (ft_strncmp(sort_env[i], sort_env[i + 1], -1) > 0)
@@ -55,18 +62,13 @@ void	print_ascii_order(t_main *main) // trop de lignes
 	tmp = sort_env[1];
 	sort_env[1] = sort_env[0];
 	sort_env[0] = tmp;
-	i = 0;
-	while (i < main->export_len)
-	{
-		printf("%s\n", sort_env[i]);
-		i++;
-	}
+	print_sort_env(sort_env, main->export_len);
 	free_env(sort_env, main->export_len);
 }
 
 int	check_syntax_env(char **split)
 {
-	int	i;
+	int		i;
 
 	i = 1;
 	if (ft_strcmp(split[0], "env") == 0 && split[1] == NULL)
@@ -104,6 +106,7 @@ int	print_env(t_main *main, int check, char **split)
 	if (check == 1)
 	{
 		print_ascii_order(main);
+		
 		printf("Export Len : %d\n", main->export_len);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/22 14:41:20 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,11 @@ typedef struct s_main {
     char	*path;
     int     hc_pos;
     int     last_exit_code;
-    int     *pids;
-    int     fdin;
-    int     fdout;
+    char *cmd;
+    int infile;
+    int outfile;
+    int *pip;
+    char **split;
 }	t_main;
 
 //GNL
@@ -111,18 +113,21 @@ char	*get_var_name(char *cmd);
 int     check_plus(char *cmd);
 char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
+void	remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
 int     ft_echo(t_main *main, char **cmd);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
-int	    is_special_case(char *actual_arg);
+int	is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
-void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char **cmd);
 /// PWD
-int		pwd(t_main *main, char **cmd);
+int     return_to_pwd(t_main *main);
+void    update_oldpwd_pwd(t_main *main);
+int     pwd(t_main *main, char **cmd);
 /// UTILS BUILTINS
+int     basic_verif(char *arg, int which);
 int		check_var_exists(char **env, int len, char *cmd);
 void	remake_env(char	**tmp, t_main *main, int which, int replace_pos);
 /// UTILS
@@ -131,7 +136,7 @@ int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int	    closed_quotes(const char *s);	
 char    *get_rid_of_spaces(char const *s);
-void	in_and_out(t_main *main, char **cmd, int *fd);
+char    *cut_str(char *str, char *cut);
 
 /// TOKENS
 int		init_tokens(char **split, t_main *main);
@@ -140,7 +145,7 @@ int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
-char    *get_rid_of(char *s, char c);
+char     *get_rid_of(char *s, char c);
 
 /// UTILS TOKENS
 int		ft_quote(char **s, char **split);

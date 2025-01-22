@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_utils1.c                                    :+:      :+:    :+:   */
+/*   tokens_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/19 16:46:21 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/19 15:57:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*get_rid_of(char *s, char c)
 
 int	check_builtin(char *s)
 {
-	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1))
+	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1)  || !ft_strncmp(s, "/bin/cd", -1))
 		|| !ft_strncmp(s, "pwd", -1) || !ft_strncmp(s, "export", -1)
 		|| !ft_strncmp(s, "unset", -1)
 		|| (!ft_strncmp(s, "env", -1) || !ft_strncmp(s, "/bin/env", -1))

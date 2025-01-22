@@ -16,6 +16,7 @@ void	sigint(int sig)
 {
 	(void)sig;
 	printf("\n");
+	//if (ft_strcmp(main->cmd, "cat") != 0) trouver un moyen de recup le main ou de faire un if sans le main
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
