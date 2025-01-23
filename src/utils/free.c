@@ -6,11 +6,18 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 11:54:10 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 15:27:39 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	free_process(t_main *main, int exit_code)
+{
+	free_end_cmd(main);
+	free_all_data(main);
+	exit (exit_code);
+}
 
 void	free_end_cmd(t_main *main)
 {

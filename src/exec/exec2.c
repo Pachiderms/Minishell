@@ -69,32 +69,43 @@ static void	redirect_in_out(t_main *main, char **cmd, int *pip)
 	if (main->outfile >= 0)
 	{
 		dup2(main->outfile, 1);
-		close(main->outfile);
+		//close(main->outfile);
 	}
-	else if (*(cmd + 1) != NULL)
+	if (*(cmd + 1) != NULL)
 		dup2(pip[1], 1);
 	close(pip[1]);
 }
 
+void	child_builtin(t_main *main, char **cmd, int *pip)
+{
+	int	exit_code;
+
+	redirect_in_out(main, cmd, pip);
+	rl_clear_history();
+	init_signals();
+	exit_code = builtin(main, cmd, cmd[0]);
+	free_all_data(main);
+	free_end_cmd(main);
+	exit(exit_code);
+}
+
 void	child_process(t_main *main, char **cmd, int *pip)
 {
-	int		exit_code;
 	char	**path;
 	char 	*ok;
 
-	ok = prep_process(*(cmd));
+	main->outfile = get_fd_out(cmd);
+	ok = prep_process(*cmd);
 	path = ft_split(ok, ' ');
 	free(ok);
-	if (check_builtin(path[0]))
-	{
-		redirect_in_out(main, cmd, pip);
-		rl_clear_history();
-		init_signals();
-		exit_code = builtin(main, path, path[0]);
-		free_all_data(main);
-		free_end_cmd(main);
-		exit(exit_code);
-	}
+	if (check_builtin(cmd[0]))
+		child_builtin(main, path, pip);
+	free_split(path);
+	if (ft_strrchr(*cmd, '>'))
+		cut_str(*cmd, ft_strrchr(*cmd, '>'));
+	ok = prep_process(*cmd);
+	path = ft_split(ok, ' ');
+	free(ok);
 	ok = ft_strjoin("/usr/bin/", path[0]);
 	redirect_in_out(main, cmd, pip);
 	rl_clear_history();

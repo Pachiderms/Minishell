@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 13:59:43 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 17:51:35 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,27 @@
 
 int	start_end(char *kqs, int start)
 {
+	printf("p start %d '%s'\n", start, &kqs[start]);
 	while (kqs[start])
 	{
-		if (!ft_strncmp(&kqs[start], "<", 1) || !ft_strncmp(&kqs[start], ">", 1))
+		if (!ft_strncmp(&kqs[start], "<", 1) || !ft_strncmp(&kqs[start], ">", 1)
+			|| !ft_strncmp(&kqs[start], "|", 1))
+		{
+			printf("break point %s\n", &kqs[start]);
 			break ;
+		}
 		start++;
 	}
+	printf("get p %d\n", start);
 	return (start);
+}
+
+int	to_separer(char *s)
+{
+	if (ft_strchr(s, '<') || ft_strchr(s, '>')
+		|| ft_strchr(s, '|'))
+		return (1);
+	return (0);
 }
 
 int	order_redirect(char **res, char *kqs_cmd)
@@ -32,11 +46,14 @@ int	order_redirect(char **res, char *kqs_cmd)
 
 	if (!kqs_cmd)
 		return (-1);
+	printf("kqs %s\n", kqs_cmd);
 	start = start_end(kqs_cmd, 0);
 	end = start_end(kqs_cmd, start + 1);
+	printf("end '%s'\n", &kqs_cmd[end]);
 	redirect[0] = kqs_cmd[start];
 	redirect[1] = '\0';
 	sub = ft_substr(kqs_cmd, 0, end - start);
+	printf("r '%s' sub 0 '%s'\n", redirect, sub);
 	if (!ft_strchr(sub, redirect[0]))
 	{
 		*res = ft_strjoin_free(*res, sub, 0);
@@ -47,7 +64,7 @@ int	order_redirect(char **res, char *kqs_cmd)
 	*res = ft_strjoin_free(*res, " ", 0);
 	sub = ft_substr(kqs_cmd, start, end - start);
 	*res = ft_strjoin_free(*res, &sub[1], 0);
-	if (ft_strchr(&kqs_cmd[end], '<') || ft_strchr(&kqs_cmd[end], '>'))
+	if (to_separer(&kqs_cmd[end]))
 		return (end);
 	return (free(sub), -1);
 }
@@ -64,8 +81,7 @@ char	*order(char *s)
 	res = NULL;
 	while (kqs_tmp[i])
 	{
-		if (ft_strnstr(kqs_tmp[i], "<", ft_strlen(kqs_tmp[i]))
-			|| ft_strnstr(kqs_tmp[i], ">", ft_strlen(kqs_tmp[i])))
+		if (to_separer(kqs_tmp[i]))
 		{
 			j = order_redirect(&res, kqs_tmp[i]);
 			while (j > 0)

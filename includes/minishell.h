@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/23 12:51:28 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 15:22:35 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ typedef struct s_main {
     char    **split;
     char    **base_split;
 }	t_main;
-
-//GNL
-char	*get_next_line(int fd);
 
 // LIBFT
 size_t	ft_atoi(const char *str);
@@ -165,6 +162,7 @@ int     launch_process(t_main *main);
 
 /// FREE
 void	free_all_data(t_main *main);
+void	free_process(t_main *main, int exit_code);
 void	free_env(char **tab, int tablen);
 void	free_tokens(t_main *main);
 void    free_end_cmd(t_main *main);

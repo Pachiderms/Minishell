@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 09:55:40 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 16:13:38 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,9 @@ char	**prep_cmd_exec(t_main *main)
 			i++;
 		}
 		res[k++] = ft_strjoin_free(main->tokens[j].value, tmp, 1);
-		// printf("token j: %s\n", main->tokens[j].value);
 		i++;
 	}
 	res[k] = NULL;
-	// for (int l=0;l<main->nb_cmd;l++)
-	// 	printf("prep cmd res: %s\n", res[l]);
 	return (res);
 }
 /*

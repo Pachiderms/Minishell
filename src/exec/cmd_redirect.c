@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 12:16:38 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 17:02:47 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,34 @@
 
 int	handle_opening_outfile(char *file, int append)
 {
-	int	fd;
+	int		fd;
+	char	*tmp;
 
 	fd = -1;
+	tmp = get_rid_of_spaces(file);
 	if (append)
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
+		fd = open(tmp, O_WRONLY | O_CREAT | O_APPEND, 0777);
 		if (fd < 0)
-			return (-1);
-		if (access(file, W_OK) != 0)
+			return (free(tmp), -1);
+		if (access(tmp, W_OK) != 0)
 		{
 			close(fd);
-			return (-1);
+			return (free(tmp), -1);
 		}
 	}
 	else
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		if (fd < 0)
-			return (-1);
-		if (access(file, W_OK) != 0)
+			return (free(tmp), -1);
+		if (access(tmp, W_OK) != 0)
 		{
 			close(fd);
-			return (-1);
+			return (free(tmp), -1);
 		}
 	}
-	return (fd);
+	return (free(tmp), fd);
 }
 
 int	handle_opening_infile(char *file, int append)
@@ -63,6 +65,20 @@ int	handle_opening_infile(char *file, int append)
 	return (fd);
 }
 
+char	*get_next(char **cmd, char *tf)
+{
+	if (ft_strcmp(*cmd, tf) == 0)
+	{
+		if (*(cmd + 1))
+			return (*(cmd + 1));
+	}
+	else if (ft_strnstr(*cmd, tf, ft_strlen(*cmd)))
+	{
+		return (&ft_strrchr(*cmd, tf[0])[1]);
+	}
+	return (NULL);
+}
+
 int	get_fd_out(char **cmd)
 {
 	int	i;
@@ -72,19 +88,13 @@ int	get_fd_out(char **cmd)
 	fd = 1;
 	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
 	{
-		if (ft_strcmp(cmd[i], ">>") == 0)
+		if (get_next(&cmd[i], ">>"))
 		{
-			if (cmd[i + 1])
-				fd = handle_opening_outfile(cmd[i + 1], 1);
-			else
-				return (-1);
+			fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
 		}
-		else if (ft_strcmp(cmd[i], ">") == 0)
+		if (get_next(&cmd[i], ">"))
 		{
-			if (cmd[i + 1])
-				fd = handle_opening_outfile(cmd[i + 1], 0);
-			else
-				return (-1);
+			fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
 		}
 		i++;
 	}
