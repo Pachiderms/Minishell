@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/23 10:01:29 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 12:51:28 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_main {
     int     outfile;
     int     pip[2];
     char    **split;
+    char    **base_split;
 }	t_main;
 
 //GNL
@@ -83,6 +84,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_substr(char const *str, unsigned int start, size_t len);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
@@ -138,6 +140,7 @@ int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int	    closed_quotes(const char *s);	
 char    *get_rid_of_spaces(char const *s);
+char	*order(char *s);
 char    *cut_str(char *str, char *cut);
 
 /// TOKENS

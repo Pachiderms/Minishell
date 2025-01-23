@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*   tokens_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2024/11/19 15:57:02 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/23 12:24:35 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ int	is_sc(char *s)
 {
 	if (!s)
 		return (0);
-	if (ft_strcmp(s, "|") == 0 || ft_strcmp(s, "<") == 0
-		|| ft_strcmp(s, ">") == 0 || ft_strcmp(s, "<<") == 0
-		|| ft_strcmp(s, ">>") == 0)
+	if (ft_strchr(s, "|") || ft_strchr(s, "<")
+		|| ft_strchr(s, ">")  || ft_strchr(s, "<<")
+		|| ft_strchr(s, ">>"))
 		return (1);
 	if (ft_strchr(s, '$'))
 		return (2);

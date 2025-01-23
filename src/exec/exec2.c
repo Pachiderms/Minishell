@@ -78,12 +78,23 @@ static void	redirect_in_out(t_main *main, char **cmd, int *pip)
 
 void	child_process(t_main *main, char **cmd, int *pip)
 {
+	int		exit_code;
 	char	**path;
-	char *ok;
+	char 	*ok;
 
 	ok = prep_process(*(cmd));
 	path = ft_split(ok, ' ');
 	free(ok);
+	if (check_builtin(path[0]))
+	{
+		redirect_in_out(main, cmd, pip);
+		rl_clear_history();
+		init_signals();
+		exit_code = builtin(main, path, path[0]);
+		free_all_data(main);
+		free_end_cmd(main);
+		exit(exit_code);
+	}
 	ok = ft_strjoin("/usr/bin/", path[0]);
 	redirect_in_out(main, cmd, pip);
 	rl_clear_history();

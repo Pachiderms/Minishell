@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 10:19:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 11:54:10 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	free_end_cmd(t_main *main)
 	free_split(main->split);
 	if (main->tokens)
 		free_tokens(main);
+	free_split(main->base_split);
+	free(main->cmd);
 }
 
 void	free_split(char **split)

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/20 15:07:14 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 12:16:38 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	get_fd_out(char **cmd)
 	int	fd;
 
 	i = 0;
-	fd = -1;
+	fd = 1;
 	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
 	{
 		if (ft_strcmp(cmd[i], ">>") == 0)
@@ -88,9 +88,7 @@ int	get_fd_out(char **cmd)
 		}
 		i++;
 	}
-	if (fd > 0)
-		return (fd);
-	return (1);
+	return (fd);
 }
 
 int	get_fd_in(char **cmd)

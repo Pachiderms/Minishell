@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/23 09:59:33 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 14:00:54 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	init_main(t_main *main)
 	main->outfile = -1;
 	main->pip[0] = -1;
 	main->pip[1] = -1;
+	main->split = NULL;
+	main->base_split = NULL;
 }
 
 char	*get_var_name(char *cmd)
@@ -113,8 +115,7 @@ int	only_space_line(char *cmd)
 int	main(int argc, char **argv, char **env)
 {
 	static t_main	main;
-	//char	*cmd;
-	char	**split;
+	char	*cmd;
 	static int i;
 
 	(void)argc;
@@ -128,24 +129,21 @@ int	main(int argc, char **argv, char **env)
 	else
 		return (free_all_data(&main), 1);
 	init_signals();
-	while (ft_strcmp(main.cmd, "exit") != 0)
+	while (1)
 	{
-		main.cmd = readline(GREEN"minishell> "RESET);
-		if (main.cmd == NULL)
+		cmd = readline(GREEN"minishell> "RESET);
+		main.cmd = order(cmd);
+		printf("cmd after order '%s'\n", main.cmd);
+		if (only_space_line(main.cmd) == 0 && main.cmd)
 		{
-			printf("exit\n");
-			break ;
-		}
-		else if (only_space_line(main.cmd) == 0 && main.cmd)
-		{
-			add_history(main.cmd);
-			split = ft_split_k_q_s(&main, main.cmd, ' ');
-			if (init_tokens(split, &main) == 0)
+			add_history(cmd);
+			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');
+			if (init_tokens(main.base_split, &main) == 0)
 				break ;
-			if (ft_process(&main, main.cmd) == 0)
-				break ;
+			ft_process(&main, main.cmd);
 			free_end_cmd(&main);
 		}
+		free(cmd);
 		i++;
 	}
 	free_all_data(&main);
