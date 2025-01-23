@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/22 16:42:44 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 09:59:33 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	init_main(t_main *main)
 	main->cmd = NULL;
 	main->infile = -1;
 	main->outfile = -1;
-	main->pip = NULL;
+	main->pip[0] = -1;
+	main->pip[1] = -1;
 }
 
 char	*get_var_name(char *cmd)
@@ -141,9 +142,9 @@ int	main(int argc, char **argv, char **env)
 			split = ft_split_k_q_s(&main, main.cmd, ' ');
 			if (init_tokens(split, &main) == 0)
 				break ;
-			if (ft_process(&main, split, main.cmd) == 0)
+			if (ft_process(&main, main.cmd) == 0)
 				break ;
-			free_end_cmd(&main, split);
+			free_end_cmd(&main);
 		}
 		i++;
 	}

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prep_pipex.c                                       :+:      :+:    :+:   */
+/*   exec0.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/23 14:09:26 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/23 09:55:40 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	prep_cmd_exec(t_main *main)
+char	**prep_cmd_exec(t_main *main)
 {
 	int		i;
 	int		j;
@@ -47,8 +47,7 @@ int	prep_cmd_exec(t_main *main)
 	res[k] = NULL;
 	// for (int l=0;l<main->nb_cmd;l++)
 	// 	printf("prep cmd res: %s\n", res[l]);
-	main->split = res;
-	return (launch_process(main, res));
+	return (res);
 }
 /*
 int	prep_cmd_exec(t_main *main, char **split) // trop de lignes

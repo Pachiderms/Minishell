@@ -32,20 +32,21 @@ int	builtin(t_main *main, char **split, char *cmd)
 	return (1);
 }
 
-int	ft_process(t_main *main, char **split, char *cmd)
+int	ft_process(t_main *main, char *cmd)
 {
+	main->split = prep_cmd_exec(main);
 	if (main->hc_pos >= 0)
-		her_doc(main, split);
+		her_doc(main, main->split);
 	else if (main->nb_cmd >= 1)
 	{
 		if (check_builtin(main->tokens[0].value)
 			&& main->nb_cmd == 1)
-			main->last_exit_code = builtin(main, split, cmd);
+			main->last_exit_code = builtin(main, main->split, cmd);
 		else
 		{
 			if (check_var_exists(main->env, main->env_len, "export PATH=") == -1)
-				return (printf("minishell: %s: No such file or directory\n", split[0]), 1);
-			main->last_exit_code = prep_cmd_exec(main);
+				return (printf("minishell: %s: No such file or directory\n", main->split[0]), 1);
+			main->last_exit_code = launch_process(main);
 		}
 		main->nb_cmd = 0;
 	}

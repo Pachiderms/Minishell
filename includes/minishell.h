@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/22 16:42:40 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 10:01:29 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 
 enum e_type {command, argument, sc};
 
+// extern pid_t	g_signal_pid;
+
 typedef struct token_t
 {
 	enum e_type	type;
@@ -57,11 +59,11 @@ typedef struct s_main {
     char	*path;
     int     hc_pos;
     int     last_exit_code;
-    char *cmd;
-    int infile;
-    int outfile;
-    int *pip;
-    char **split;
+    char    *cmd;
+    int     infile;
+    int     outfile;
+    int     pip[2];
+    char    **split;
 }	t_main;
 
 //GNL
@@ -152,17 +154,17 @@ int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 /// EXEC
-int	    ft_process(t_main *main, char **split, char *cmd);
+int	    ft_process(t_main *main, char *cmd);
 int	    builtin(t_main *main, char **split, char *cmd);
 /// PIPEX
-int     prep_cmd_exec(t_main *main);
-int     launch_process(t_main *main, char **processes);
+char    **prep_cmd_exec(t_main *main);
+int     launch_process(t_main *main);
 
 /// FREE
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);
 void	free_tokens(t_main *main);
-void    free_end_cmd(t_main *main, char **split);
+void    free_end_cmd(t_main *main);
 void    free_split(char **split);
 
 /// SIGNALS
