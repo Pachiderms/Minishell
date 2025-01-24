@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 16:13:38 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/24 11:10:12 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ char	**prep_cmd_exec(t_main *main)
 	res = malloc((main->nb_cmd + 1) * sizeof(char *));
 	i = 0;
 	k = 0;
-	while (i < main->tokens_len)
+	while (i < main->tokens_len && main->nb_cmd > 0)
 	{
 		j = i;
 		tmp = NULL;
-		while (main->tokens[j].type != command && j <= main->tokens_len)
+		while (j < main->tokens_len)
+		{
+			if (main->tokens[j].type == command)
+				break ;
 			j++;
+		}
 		while (i < main->tokens_len)
 		{
 			if (!ft_strcmp(main->tokens[i].value, "|"))

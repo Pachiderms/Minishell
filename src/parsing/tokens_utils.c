@@ -21,19 +21,17 @@ char	*cut_str(char *str, char *cut)
 	s = (unsigned char *)str;
 	if (!cut || !str)
 		return (str);
-	printf("str:%s|cut:%s\n", str, cut);
 	while (s[i])
 	{
 		if (ft_strcmp((char *)(s + i), cut) == 0)
 		{
 			s[i] = '\0';
 			i--;
-			while (ft_isspace(s[i]))
-			{
-				s[i] = '\0';
-				i--;
-			}	
-			printf("s:%s|\n", s);
+			// while (ft_isspace(s[i]))
+			// {
+			// 	s[i] = '\0';
+			// 	i--;
+			// }	
 			return ((char *)s);
 		}
 		i++;

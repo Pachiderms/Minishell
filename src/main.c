@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/23 17:29:21 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/24 10:58:07 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ int	main(int argc, char **argv, char **env)
 		{
 			char *tmp = order(cmd);
 			main.cmd = get_rid_of_spaces(tmp);
-			printf("order '%s'\n", main.cmd);
 			free(tmp);
 			add_history(cmd);
 			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');

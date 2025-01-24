@@ -6,7 +6,7 @@
 #    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/01/23 13:40:23 by tzizi            ###   ########.fr        #
+#    Updated: 2025/01/24 10:59:32 by tzizi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,23 +38,23 @@ $(LIBFT_LIB):
 	make -sC $(LIBFT_PATH)
 
 $(NAME): $(LIBFT_LIB) $(OBJS)
-	mkdir -p objs
 	$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
-	mv src/*.o src/builtins/*.o src/parsing/*.o src/exec/*.o src/utils/*.o objs
 	@echo "$(NAME): $(GREEN)$(NAME) compiled.$(RESET)"
-	@echo ".o files in directory 'objs'"
 
 valgrind:
 	valgrind --leak-check=full ./minishell
 
 clean:
 	make clean -sC $(LIBFT_PATH)
-	rm -rf objs
+	find . -type f -name '*.o' -delete
 
 fclean: clean
 	make fclean -sC $(LIBFT_PATH)
 	rm -rf $(NAME)
 
+nothing: all clean
+	clear
+
 re: fclean all
 
-.PHONY: all valgrind clean fclean re
+.PHONY: all valgrind clean fclean nothing re
