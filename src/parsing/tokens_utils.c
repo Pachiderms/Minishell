@@ -27,11 +27,6 @@ char	*cut_str(char *str, char *cut)
 		{
 			s[i] = '\0';
 			i--;
-			// while (ft_isspace(s[i]))
-			// {
-			// 	s[i] = '\0';
-			// 	i--;
-			// }	
 			return ((char *)s);
 		}
 		i++;

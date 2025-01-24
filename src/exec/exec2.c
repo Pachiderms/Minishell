@@ -84,9 +84,7 @@ void	child_builtin(t_main *main, char **cmd, int *pip)
 	rl_clear_history();
 	init_signals();
 	exit_code = builtin(main, cmd, cmd[0]);
-	free_all_data(main);
-	free_end_cmd(main);
-	exit(exit_code);
+	free_process(main, exit_code);
 }
 
 void	child_process(t_main *main, char **cmd, int *pip)
@@ -98,7 +96,12 @@ void	child_process(t_main *main, char **cmd, int *pip)
 	ok = prep_process(*cmd);
 	path = ft_split(ok, ' ');
 	free(ok);
-	if (check_builtin(cmd[0]))
+	if (!is_cmd(path[0], main->path))
+	{
+		free_split(path);
+		free_process(main, 2);
+	}
+	if (check_builtin(path[0]))
 		child_builtin(main, path, pip);
 	free_split(path);
 	if (ft_strrchr(*cmd, '>'))
@@ -111,9 +114,8 @@ void	child_process(t_main *main, char **cmd, int *pip)
 	rl_clear_history();
 	init_signals();
 	execve(ok, path, main->env);
-	free_all_data(main);
 	perror("ERROR CHILD");
-	exit(0);
+	free_process(main, 1);
 }
 
 static void	parent_process(t_main *main, char **cmd, int *pip)
