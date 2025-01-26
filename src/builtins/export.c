@@ -45,7 +45,7 @@ int	check_ko_export(char *arg)
 	while (arg[i++])
 	{
 		if (arg[i] == '!' && arg[i + 1] != '=')
-			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!'))
+			return (printf("minishell: %s: event not found\n", ft_strchr(arg, '!'))
 				, 0);
 	}
 	i = 0;
@@ -57,7 +57,7 @@ int	check_ko_export(char *arg)
 			|| arg[i] == '*' || arg[i] == '#'
 			|| (arg[i] == '+' && arg[i + 1] != '=')
 			|| arg[i] == ' ' || arg[i] == '!')
-			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg)
+			return (printf("minishell: export: ‘%s’: not a valid identifier\n", arg)
 				, 0);
 		i++;
 	}

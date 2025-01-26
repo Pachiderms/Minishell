@@ -47,15 +47,14 @@ char	*create_replace_pos(char *cmd)
 
 	if (ft_strchr(cmd, '='))
 	{
-		save_value = ft_strjoin(ft_strjoin("\"", &ft_strchr(cmd, '=')[1]), "\""); // ft_strdup enleve norme
-		temp = save_value;
-		save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
-		free(temp);
-		return (save_value);
+		temp = ft_strjoin_free(ft_strjoin("\"", &ft_strchr(cmd, '=')[1]), "\"", 0); // ft_strdup enleve norme
+		save_value = ft_strjoin_free("export ", ft_strjoin_free(get_var_name(cmd), temp, 0), 1);
+		return (free(temp), save_value);
 	}
 	else
 		return (ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
 }
+
 
 void	add_pos(t_main *main, char *cmd, int i, int which)
 {

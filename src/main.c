@@ -24,6 +24,13 @@ void	init_main(t_main *main)
 	main->nb_cmd = 0;
 	main->hc_pos = -1;
 	main->path = NULL;
+	main->cmd = NULL;
+	main->infile = -1;
+	main->outfile = -1;
+	main->pip[0] = -1;
+	main->pip[1] = -1;
+	main->split = NULL;
+	main->base_split = NULL;
 }
 
 char	*get_var_name(char *cmd)
@@ -54,19 +61,18 @@ char	*get_var_name(char *cmd)
 	return (var_name);
 }
 
-int	init_env(char **env, t_main *main) // trop de lignes
+int	init_env(char **env, t_main *main)
 {
 	int	i;
-	char *save_value;
 	char *temp;
 
 	i = -1;
 	while (env[++i] != NULL)
 		continue ;
 	main->env_len = i;
-	printf("Basic env len : %d\n", main->env_len);
+	// printf("Basic env len : %d\n", main->env_len);
 	main->export_len = i - 1;
-	printf("Basic export len : %d\n", main->export_len);
+	// printf("Basic export len : %d\n", main->export_len);
 	main->env = (char **)malloc(sizeof(char *) * (main->env_len + 1));
 	main->export = (char **)malloc(sizeof(char *) * (main->export_len + 1));
 	if (!main->env || !main->export)
@@ -81,11 +87,9 @@ int	init_env(char **env, t_main *main) // trop de lignes
 	i = 0;
 	while (i < main->export_len)
 	{
-		save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(env[i], '=')[1])), "\"");
-		temp = save_value;
-		save_value = ft_strjoin("export ", ft_strjoin(get_var_name(env[i]), temp));
+		temp = ft_strjoin_free(ft_strjoin("\"", &ft_strchr(env[i], '=')[1]), "\"", 0);
+		main->export[i] = ft_strjoin_free("export ", ft_strjoin_free(get_var_name(env[i]), temp, 0), 1);
 		free(temp);
-		main->export[i] = save_value;
 		i++;
 	}
 	main->export[i] = NULL;
@@ -108,15 +112,15 @@ int	only_space_line(char *cmd)
 
 ////////////////////////////////////////////////////////////
 
-int	main(int argc, char **argv, char **env) // trop de lignes
+int	main(int argc, char **argv, char **env)
 {
 	static t_main	main;
 	char	*cmd;
-	char	**split;
+	static int i;
 
 	(void)argc;
 	(void)argv;
-	cmd = NULL;
+	main.cmd = NULL;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
@@ -128,27 +132,20 @@ int	main(int argc, char **argv, char **env) // trop de lignes
 	while (1)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
-		printf("cmd0: %s\n", cmd);
-		if (cmd == NULL || ft_strcmp(cmd, "exit") == 0)
-		{
-			if (cmd == NULL)
-				printf("exit\n");
-			break ;
-		}
 		if (only_space_line(cmd) == 0 && cmd)
 		{
+			char *tmp = order(cmd);
+			main.cmd = get_rid_of_spaces(tmp);
+			free(tmp);
 			add_history(cmd);
-			split = ft_split_k_q_s(&main, cmd, ' ');
-			if (init_tokens(split, &main) == 0)
+			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');
+			if (init_tokens(main.base_split, &main) == 0)
 				break ;
-			// for(int i=0;split[i];i++)
-			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
-			if (ft_exec(&main, split, cmd) == 0)
-				break ;
-			//printf("exit code %d\n", main.last_exit_code);
-			free_end_cmd(&main, split);
+			ft_process(&main, main.cmd);
+			free_end_cmd(&main);
 		}
-		//printf("cmd: %s\n", cmd);
+		free(cmd);
+		i++;
 	}
 	free_all_data(&main);
 	rl_clear_history();

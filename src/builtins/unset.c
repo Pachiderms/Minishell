@@ -20,6 +20,9 @@ int	check_var_exists2(t_main *main, char *arg)
 
 	i = 0;
 	j = 0;
+
+	if (ft_strcmp(arg, "?") == 0)
+		return (-2);
 	while (main->env[i])
 	{
 		actual_var = ft_strdup(main->env[i]);
@@ -43,18 +46,18 @@ int	basic_verif(char *arg, int which)
 		if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
 			return (0);
 		if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
-			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), 0);
+			return (printf("minishell: export: ‘%s’: not a valid identifier\n", arg), 0);
 		if (arg[0] == '-' && arg[1])
-			return (printf("bash: export: -%c: invalid option\n", arg[1]), 0);
+			return (printf("minishell: export: -%c: invalid option\n", arg[1]), 0);
 	}
 	if (which == 1)
 	{
 		if (arg[0] == '_' && arg[1] == '\0')
 			return (0);
 		if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
-			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), 0);
+			return (printf("minishell: unset: ‘%s’: not a valid identifier\n", arg), 0);
 		if (arg[0] == '-' && arg[1])
-			return (printf("bash: unset: -%c: invalid option\n", arg[1]), 0);
+			return (printf("minishell: unset: -%c: invalid option\n", arg[1]), 0);
 	}
 	return (1);
 }
@@ -73,14 +76,14 @@ int	check_syntax_unset(char *cmd)
 		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.' || arg[i] == '+'
 			|| arg[i] == '{' || arg[i] == '}' || arg[i] == '-' || arg[i] == '*'
 			|| arg[i] == '#' || arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
-			return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg)
+			return (printf("minishell: unset: ‘%s’: not a valid identifier\n", arg)
 				, 0);
 	}
 	i = 0;
 	while (arg[i++])
 	{
 		if (arg[i] == '!')
-			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!'))
+			return (printf("minishell: %s: event not found\n", ft_strchr(arg, '!'))
 				, 0);
 	}
 	return (1);

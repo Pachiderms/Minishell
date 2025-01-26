@@ -1,18 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prep_pipex.c                                       :+:      :+:    :+:   */
+/*   exec0.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/23 14:09:26 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/23 09:55:40 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	prep_cmd_pipex(t_main *main, char **split) // trop de lignes
+char	**prep_cmd_exec(t_main *main)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	**res;
+	char	*tmp;
+
+	res = malloc((main->nb_cmd + 1) * sizeof(char *));
+	i = 0;
+	k = 0;
+	while (i < main->tokens_len && main->nb_cmd > 0)
+	{
+		j = i;
+		tmp = NULL;
+		while (j < main->tokens_len)
+		{
+			if (main->tokens[j].type == command)
+				break ;
+			j++;
+		}
+		while (i < main->tokens_len)
+		{
+			if (!ft_strcmp(main->tokens[i].value, "|"))
+				break ;
+			if (main->tokens[i].type != command)
+			{
+				tmp = ft_strjoin_free(tmp, " ", 0);
+				tmp = ft_strjoin_free(tmp, main->tokens[i].value, 0);			
+			}
+			i++;
+		}
+		res[k++] = ft_strjoin_free(main->tokens[j].value, tmp, 1);
+		i++;
+	}
+	res[k] = NULL;
+	return (res);
+}
+/*
+int	prep_cmd_exec(t_main *main, char **split) // trop de lignes
 {
 	int		i;
 	int		k;
@@ -60,7 +99,7 @@ int	prep_cmd_pipex(t_main *main, char **split) // trop de lignes
 	printf("split pipex : '%s'\n", split_pipex);
 	return (pipex(main, split_pipex));
 }
-
+*/
 // < infile.txt cat -l -p  | grep "ok" > outfile.txt | < infile.txt cat -l -p  | grep "ok" > outfile.txt
 
 // < infile.txt cat -l -p  | grep ok > outfile.txt | < infile.txt cat -l -p  | grep ok > outfile.txt

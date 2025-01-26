@@ -39,6 +39,8 @@
 
 enum e_type {command, argument, sc};
 
+// extern pid_t	g_signal_pid;
+
 typedef struct token_t
 {
 	enum e_type	type;
@@ -57,10 +59,13 @@ typedef struct s_main {
     char	*path;
     int     hc_pos;
     int     last_exit_code;
+    char    *cmd;
+    int     infile;
+    int     outfile;
+    int     pip[2];
+    char    **split;
+    char    **base_split;
 }	t_main;
-
-//GNL
-char	*get_next_line(int fd);
 
 // LIBFT
 size_t	ft_atoi(const char *str);
@@ -70,17 +75,19 @@ char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strjoin_free(char const *s1, char const *s2);
+char	*ft_strjoin_free(char const *s1, char const *s2, int last);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_substr(char const *str, unsigned int start, size_t len);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 int	    ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
+char    *ft_itoa(int n);
 
 // MINISHELL
 
@@ -116,10 +123,11 @@ int		get_fd_out(char **cmd);
 /// CD
 int	is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
-void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char **cmd);
 /// PWD
-int		pwd(t_main *main, char **cmd);
+int     return_to_pwd(t_main *main);
+void    update_oldpwd_pwd(t_main *main);
+int     pwd(t_main *main, char **cmd);
 /// UTILS BUILTINS
 int     basic_verif(char *arg, int which);
 int		check_var_exists(char **env, int len, char *cmd);
@@ -128,8 +136,9 @@ void	remake_env(char	**tmp, t_main *main, int which, int replace_pos);
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
-int	    closed_quotes(const char *s);	
+int	    closed_quotes(const char *s);
 char    *get_rid_of_spaces(char const *s);
+char	*order(char *s);
 char    *cut_str(char *str, char *cut);
 
 /// TOKENS
@@ -146,16 +155,18 @@ int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 /// EXEC
-int	    ft_exec(t_main *main, char **split, char *cmd);
+int	    ft_process(t_main *main, char *cmd);
+int	    builtin(t_main *main, char **split, char *cmd);
 /// PIPEX
-int     prep_cmd_pipex(t_main *main, char **split);
-int     pipex(t_main *main, char *split_pipex);
+char    **prep_cmd_exec(t_main *main);
+int     launch_process(t_main *main);
 
 /// FREE
 void	free_all_data(t_main *main);
+void	free_process(t_main *main, int exit_code);
 void	free_env(char **tab, int tablen);
 void	free_tokens(t_main *main);
-void    free_end_cmd(t_main *main, char **split);
+void    free_end_cmd(t_main *main);
 void    free_split(char **split);
 
 /// SIGNALS

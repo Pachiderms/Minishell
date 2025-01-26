@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/26 17:15:49 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/23 12:28:53 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	**ft_free_split_k_q_s(char **d, int start)
 {
+	start--;
 	while (start >= 0)
 	{
 		free(d[start]);
@@ -115,12 +116,11 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
 		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
-		if (dest[x] == NULL || j < 0)
+		if (dest[x++] == NULL || j < 0)
 			return (ft_free_split_k_q_s(dest, x));
-		x++;
 		i += (j - i);
 	}
 	dest[x] = 0;
 	main->split_len = x;
-	return (dest);
+	return (free(no_space), dest);
 }

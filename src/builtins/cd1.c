@@ -65,7 +65,7 @@ void	*handle_home_case(t_main *main, char *actual_arg)
 		home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
 		if (home_pos == -1)
 		{
-			printf("bash: cd: HOME not set\n");
+			printf("minishell: cd: HOME not set\n");
 			return (NULL);
 		}
 		actual_arg = ft_strdup(&ft_strchr(main->env[home_pos], '=')[1]);
