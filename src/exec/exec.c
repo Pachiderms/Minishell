@@ -14,21 +14,22 @@
 
 int	builtin(t_main *main, char **split, char *cmd)
 {
-	if (ft_strcmp(cmd, "env") == 0
-		|| ft_strcmp(cmd, "/bin/env") == 0)
+	(void)cmd;
+	if (ft_strcmp(split[0], "env") == 0
+		|| ft_strcmp(split[0], "/bin/env") == 0)
 		return (print_env(main, 0, split));
-	if (ft_strcmp(cmd, "export") == 0)
+	if (ft_strcmp(split[0], "export") == 0)
 		return (prep_export(main, split));
-	if (ft_strcmp(cmd, "unset") == 0)
+	if (ft_strcmp(split[0], "unset") == 0)
 		return (prep_unset(main, split));
-	if (ft_strcmp(cmd, "echo") == 0)
+	if (ft_strcmp(split[0], "echo") == 0)
 		return (ft_echo(main, split));
-	if (ft_strcmp(cmd, "cd") == 0
-		|| ft_strcmp(cmd, "/bin/cd") == 0)
+	if (ft_strcmp(split[0], "cd") == 0
+		|| ft_strcmp(split[0], "/bin/cd") == 0)
 		return (cd(main, split));
-	if (ft_strcmp(cmd, "pwd") == 0)
+	if (ft_strcmp(split[0], "pwd") == 0)
 		return (pwd(main, split));
-	if (ft_strcmp(cmd, "exit") == 0)
+	if (ft_strcmp(split[0], "exit") == 0)
 	{
 		printf("exit\n");
 		free_process(main, -42);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/24 10:58:02 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/27 13:33:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	order_redirect(char **res, char *kqs_cmd)
 	sub = ft_substr(kqs_cmd, start, end - start);
 	*res = ft_strjoin_free(*res, &sub[1], 0);
 	if (to_separer(&kqs_cmd[end]))
-		return (end);
+		return (free(sub), end);
 	return (free(sub), -1);
 }
 

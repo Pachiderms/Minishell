@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/01/24 10:59:32 by tzizi            ###   ########.fr        #
+#    Updated: 2025/01/27 13:38:22 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC = src/main.c src/builtins/env.c src/exec/exec.c src/exec/exec2.c src/builtin
 
 OBJS := $(SRC:%.c=%.o)
 
-CC = clang #gcc?
+CC = gcc
 FLAGS = -Wall -Wextra -Werror -gdwarf-4 -I ./includes
 
 .c.o:

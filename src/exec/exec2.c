@@ -41,6 +41,7 @@ static void	wait_all(t_main *main)
 	int		len;
 	char	**tmp;
 
+	(void)tmp;
 	tmp = main->split;
 	len = main->nb_cmd;
 	while (len--)
