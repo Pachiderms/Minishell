@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/23 15:22:35 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/28 13:31:56 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ char     *get_rid_of(char *s, char c);
 int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
+char	*get_cmd(char *path);
 /// EXEC
 int	    ft_process(t_main *main, char *cmd);
 int	    builtin(t_main *main, char **split, char *cmd);

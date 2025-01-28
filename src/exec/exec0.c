@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/24 11:10:12 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/28 13:05:15 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**prep_cmd_exec(t_main *main)
 	char	**res;
 	char	*tmp;
 
-	res = malloc((main->nb_cmd + 1) * sizeof(char *));
+	res = malloc((main->nb_cmd + 2) * sizeof(char *));
 	i = 0;
 	k = 0;
 	while (i < main->tokens_len && main->nb_cmd > 0)

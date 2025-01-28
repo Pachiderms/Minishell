@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/27 13:33:50 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/28 14:43:53 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ char	*order(char *s)
 				j = order_redirect(&res, &kqs_tmp[i][j]);				
 		}
 		else
+		{
 			res = ft_strjoin_free(res, kqs_tmp[i], 0);
+		}
 		res = ft_strjoin_free(res, " ", 0);
 		i++;
 	}

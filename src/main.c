@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/27 13:31:00 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/28 14:42:06 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,17 +136,19 @@ int	main(int argc, char **argv, char **env)
 		{
 			char *tmp = order(cmd);
 			main.cmd = get_rid_of_spaces(tmp);
+			printf("order '%s'\n", main.cmd);
 			free(tmp);
 			add_history(cmd);
+			free(cmd);
 			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');
 			if (init_tokens(main.base_split, &main) == 0)
 				break ;
 			ft_process(&main, main.cmd);
 			free_end_cmd(&main);
 		}
-		free(cmd);
 		i++;
 	}
+	free_end_cmd(&main);
 	free_all_data(&main);
 	rl_clear_history();
 	return (0);
