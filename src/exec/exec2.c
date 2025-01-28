@@ -14,10 +14,11 @@
 
 pid_t	g_signal_pid;
 
-char	*prep_process(char *s)
+char	**prep_process(char *s)
 {
 	char	*res;
 	char	*tmp;
+	char	**f;
 
 	res = NULL;
 	tmp = NULL;
@@ -29,9 +30,23 @@ char	*prep_process(char *s)
 		res = get_rid_of(tmp, '>');
 		free(tmp);
 		tmp = get_rid_of_spaces(res);
-		return (free(res), tmp);
+		f = ft_split(tmp, ' ');
+		free(tmp);
+		return (free(res), f);
 	}
-	return (get_rid_of_spaces(s));
+	res = get_rid_of_spaces(s);
+	f = ft_split(res, ' ');
+	return (free(res), f);
+}
+
+char	*cook_cmd(char *s)
+{
+	if (!ft_strncmp(s, "/bin/", 5))
+		return (ft_strdup(s));
+	else if (!ft_strncmp(s, "/usr/bin/", 8))
+		return (ft_strdup(s));
+	else
+		return (ft_strjoin("/usr/bin/", s));
 }
 
 static void	wait_all(t_main *main)
@@ -39,9 +54,10 @@ static void	wait_all(t_main *main)
 	int		status;
 	int		pid;
 	int		len;
-	// char	**tmp;
+	char	**tmp;
 
-	// tmp = main->split;
+	(void)tmp;
+	tmp = main->split;
 	len = main->nb_cmd;
 	while (len--)
 	{
@@ -69,7 +85,6 @@ static void	redirect_in_out(t_main *main, char **cmd, int *pip)
 	if (main->outfile >= 0)
 	{
 		dup2(main->outfile, 1);
-		//close(main->outfile);
 	}
 	if (*(cmd + 1) != NULL)
 		dup2(pip[1], 1);
@@ -93,9 +108,7 @@ void	child_process(t_main *main, char **cmd, int *pip)
 	char 	*ok;
 
 	main->outfile = get_fd_out(cmd);
-	ok = prep_process(*cmd);
-	path = ft_split(ok, ' ');
-	free(ok);
+	path = prep_process(*cmd);
 	if (!is_cmd(path[0], main->path))
 	{
 		free_split(path);
@@ -106,14 +119,14 @@ void	child_process(t_main *main, char **cmd, int *pip)
 	free_split(path);
 	if (ft_strrchr(*cmd, '>'))
 		cut_str(*cmd, ft_strrchr(*cmd, '>'));
-	ok = prep_process(*cmd);
-	path = ft_split(ok, ' ');
-	free(ok);
-	ok = ft_strjoin("/usr/bin/", path[0]);
+	path = prep_process(*cmd);
+	ok = cook_cmd(path[0]);
 	redirect_in_out(main, cmd, pip);
 	rl_clear_history();
 	init_signals();
 	execve(ok, path, main->env);
+	free(ok);
+	free_split(path);
 	perror("ERROR CHILD");
 	free_process(main, 1);
 }

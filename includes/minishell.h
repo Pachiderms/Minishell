@@ -41,6 +41,12 @@ enum e_type {command, argument, sc};
 
 // extern pid_t	g_signal_pid;
 
+#ifdef DEFINE_I
+int cat = 0;
+#else
+extern int cat;
+#endif
+
 typedef struct token_t
 {
 	enum e_type	type;
@@ -154,6 +160,7 @@ char     *get_rid_of(char *s, char c);
 int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
+char	*get_cmd(char *path);
 /// EXEC
 int	    ft_process(t_main *main, char *cmd);
 int	    builtin(t_main *main, char **split, char *cmd);

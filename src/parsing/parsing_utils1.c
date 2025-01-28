@@ -59,7 +59,7 @@ int	order_redirect(char **res, char *kqs_cmd)
 	sub = ft_substr(kqs_cmd, start, end - start);
 	*res = ft_strjoin_free(*res, &sub[1], 0);
 	if (to_separer(&kqs_cmd[end]))
-		return (end);
+		return (free(sub), end);
 	return (free(sub), -1);
 }
 
@@ -82,7 +82,9 @@ char	*order(char *s)
 				j = order_redirect(&res, &kqs_tmp[i][j]);				
 		}
 		else
+		{
 			res = ft_strjoin_free(res, kqs_tmp[i], 0);
+		}
 		res = ft_strjoin_free(res, " ", 0);
 		i++;
 	}

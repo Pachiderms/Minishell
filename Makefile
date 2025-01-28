@@ -26,7 +26,7 @@ SRC = src/main.c src/builtins/env.c src/exec/exec.c src/exec/exec0.c src/exec/ex
 
 OBJS := $(SRC:%.c=%.o)
 
-CC = clang #gcc?
+CC = gcc
 FLAGS = -Wall -Wextra -Werror -gdwarf-4 -I ./includes
 
 .c.o:

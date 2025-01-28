@@ -68,8 +68,21 @@ char	*get_rid_of(char *s, char c)
 	return (tmp);
 }
 
-int	check_builtin(char *s)
+char	*get_cmd(char *path)
 {
+	if (!ft_strncmp(path, "/bin/", 5))
+		return (&path[5]);
+	else if (!ft_strncmp(path, "/usr/bin/", 8))
+		return (&path[8]);
+	else
+		return (path);
+}
+
+int	check_builtin(char *_s)
+{
+	char	*s;
+
+	s = get_cmd(_s);
 	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1)  || !ft_strncmp(s, "/bin/cd", -1))
 		|| !ft_strncmp(s, "pwd", -1) || !ft_strncmp(s, "export", -1)
 		|| !ft_strncmp(s, "unset", -1)
@@ -88,9 +101,7 @@ int	is_cmd(char *s, char *path)
 
 	i = 0;
 	tmp = NULL;
-	if (!ft_strncmp(s, "./", 2))
-		return (1);
-	s1 = ft_strjoin("/", s);
+	s1 = ft_strjoin("/", get_cmd(s));
 	split = ft_split(path, ':');
 	if (check_builtin(s))
 		return (free_split(split), free(s1), 1);

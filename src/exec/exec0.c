@@ -20,7 +20,7 @@ char	**prep_cmd_exec(t_main *main)
 	char	**res;
 	char	*tmp;
 
-	res = malloc((main->nb_cmd + 1) * sizeof(char *));
+	res = malloc((main->nb_cmd + 2) * sizeof(char *));
 	i = 0;
 	k = 0;
 	while (i < main->tokens_len && main->nb_cmd > 0)

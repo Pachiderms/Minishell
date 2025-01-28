@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#define DEFINE_I
 #include "../includes/minishell.h"
 
 void	init_main(t_main *main)
@@ -121,6 +122,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	main.cmd = NULL;
+	cat = 0;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
@@ -132,21 +134,29 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		cmd = readline(GREEN"minishell> "RESET);
+		if (cmd == NULL)
+		{
+			printf("exit\n");
+			break ;
+		}
 		if (only_space_line(cmd) == 0 && cmd)
 		{
 			char *tmp = order(cmd);
 			main.cmd = get_rid_of_spaces(tmp);
 			free(tmp);
 			add_history(cmd);
+			free(cmd);
 			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');
 			if (init_tokens(main.base_split, &main) == 0)
 				break ;
 			ft_process(&main, main.cmd);
 			free_end_cmd(&main);
 		}
-		free(cmd);
+		cat = 0;
 		i++;
 	}
+	if (cmd != NULL)
+		free_end_cmd(&main);
 	free_all_data(&main);
 	rl_clear_history();
 	return (0);
