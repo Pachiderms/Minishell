@@ -42,7 +42,6 @@ int	ft_process(t_main *main, char *cmd)
 {
 	(void)cmd;
 	main->split = prep_cmd_exec(main);
-	printf("sp : %s\n", main->base_split[0]);
 	if (ft_strcmp(main->base_split[0], "cat") == 0 || ft_strcmp(main->base_split[0], "sleep") == 0)
 		cat = 1;
 	if (main->hc_pos >= 0)
@@ -59,7 +58,6 @@ int	ft_process(t_main *main, char *cmd)
 	}
 	else if (main->tokens[0].value[0] != '\0')
 	{
-		printf("token : '%s'\n", main->tokens[0].value);
 		if (ft_strchr(main->tokens[0].value, '/'))
 		{
 			if (chdir(main->tokens[0].value) == 0)
