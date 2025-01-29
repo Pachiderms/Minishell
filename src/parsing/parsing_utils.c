@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 12:28:53 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/29 14:17:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s) // trop de lignes
 			j = i + 1;
 			if (_s[i] == 34 || _s[i] == 39)
 			{
-				if (!check_quotes(&_s[i], _s[i]))
-					return (-1);
 				while (_s[j] != _s[i] && _s[j])
 					j++;
 				i = j + 1;
@@ -77,6 +75,8 @@ int	count_words(char *no_space)
 
 	i = 0;
 	word = 0;
+	if (!check_quotes(no_space, 34) || !check_quotes(no_space, 39))
+		return (-1);
 	while (no_space[i])
 	{
 		if (ft_isspace(no_space[i]) == 1)
@@ -103,14 +103,18 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	int		x;
 	char	**dest;
 	char	*no_space;
+	int		size;
 
 	i = 0;
 	x = 0;
 	j = 0;
 	no_space = get_rid_of_spaces(s);
-	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
+	size = count_words(no_space);
+	if (size <= 0)
+		return (NULL);
+	dest = malloc((size + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
-		return (0);
+		return (free(no_space), NULL);
 	while (no_space[i])
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/18 14:40:41 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/29 14:15:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	free_split(char **split)
 
 	len = 0;
 	i = 0;
+	if (!split)
+		return ;
 	while (split[len])
 		len++;
 	if (len <= 0)
