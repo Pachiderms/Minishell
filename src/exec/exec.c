@@ -40,7 +40,10 @@ int	builtin(t_main *main, char **split, char *cmd)
 
 int	ft_process(t_main *main, char *cmd)
 {
+	(void)cmd;
 	main->split = prep_cmd_exec(main);
+	if (ft_strcmp(main->base_split[0], "cat") == 0 || ft_strcmp(main->base_split[0], "sleep") == 0)
+		cat = 1;
 	if (main->hc_pos >= 0)
 		her_doc(main, main->split);
 	else if (main->nb_cmd >= 1)
@@ -53,8 +56,23 @@ int	ft_process(t_main *main, char *cmd)
 		main->last_exit_code = launch_process(main);
 		main->nb_cmd = 0;
 	}
-	else if (cmd[0] != '\0')
-		printf(GREY"minishell: %s: command not found\n"RESET,
-			main->tokens[0].value);
+	else if (main->tokens[0].value[0] != '\0')
+	{
+		if (ft_strchr(main->tokens[0].value, '/'))
+		{
+			if (chdir(main->tokens[0].value) == 0)
+			{
+				printf(GREY"minishell: %s: Is a directory\n"RESET,
+					main->tokens[0].value);
+				return_to_pwd(main);
+			}
+			else
+				printf(GREY"minishell: %s: No such file or directory\n"RESET,
+					main->tokens[0].value);
+		}
+		else
+			printf(GREY"minishell: %s: command not found\n"RESET,
+				main->tokens[0].value);
+	}
 	return (1);
 }

@@ -20,6 +20,9 @@ int	check_var_exists2(t_main *main, char *arg)
 
 	i = 0;
 	j = 0;
+
+	if (ft_strcmp(arg, "?") == 0)
+		return (-2);
 	while (main->env[i])
 	{
 		actual_var = ft_strdup(main->env[i]);

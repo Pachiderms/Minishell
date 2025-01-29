@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/28 13:31:56 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/28 17:18:37 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ enum e_type {command, argument, sc};
 
 // extern pid_t	g_signal_pid;
 
+#ifdef DEFINE_I
+int cat = 0;
+#else
+extern int cat;
+#endif
+
 typedef struct token_t
 {
 	enum e_type	type;
@@ -65,6 +71,8 @@ typedef struct s_main {
     int     pip[2];
     char    **split;
     char    **base_split;
+    int dquotes;
+    int squotes;
 }	t_main;
 
 // LIBFT
@@ -87,6 +95,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 int	    ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
+char    *ft_itoa(int n);
 
 // MINISHELL
 
@@ -135,7 +144,7 @@ void	remake_env(char	**tmp, t_main *main, int which, int replace_pos);
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
-int	    closed_quotes(const char *s);	
+int	    closed_quotes(const char *s);
 char    *get_rid_of_spaces(char const *s);
 char	*order(char *s);
 char    *cut_str(char *str, char *cut);

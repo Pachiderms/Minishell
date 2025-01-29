@@ -6,7 +6,7 @@
 #    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/01/23 11:47:07 by tzizi            ###   ########.fr        #
+#    Updated: 2024/11/18 16:28:25 by tzizi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC =	ft_atoi.c \
 	ft_isdigit.c \
 	ft_strrchr.c \
 	ft_strnstr.c \
-	ft_putnbr_fd.c
+	ft_putnbr_fd.c \
+	ft_itoa.c
 
 BFILES =	ft_atoi.o \
 		ft_calloc.o	\
@@ -46,7 +47,8 @@ BFILES =	ft_atoi.o \
 		ft_isdigit.o \
 		ft_strrchr.o \
 		ft_strnstr.o \
-		ft_putnbr_fd.o
+		ft_putnbr_fd.o \
+		ft_itoa.o
 
 OBJS = ${SRC:.c=.o}
 

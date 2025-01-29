@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd1.c                                              :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/22 17:04:02 by tzizi            ###   ########.fr       */
+/*   Updated: 2024/11/18 15:08:45 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	*handle_home_case(t_main *main, char *actual_arg)
 
 	if (ft_strcmp(actual_arg, "--") == 0)
 	{
+		free(actual_arg);
 		actual_arg = NULL;
 		home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
 		if (home_pos == -1)
@@ -67,13 +68,14 @@ void	*handle_home_case(t_main *main, char *actual_arg)
 			printf("minishell: cd: HOME not set\n");
 			return (NULL);
 		}
-		actual_arg = &ft_strchr(main->env[home_pos], '=')[1];
+		actual_arg = ft_strdup(&ft_strchr(main->env[home_pos], '=')[1]);
 	}
 	else if (ft_strcmp(actual_arg, "~") == 0
 		|| ft_strcmp(actual_arg, "~/") == 0)
 	{
+		free(actual_arg);
 		actual_arg = NULL;
-		actual_arg = "/home/zamgar";
+		actual_arg = ft_strdup("/home/zamgar");
 	}
 	return ("not null");
 }
@@ -91,7 +93,7 @@ char	*get_actual_arg(t_main *main, char *arg)
 		actual_arg = NULL;
 		oldpwd_pos = check_var_exists(main->env, main->env_len,
 				"export OLDPWD=");
-		actual_arg = &ft_strchr(main->env[oldpwd_pos], '=')[1];
+		actual_arg = ft_strdup(&ft_strchr(main->env[oldpwd_pos], '=')[1]);
 		printf("%s\n", actual_arg);
 	}
 	if (handle_home_case(main, actual_arg) == NULL)

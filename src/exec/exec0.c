@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec0.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/28 13:05:15 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/28 16:50:36 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**prep_cmd_exec(t_main *main)
 	char	**res;
 	char	*tmp;
 
-	res = malloc((main->nb_cmd + 2) * sizeof(char *));
+	res = malloc((main->tokens_len + 1) * sizeof(char *));
 	i = 0;
 	k = 0;
 	while (i < main->tokens_len && main->nb_cmd > 0)
@@ -40,7 +40,8 @@ char	**prep_cmd_exec(t_main *main)
 			if (main->tokens[i].type != command)
 			{
 				tmp = ft_strjoin_free(tmp, " ", 0);
-				tmp = ft_strjoin_free(tmp, main->tokens[i].value, 0);			
+				printf("token val '%s'\n", main->tokens[i].value);
+				tmp = ft_strjoin_free(tmp, main->tokens[i].value, 0);
 			}
 			i++;
 		}
@@ -48,6 +49,8 @@ char	**prep_cmd_exec(t_main *main)
 		i++;
 	}
 	res[k] = NULL;
+	for(int i=0; res[i];i++)
+		printf("res %d '%s'\n", i, res[i]);
 	return (res);
 }
 /*
