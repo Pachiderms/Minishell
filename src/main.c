@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/29 14:26:43 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/31 13:04:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,9 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (only_space_line(cmd) == 0 && cmd)
 		{
-			char *tmp = order(cmd);
-			main.cmd = get_rid_of_spaces(tmp);
-			free(tmp);
+			main.cmd = order(cmd);
+			//printf("order '%s'\n", main.cmd);
 			add_history(cmd);
-			free(cmd);
 			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');
 			if (main.base_split)
 			{
@@ -155,6 +153,7 @@ int	main(int argc, char **argv, char **env)
 			}
 			free_end_cmd(&main);
 		}
+		free(cmd);
 		cat = 0;
 		i++;
 	}

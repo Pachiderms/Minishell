@@ -41,8 +41,8 @@ int	init_tokens(char **split, t_main *main)
 			main->tokens[i].type = argument;
 		main->tokens[i].value = split[i];
 	}
-	for(int i=0;split[i];i++)
-		printf("split : '%s' (token : %u)\n", split[i], main->tokens[i].type);
+	// for(int i=0;split[i];i++)
+	// 	printf("split : '%s' (token : %u)\n", split[i], main->tokens[i].type);
 	main->nb_cmd = get_cmd_number(main, split);
 	return (1);
 }

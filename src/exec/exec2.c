@@ -120,6 +120,8 @@ void	child_process(t_main *main, char **cmd, int *pip)
 	if (ft_strrchr(*cmd, '>'))
 		cut_str(*cmd, ft_strrchr(*cmd, '>'));
 	path = prep_process(*cmd);
+	// for (int i = 0; path[i];i++)
+	// 	printf("final %d %s\n", i, path[i]);
 	ok = cook_cmd(path[0]);
 	redirect_in_out(main, cmd, pip);
 	rl_clear_history();

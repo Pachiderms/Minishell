@@ -38,6 +38,27 @@ int	builtin(t_main *main, char **split, char *cmd)
 	return (1);
 }
 
+int	no_cmd(t_main *main)
+{
+	if (ft_strchr(main->tokens[0].value, '/'))
+	{
+		if (chdir(main->tokens[0].value) == 0)
+		{
+			printf(GREY"minishell: %s: Is a directory\n"RESET,
+				main->tokens[0].value);
+			return_to_pwd(main);
+			return (126);
+		}
+		else
+			printf(GREY"minishell: %s: No such file or directory\n"RESET,
+				main->tokens[0].value);
+	}
+	else
+		printf(GREY"minishell: %s: command not found\n"RESET,
+			main->tokens[0].value);
+	return (127);
+}
+
 int	ft_process(t_main *main, char *cmd)
 {
 	(void)cmd;
@@ -45,7 +66,7 @@ int	ft_process(t_main *main, char *cmd)
 	if (ft_strcmp(main->base_split[0], "cat") == 0 || ft_strcmp(main->base_split[0], "sleep") == 0)
 		cat = 1;
 	if (main->hc_pos >= 0)
-		her_doc(main, main->split);
+		her_doc(main);
 	else if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)
@@ -58,21 +79,7 @@ int	ft_process(t_main *main, char *cmd)
 	}
 	else if (main->tokens[0].value[0] != '\0')
 	{
-		if (ft_strchr(main->tokens[0].value, '/'))
-		{
-			if (chdir(main->tokens[0].value) == 0)
-			{
-				printf(GREY"minishell: %s: Is a directory\n"RESET,
-					main->tokens[0].value);
-				return_to_pwd(main);
-			}
-			else
-				printf(GREY"minishell: %s: No such file or directory\n"RESET,
-					main->tokens[0].value);
-		}
-		else
-			printf(GREY"minishell: %s: command not found\n"RESET,
-				main->tokens[0].value);
+		main->last_exit_code = no_cmd(main);
 	}
 	return (1);
 }

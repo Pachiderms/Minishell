@@ -3,172 +3,149 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 13:59:43 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/31 12:46:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	start_end(char *kqs, int start)
+char    *add_char_to_str(char *s, char c, int _free)
 {
-	while (kqs[start])
-	{
-		if (!ft_strncmp(&kqs[start], "<", 1) || !ft_strncmp(&kqs[start], ">", 1)
-			|| !ft_strncmp(&kqs[start], "|", 1))
-		{
-			break ;
-		}
-		start++;
-	}
-	return (start);
+        char    *res;
+        int             len;
+        int             i;
+
+        len = ft_strlen(s);
+        res = malloc((len + 2) * sizeof(char));
+        if (!res)
+                return (NULL);
+        i = 0;
+        while (i < len)
+        {
+                res[i] = s[i];
+                i++;
+        }
+        res[i++] = c;
+        res[i++] = '\0';
+        if (_free)
+                free(s);
+        return (res);
 }
 
-int	to_separer(char *s)
+char    *cmd_separate(char *s)
 {
-	if (ft_strchr(s, '<') || ft_strchr(s, '>')
-		|| ft_strchr(s, '|'))
-		return (1);
-	return (0);
+        char    *res;
+        int             i;
+
+        i = 0;
+        res = NULL;
+        while (s[i])
+        {
+                if (s[i + 1] == '>' || s[i + 1] == '|')
+                {
+                        if (!ft_isspace(s[i]))
+                                res = add_char_to_str(res, s[i], 1);
+                        res = add_char_to_str(res, ' ', 1);
+                        i++;
+                }
+                res = add_char_to_str(res, s[i], 1);
+                i++;
+        }
+        return (res);
 }
 
-int	order_redirect(char **res, char *kqs_cmd)
+// placer les < au bon endoroit
+char    *order(char *_s)
 {
-	int		start;
-	int		end;
-	char	*sub;
-	char	redirect[2];
+        char    *s;
 
-	if (!kqs_cmd)
-		return (-1);
-	start = start_end(kqs_cmd, 0);
-	end = start_end(kqs_cmd, start + 1);
-	redirect[0] = kqs_cmd[start];
-	redirect[1] = '\0';
-	sub = ft_substr(kqs_cmd, 0, end - start);
-	if (!ft_strchr(sub, redirect[0]))
-		*res = ft_strjoin_free(*res, sub, 0);
-	else
-		*res = ft_strjoin_free(*res, cut_str(sub, ft_strrchr(sub, redirect[0])), 0);
-	free(sub);
-	*res = ft_strjoin_free(*res, " ", 0);
-	*res = ft_strjoin_free(*res, redirect, 0);
-	*res = ft_strjoin_free(*res, " ", 0);
-	sub = ft_substr(kqs_cmd, start, end - start);
-	*res = ft_strjoin_free(*res, &sub[1], 0);
-	if (to_separer(&kqs_cmd[end]))
-		return (free(sub), end);
-	return (free(sub), -1);
+        s = get_rid_of_spaces(_s);
+        return (cmd_separate(s));
 }
 
-char	*order(char *s)
+int     sizeup_no_space(char const *s) // trop de lignes
 {
-	int		i;
-	int		j;
-	char	**kqs_tmp;
-	char	*res;
+        size_t  i;
+        int             size;
 
-	i = 0;
-	kqs_tmp = ft_split(s, ' ');
-	res = NULL;
-	while (kqs_tmp[i])
-	{
-		if (to_separer(kqs_tmp[i]))
-		{
-			j = order_redirect(&res, kqs_tmp[i]);
-			while (j > 0)
-				j = order_redirect(&res, &kqs_tmp[i][j]);				
-		}
-		else
-		{
-			res = ft_strjoin_free(res, kqs_tmp[i], 0);
-		}
-		res = ft_strjoin_free(res, " ", 0);
-		i++;
-	}
-	return (free_split(kqs_tmp), res);
+        i = 0;
+        size = 0;
+        while (ft_isspace(s[i]) == 1)
+                i++;
+        while (i < ft_strlen(s))
+        {
+                if (ft_isspace(s[i]) == 1)
+                {
+                        while (ft_isspace(s[i]) == 1)
+                                i++;
+                        if (s[i])
+                                size++;
+                }
+                if (s[i] == 34 || s[i] == 39)
+                {
+                        i++;
+                        size++;
+                        while (s[i] && (s[i] != 34 && s[i] != 39))
+                        {
+                                size++;
+                                i++;
+                        }
+                        if (s[i] == 34 || s[i] == 39)
+                                size++;
+                }
+                else
+                        size++;
+                i++;
+        }
+        return (size);
 }
 
-int	sizeup_no_space(char const *s) // trop de lignes
+char    *get_rid_of_spaces(char const *s) // trop de lignes
 {
-	size_t	i;
-	int		size;
+        int             i;
+        int             j;
+        int             size;
+        char    *no_space;
 
-	i = 0;
-	size = 0;
-	while (ft_isspace(s[i]) == 1)
-		i++;
-	while (i < ft_strlen(s))
-	{
-		if (ft_isspace(s[i]) == 1)
-		{
-			while (ft_isspace(s[i]) == 1)
-				i++;
-			if (s[i])
-				size++;
-		}
-		if (s[i] == 34 || s[i] == 39)
-		{
-			i++;
-			size++;
-			while (s[i] && (s[i] != 34 && s[i] != 39))
-			{
-				size++;
-				i++;
-			}
-			if (s[i] == 34 || s[i] == 39)
-				size++;
-		}
-		else
-			size++;
-		i++;
-	}
-	return (size);
-}
-
-char	*get_rid_of_spaces(char const *s) // trop de lignes
-{
-	int		i;
-	int		j;
-	int		size;
-	char	*no_space;
-
-	i = 0;
-	size = sizeup_no_space(s);
-	no_space = malloc(sizeof(char) * size + 1);
-	if (!no_space)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (ft_isspace(s[i]) == 1)
-		i++;
-	while (j < size)
-	{
-		if (ft_isspace(s[i]) == 1)
-		{
-			while (ft_isspace(s[i]) == 1)
-				i++;
-			if (s[i])
-				no_space[j++] = ' ';
-		}
-		if (s[i] == 34 || s[i] == 39)
-		{
-			no_space[j++] = s[i];
-			i++;
-			while (s[i] && (s[i] != 34 && s[i] != 39))
-			{
-				no_space[j++] = s[i];
-				i++;
-			}
-			if (s[i] == 34 || s[i] == 39)
-				no_space[j++] = s[i];
-		}
-		else
-			no_space[j++] = s[i];
-		i++;
-	}
-	no_space[j] = '\0';
-	return (no_space);
+        i = 0;
+        if (!s)
+                return (NULL);
+        size = sizeup_no_space(s);
+        no_space = malloc(sizeof(char) * size + 1);
+        if (!no_space)
+                return (NULL);
+        i = 0;
+        j = 0;
+        while (ft_isspace(s[i]) == 1)
+                i++;
+        while (j < size)
+        {
+                if (ft_isspace(s[i]) == 1)
+                {
+                        while (ft_isspace(s[i]) == 1)
+                                i++;
+                        if (s[i])
+                                no_space[j++] = ' ';
+                }
+                if (s[i] == 34 || s[i] == 39)
+                {
+                        no_space[j++] = s[i];
+                        i++;
+                        while (s[i] && (s[i] != 34 && s[i] != 39))
+                        {
+                                no_space[j++] = s[i];
+                                i++;
+                        }
+                        if (s[i] == 34 || s[i] == 39)
+                                no_space[j++] = s[i];
+                }
+                else
+                        no_space[j++] = s[i];
+                i++;
+        }
+        no_space[j] = '\0';
+        return (no_space);
 }

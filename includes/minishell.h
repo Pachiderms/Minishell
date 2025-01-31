@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/28 17:18:37 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/01/31 13:16:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char    *ft_itoa(int n);
 // MINISHELL
 
 //HERE_DOC
-int     her_doc(t_main *main, char **split);
+int     her_doc(t_main *main);
 
 /// ENV
 int		init_env(char **env, t_main *main);
@@ -129,7 +129,7 @@ int     ft_echo(t_main *main, char **cmd);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
-int	is_special_case(char *actual_arg);
+int	    is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
 int		cd(t_main *main, char **cmd);
 /// PWD
@@ -156,7 +156,7 @@ int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
-char     *get_rid_of(char *s, char c);
+char    *get_rid_of(char *s, char c);
 
 /// UTILS TOKENS
 int		ft_quote(char **s, char **split);
@@ -184,8 +184,7 @@ void    sigquit(int sig);
 void    init_signals();
 
 /// OTHERS
-char	*ft_strendchr(char *s, char end);
 int	    check_var_exists2(t_main *main, char *arg);
-char	*ft_strchrb(const char *s, int c);
 char	*get_var_name(char *cmd);
+char    *add_char_to_str(char *s, char c, int _free);
 #endif
