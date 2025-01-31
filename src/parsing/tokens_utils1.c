@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*   tokens_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2024/11/19 15:57:02 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/31 02:33:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,62 @@ char	*get_rid_of_quotes(char *s)
 	int		len;
 	char	*dest;
 
-	i = -1;
+	i = 0;
 	len = 0;
 	if (!s)
 		return (NULL);
-	while (s[++i])
+	while (s[i])
 	{
+		//printf("i : %d\n", i);
+		if (s[i] == 34 || s[i] == 39)
+		{
+			char q = s[i];
+			//printf("i before passing : %d\n", i);
+			i++;
+			while (s[i] != q && s[i])
+			{
+				//printf("%c", s[i]);
+				len++;
+				i++;
+			}
+			i++;
+			//printf("i after passing : %d\n", i);
+		}
+		if (s[i] == '\0')
+			break ;
 		if (s[i] != 34 && s[i] != 39)
+		{
+			//printf("%c", s[i]);
 			len++;
+		}
+		if (s[i] && s[i] != '\'' && s[i] != '"')
+			i++;
 	}
+	//printf("\nlen : %d\n", len);
 	dest = malloc(len * sizeof(char) + 1);
 	if (!dest)
 		return (NULL);
-	i = -1;
+	i = 0;
 	len = 0;
-	while (s[++i])
+	while (s[i])
 	{
+		if (s[i] == 34 || s[i] == 39)
+		{
+			char q = s[i];
+			i++;
+			while (s[i] != q && s[i])
+			{
+				dest[len++] = s[i];
+				i++;
+			}
+			i++;
+		}
+		if (s[i] == '\0')
+			break ;
 		if (s[i] != 34 && s[i] != 39)
 			dest[len++] = s[i];
+		if (s[i] && s[i] != '\'' && s[i] != '"')
+			i++;
 	}
 	dest[len++] = '\0';
 	return (free(s), dest);
@@ -105,6 +143,8 @@ int	is_cmd(char *s, char *path)
 	split = ft_split(path, ':');
 	if (check_builtin(s))
 		return (free_split(split), free(s1), 1);
+	if (ft_strcmp(s, "\0") == 0)
+		return (0);
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);

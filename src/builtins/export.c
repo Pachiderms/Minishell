@@ -124,7 +124,7 @@ int	prep_export(t_main *main, char **split)
 	}
 	while (split[i] && is_sc(split[i]) != 1)
 	{
-		printf("split : '%s'\n", split[i]);
+		printf("split : <%s>\n", split[i]);
 		tmp = ft_strjoin("export ", split[i]);
 		export(main, tmp);
 		free(tmp);

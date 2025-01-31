@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 13:59:43 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/30 18:06:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*order(char *s)
 		{
 			j = order_redirect(&res, kqs_tmp[i]);
 			while (j > 0)
-				j = order_redirect(&res, &kqs_tmp[i][j]);				
+				j = order_redirect(&res, &kqs_tmp[i][j]);
 		}
 		else
 		{

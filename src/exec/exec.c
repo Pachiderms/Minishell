@@ -56,7 +56,7 @@ int	ft_process(t_main *main, char *cmd)
 		main->last_exit_code = launch_process(main);
 		main->nb_cmd = 0;
 	}
-	else if (main->tokens[0].value[0] != '\0')
+	else if (main->tokens[0].value != NULL)
 	{
 		if (ft_strchr(main->tokens[0].value, '/'))
 		{

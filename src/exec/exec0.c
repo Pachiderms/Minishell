@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec0.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/28 16:50:36 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:49:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**prep_cmd_exec(t_main *main)
 			if (main->tokens[i].type != command)
 			{
 				tmp = ft_strjoin_free(tmp, " ", 0);
-				printf("token val '%s'\n", main->tokens[i].value);
+				printf("token val <%s>\n", main->tokens[i].value);
 				tmp = ft_strjoin_free(tmp, main->tokens[i].value, 0);
 			}
 			i++;
@@ -50,7 +50,7 @@ char	**prep_cmd_exec(t_main *main)
 	}
 	res[k] = NULL;
 	for(int i=0; res[i];i++)
-		printf("res %d '%s'\n", i, res[i]);
+		printf("res %d <%s>\n", i, res[i]);
 	return (res);
 }
 /*
@@ -99,7 +99,7 @@ int	prep_cmd_exec(t_main *main, char **split) // trop de lignes
 		}
 		i++;
 	}
-	printf("split pipex : '%s'\n", split_pipex);
+	printf("split pipex : <%s>\n", split_pipex);
 	return (pipex(main, split_pipex));
 }
 */

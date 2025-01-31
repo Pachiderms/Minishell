@@ -41,6 +41,8 @@ void	free_split(char **split)
 
 	len = 0;
 	i = 0;
+	if (!split)
+		return ;
 	while (split[len])
 		len++;
 	if (len <= 0)

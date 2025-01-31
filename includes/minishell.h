@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/28 17:18:37 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/01/31 14:43:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,22 @@ int cat = 0;
 extern int cat;
 #endif
 
+typedef struct s_dollar
+{
+    int i;
+	int j;
+	int end;
+	int r;
+	int r1;
+	int rep_pos;
+	int check;
+	char *arg_dup;
+	char *tmp;
+	char *tmp2;
+	char *tmp3;
+	char *final_tmp;
+}  t_dollar;
+
 typedef struct token_t
 {
 	enum e_type	type;
@@ -59,6 +75,7 @@ typedef struct s_main {
     char	**export;
     int		export_len;
     t_token	*tokens;
+    t_dollar dollars;
     int		tokens_len;
     int     split_len;
     int		nb_cmd;
@@ -71,8 +88,9 @@ typedef struct s_main {
     int     pip[2];
     char    **split;
     char    **base_split;
-    int dquotes;
-    int squotes;
+    int     s_qs[42];
+    int     d_qs[42];
+    int check;
 }	t_main;
 
 // LIBFT
@@ -157,6 +175,7 @@ int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
 char     *get_rid_of(char *s, char c);
+char	*replace_dollar(char *arg, t_main *main);
 
 /// UTILS TOKENS
 int		ft_quote(char **s, char **split);
