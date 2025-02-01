@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/01 13:04:51 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 17:05:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int	main(int argc, char **argv, char **env)
 			//char *tmp = order(cmd);
 			//main.cmd = get_rid_of_spaces(tmp);
 			main.cmd = get_rid_of_spaces(cmd);
-			printf("cmd : <%s> | main.cmd : <%s>\n", cmd, main.cmd);
+			printf("cmd : <%s> | main.cmd : <%s>\n\n", cmd, main.cmd);
 			//free(tmp);
 			add_history(cmd);
 			free(cmd);

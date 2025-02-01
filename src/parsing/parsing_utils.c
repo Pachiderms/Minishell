@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/01 11:22:07 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 17:09:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,10 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 		return (NULL);
 	printf("no space before dollar : <%s>\n", no_space);
 	no_space = replace_dollar(no_space, main);
-	printf("no space after dollar : <%s>\n", no_space);
-	printf("no space before sc_c : <%s>\n", no_space);
+	printf("no space after dollar : <%s>\n\n", no_space);
 	no_space = handle_sc_c(no_space, main);
-	printf("no space after sc_c : <%s>\n", no_space);
+	no_space = get_rid_of_spaces(no_space);
+	printf("no space : %s\n", no_space);
 	size = count_words(no_space);
 	if (size <= 0)
 		return (NULL);
@@ -164,13 +164,13 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
-		printf("no_space adter calc : <%s>\n", ft_substr(no_space, i, j - i)); // substr doit etre free
 		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
-		printf("no_space adter quotes rid : <%s>\n", dest[x]);
+		printf("no_space[%d] adter rid quotes : <%s>\n", x, dest[x]);
 		if (dest[x++] == NULL || j < 0)
 			return (ft_free_split_k_q_s(dest, x));
 		i += (j - i);
 	}
+	printf("\n");
 	dest[x] = 0;
 	main->split_len = x;
 	return (free(no_space), dest);

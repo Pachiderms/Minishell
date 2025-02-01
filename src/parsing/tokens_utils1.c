@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/31 23:16:43 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 14:25:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ int	is_cmd(char *s, char *path)
 	if (check_builtin(s))
 		return (free_split(split), free(s1), 1);
 	if (ft_strcmp(s, "\0") == 0)
+		return (0);
+	if (ft_strchr(s, '/'))
 		return (0);
 	while (split[i])
 	{

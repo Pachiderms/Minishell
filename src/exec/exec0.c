@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/30 22:49:59 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 17:03:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**prep_cmd_exec(t_main *main)
 			if (main->tokens[i].type != command)
 			{
 				tmp = ft_strjoin_free(tmp, " ", 0);
-				printf("token val <%s>\n", main->tokens[i].value);
+				//printf("token val <%s>\n", main->tokens[i].value);
 				tmp = ft_strjoin_free(tmp, main->tokens[i].value, 0);
 			}
 			i++;
@@ -49,8 +49,8 @@ char	**prep_cmd_exec(t_main *main)
 		i++;
 	}
 	res[k] = NULL;
-	for(int i=0; res[i];i++)
-		printf("res %d <%s>\n", i, res[i]);
+	// for(int i=0; res[i];i++)
+	// 	printf("res %d <%s>\n", i, res[i]);
 	return (res);
 }
 /*
