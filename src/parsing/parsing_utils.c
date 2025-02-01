@@ -6,125 +6,79 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/29 14:17:05 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 18:33:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**ft_free_split_k_q_s(char **d, int start)
-{
-	start--;
-	while (start >= 0)
-	{
-		free(d[start]);
-		start--;
-	}
-	free(d);
-	return (0);
-}
-
-int	check_quotes(char const *s, char q)
+int	get_dchar_len(char **split)
 {
 	int	i;
-	int	quotes;
 
-	quotes = 0;
 	i = 0;
-	while (s[i])
-	{
-		if (s[i] == q)
-			quotes++;
+	if (!split)
+		return (0);
+	while (split[i])
 		i++;
-	}
-	return (quotes % 2 == 0);
-}
-
-int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s) // trop de lignes
-{
-	int	j;
-
-	j = 0;
-	if (diff == 1)
-	{
-		while (_s[i] != _c && _s[i])
-		{
-			j = i + 1;
-			if (_s[i] == 34 || _s[i] == 39)
-			{
-				while (_s[j] != _s[i] && _s[j])
-					j++;
-				i = j + 1;
-			}
-			else
-				i++;
-		}
-	}
-	else if (diff == 0)
-	{
-		while (_s[i] == _c && _s[i])
-			i++;
-	}
 	return (i);
 }
 
-int	count_words(char *no_space)
-{
-	int	i;
-	int	word;
-
-	i = 0;
-	word = 0;
-	if (!check_quotes(no_space, 34) || !check_quotes(no_space, 39))
-		return (-1);
-	while (no_space[i])
-	{
-		if (ft_isspace(no_space[i]) == 1)
-		{
-			word++;
-			i++;
-		}
-		if (no_space[i] == 34 || no_space[i] == 39)
-		{
-			i++;
-			while (no_space[i] && (no_space[i] != 34 && no_space[i] != 39))
-				i++;
-			word++;
-		}
-		i++;
-	}
-	return (word + 1);
-}
-
-char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
+char	*find_args(char **s, t_main *main)
 {
 	int		i;
-	int		j;
-	int		x;
-	char	**dest;
-	char	*no_space;
-	int		size;
+	char	*res;
+	char	*previous;
 
 	i = 0;
-	x = 0;
-	j = 0;
-	no_space = get_rid_of_spaces(s);
-	size = count_words(no_space);
-	if (size <= 0)
+	res = NULL;
+	previous = NULL;
+	if (!s)
 		return (NULL);
-	dest = malloc((size + 1) * sizeof(char *));
-	if (dest == NULL || s == 0)
-		return (free(no_space), NULL);
-	while (no_space[i])
+	while (s[i])
 	{
-		i = ft_calc_k_q_s(i, 0, c, no_space);
-		j = ft_calc_k_q_s(i, 1, c, no_space);
-		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
-		if (dest[x++] == NULL || j < 0)
-			return (ft_free_split_k_q_s(dest, x));
-		i += (j - i);
+		if (!is_cmd(s[i], main->path)
+			&& !ft_strnstr(s[i], "<<", ft_strlen(s[i]))
+			&& ft_strcmp(previous, "<<") != 0)
+		{
+			res = ft_strjoin_free(res, s[i], 0);
+			if (s[i + 1])
+				res = ft_strjoin_free(res, " ", 0);
+		}
+		previous= s[i];
+		i++;
 	}
-	dest[x] = 0;
-	main->split_len = x;
-	return (free(no_space), dest);
+	return (res);
+}
+
+char	*find_cmd(char **s, t_main *main)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	while (s[i])
+	{
+		if (is_cmd(s[i], main->path))
+			return (ft_strdup(s[i]));
+		i++;
+	}
+	return (NULL);
+}
+
+char	*find_heredoc_eof(char **s)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	while (s[i])
+	{
+		if (get_next(&s[i], "<<"))
+			return (get_next(&s[i], "<<"));
+		i++;
+	}
+	return (NULL);
 }

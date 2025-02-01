@@ -23,6 +23,8 @@ int	check_var_exists2(t_main *main, char *arg)
 
 	if (ft_strcmp(arg, "?") == 0)
 		return (-2);
+	if (ft_strcmp(arg, "UID") == 0)
+		return (-3);
 	while (main->env[i])
 	{
 		actual_var = ft_strdup(main->env[i]);

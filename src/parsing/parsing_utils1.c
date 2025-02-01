@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/31 12:46:52 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 16:55:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,59 @@ char    *cmd_separate(char *s)
                                 res = add_char_to_str(res, s[i], 1);
                         res = add_char_to_str(res, ' ', 1);
                         i++;
-                }
+                }               
                 res = add_char_to_str(res, s[i], 1);
+                if ((s[i] == '>' || s[i] == '|')
+                        && s[i + 1] != s[i])
+                        res = add_char_to_str(res, ' ', 1);
                 i++;
         }
-        return (res);
+        return (free(s), res);
 }
 
-// placer les < au bon endoroit
-char    *order(char *_s)
+t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
+{
+        char    **pipe;
+        t_cmd   *cmd_tokens;
+        t_cmd   *tmp;
+        int     i;
+
+        pipe = ft_split(pipes[0], ' ');
+        cmd_tokens = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
+                        , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
+        if (cmd_tokens->cmd)
+                main->nb_cmd++;
+        free_split(pipe);
+        i = 1;
+        while (i < get_dchar_len(pipes))
+        {
+                pipe = ft_split(pipes[i], ' ');
+                tmp = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
+                        , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
+                if (tmp->cmd)
+                        main->nb_cmd++;
+                ft_lstadd_back(&cmd_tokens, tmp);
+                tmp = tmp->next;
+                free_split(pipe);
+                i++;
+        }
+        return (cmd_tokens);
+}
+
+int     order(char *_s, t_main *main)
 {
         char    *s;
+        char    **pipes;
 
-        s = get_rid_of_spaces(_s);
-        return (cmd_separate(s));
+        (void)main;
+        s = cmd_separate(get_rid_of_spaces(_s)); // placer les ' ' manquants/supr ceux en trop
+        printf("order 0 '%s'\n", s);
+        pipes = ft_split(s, '|'); // separer les pipes
+        for (int i=0;pipes[i];i++)
+                printf("pipe %d '%s'\n", i, pipes[i]);
+        main->cmd_tokens = init_cmd_tokens(pipes, main); // initialisation tokens
+        print_t_cmd(main->cmd_tokens);
+        return (free(s), free_split(pipes), 1);
 }
 
 int     sizeup_no_space(char const *s) // trop de lignes

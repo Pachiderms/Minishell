@@ -214,18 +214,12 @@ int	handle_sc(t_main *main, char **split, int i)
 	int		sc_type;
 
 	sc_type = is_sc(split[i]);
-	if (sc_type == 1)
-	{
-		main->tokens[i].type = sc;
-		return (1);
-	}
 	if (sc_type == 2)
 	{
 		// int j = -1;
 		// while (split[++j])
 		// 	printf("split %d : %s\n", j, split[j]);
 		split[i] = replace_dollar(split[i], main);
-		main->tokens[i].type = argument;
 		// j = -1;
 		// while (split[++j])
 		// 	printf("res split %d : %s\n", j, split[j]);

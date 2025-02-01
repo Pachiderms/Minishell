@@ -92,9 +92,12 @@ int	cd(t_main *main, char **split)
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
-	if (main->split_len > 2)
+	//plus de split_len car plus de split !!
+	// if (main->split_len > 2)
+	// 	return (printf("minishell: cd: too many arguments\n"), free(dir), 0);
+	if (get_dchar_len(split) > 2)
 		return (printf("minishell: cd: too many arguments\n"), free(dir), 0);
-	if (main->split_len == 1 && (ft_strcmp("cd", split[0]) == 0 || ft_strcmp("/bin/cd", split[0]) == 0))
+	if (/*main->split_len == 1 &&*/get_dchar_len(split) && (ft_strcmp("cd", split[0]) == 0 || ft_strcmp("/bin/cd", split[0]) == 0))
 	{
 		if (print_home_pwd(main) == 1)
 			return (free(dir), 1);

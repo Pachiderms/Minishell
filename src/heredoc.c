@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/31 13:10:44 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 17:59:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,27 @@ int write_in_here_doc(int here_doc, char *eof)
     }
     free(tmp);
 	ft_putstr_fd(res, here_doc);
-    close(here_doc);
-    return(0);
+    return(1);
 }
 
-int her_doc(t_main *main)
+int ft_heredoc(t_cmd *token)
 {
-    char    *eof;
     int     here_doc;
 
-    eof = main->tokens[main->hc_pos + 1].value;
+    if (!token->heredoc_eof)
+        return (token->infile);
     here_doc = open("heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
 	if (here_doc < 0)
         return (-1);
-    if (!write_in_here_doc(here_doc, eof))
+    if (!write_in_here_doc(here_doc, token->heredoc_eof))
     {
         unlink("heredoc.tmp");
-        main->hc_pos = -1;
-        return (-1);
+        return (token->infile);
     }
-    main->hc_pos = -1;
-	return (here_doc);
+    else
+    {
+        token->hd = 1;
+        token->args = ft_strjoin_free(token->args, "heredoc.tmp", 0);
+    }
+    return (here_doc);
 }

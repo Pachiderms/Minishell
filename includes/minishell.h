@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/31 13:16:00 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 17:58:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,6 @@
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
-
 enum e_type {command, argument, sc};
 
 // extern pid_t	g_signal_pid;
@@ -47,32 +43,48 @@ int cat = 0;
 extern int cat;
 #endif
 
-typedef struct token_t
+typedef struct s_cmd
 {
-	enum e_type	type;
-	char		*value;
-}	t_token;
+    char    *cmd;
+    char    *args;
+    int     hd;
+    char    *heredoc_eof;
+    int     infile;
+    int     outfile;
+    int     pip[2];
+    struct s_cmd *next;
+    
+}   t_cmd;
+
+typedef struct s_dollar
+{
+    int i;
+	int j;
+	int end;
+	int r;
+	int r1;
+	int rep_pos;
+	int check;
+	char *arg_dup;
+	char *tmp;
+	char *tmp2;
+	char *tmp3;
+	char *final_tmp;
+}  t_dollar;
 
 typedef struct s_main {
     char	**env;
     int		env_len;
     char	**export;
     int		export_len;
-    t_token	*tokens;
-    int		tokens_len;
-    int     split_len;
+    t_cmd   *cmd_tokens;
+    t_dollar    dollars;
+    int     s_qs[42];
+    int     d_qs[42];
+    int     check;
     int		nb_cmd;
     char	*path;
-    int     hc_pos;
     int     last_exit_code;
-    char    *cmd;
-    int     infile;
-    int     outfile;
-    int     pip[2];
-    char    **split;
-    char    **base_split;
-    int dquotes;
-    int squotes;
 }	t_main;
 
 // LIBFT
@@ -99,8 +111,27 @@ char    *ft_itoa(int n);
 
 // MINISHELL
 
+//NEW PARSING
+int 	get_dchar_len(char **split);
+int     order(char *s, t_main *main);
+char	*find_cmd(char **s, t_main *main);
+char	*find_args(char **s, t_main *main);
+char    *find_heredoc_eof(char **s);
+char	*get_next(char **cmd, char *tf);
+
+//t_cmd utils
+void    ft_lstclear(t_cmd **lst);
+void    ft_lstdelone(t_cmd *lst);
+void	clear_node(t_cmd *node);
+int     ft_lstsize(t_cmd *lst);
+t_cmd  *ft_lstnew(int infile, int outfile, char *heredoc_eof, char *cmd, char *args);
+void    ft_lstadd_back(t_cmd **lst, t_cmd *new);
+void    ft_lstadd_front(t_cmd **lst, t_cmd *new);
+t_cmd  *ft_lstlast(t_cmd *lst);
+void    print_t_cmd(t_cmd *cmd);//a supr a la fin
+
 //HERE_DOC
-int     her_doc(t_main *main);
+int     ft_heredoc(t_cmd *token);
 
 /// ENV
 int		init_env(char **env, t_main *main);
@@ -123,7 +154,7 @@ char	*get_var_name(char *cmd);
 int     check_plus(char *cmd);
 char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
-void	remake_env_fill(char **tmp, t_main *main, int which);
+void    remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
 int     ft_echo(t_main *main, char **cmd);
 int		get_fd_in(char **cmd);
@@ -142,15 +173,12 @@ int		check_var_exists(char **env, int len, char *cmd);
 void	remake_env(char	**tmp, t_main *main, int which, int replace_pos);
 /// UTILS
 int		only_space_line(char *cmd);
-int     get_cmd_number(t_main *main, char **split);
-char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int	    closed_quotes(const char *s);
 char    *get_rid_of_spaces(char const *s);
-char	*order(char *s);
+char	*replace_dollar(char *arg, t_main *main);
 char    *cut_str(char *str, char *cut);
 
 /// TOKENS
-int		init_tokens(char **split, t_main *main);
 int		is_cmd(char *s, char *path);
 int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
@@ -159,13 +187,12 @@ char	*get_rid_of_quotes(char *s);
 char    *get_rid_of(char *s, char c);
 
 /// UTILS TOKENS
-int		ft_quote(char **s, char **split);
-char	**clean_split(t_main *main, char **split);
+int     check_open_quotes(char const *s, t_main *main);
 int	    handle_sc(t_main *main, char **split, int i);
 char	*get_cmd(char *path);
 /// EXEC
-int	    ft_process(t_main *main, char *cmd);
-int	    builtin(t_main *main, char **split, char *cmd);
+int	    ft_process(t_main *main);
+int	    builtin(t_main *main);
 /// PIPEX
 char    **prep_cmd_exec(t_main *main);
 int     launch_process(t_main *main);
