@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/31 14:43:30 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 13:04:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ typedef struct s_main {
     char    **base_split;
     int     s_qs[42];
     int     d_qs[42];
-    int check;
+    int ut_nl_err;
+    int ut_err;
+    char ut_err_c[2];
 }	t_main;
 
 // LIBFT
@@ -207,4 +209,6 @@ char	*ft_strendchr(char *s, char end);
 int	    check_var_exists2(t_main *main, char *arg);
 char	*ft_strchrb(const char *s, int c);
 char	*get_var_name(char *cmd);
+char	*handle_sc_c(char *arg, t_main *main);
+
 #endif

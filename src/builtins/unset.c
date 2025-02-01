@@ -21,7 +21,6 @@ int	check_var_exists2(t_main *main, char *arg)
 	i = 0;
 	j = 0;
 
-	printf("arg : <%s>", arg);
 	if (ft_strcmp(arg, "?") == 0)
 		return (-2);
 	if (ft_strcmp(arg, "UID") == 0)

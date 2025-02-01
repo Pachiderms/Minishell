@@ -6,66 +6,64 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/31 02:33:11 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/31 23:16:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	s_len(char *s)
+{
+	int i;
+	int len;
+	char q;
+
+	i = 0;
+	len = 0;
+	while (s[i])
+	{
+		if (s[i] == 34 || s[i] == 39)
+		{
+			q = s[i++];
+			while (s[i] != q && s[i])
+			{
+				len++;
+				i++;
+			}
+			i++;
+		}
+		if (s[i] == '\0')
+			break ;
+		if (s[i] != 34 && s[i] != 39)
+			len++;
+		if (s[i] && s[i] != '\'' && s[i] != '"')
+			i++;
+	}
+	return (len);
+}
 
 char	*get_rid_of_quotes(char *s)
 {
 	int		i;
 	int		len;
 	char	*dest;
+	char 	q;
 
 	i = 0;
-	len = 0;
 	if (!s)
 		return (NULL);
-	while (s[i])
-	{
-		//printf("i : %d\n", i);
-		if (s[i] == 34 || s[i] == 39)
-		{
-			char q = s[i];
-			//printf("i before passing : %d\n", i);
-			i++;
-			while (s[i] != q && s[i])
-			{
-				//printf("%c", s[i]);
-				len++;
-				i++;
-			}
-			i++;
-			//printf("i after passing : %d\n", i);
-		}
-		if (s[i] == '\0')
-			break ;
-		if (s[i] != 34 && s[i] != 39)
-		{
-			//printf("%c", s[i]);
-			len++;
-		}
-		if (s[i] && s[i] != '\'' && s[i] != '"')
-			i++;
-	}
-	//printf("\nlen : %d\n", len);
+	len = s_len(s);
 	dest = malloc(len * sizeof(char) + 1);
 	if (!dest)
-		return (NULL);
-	i = 0;
+		return (free(s), NULL);
 	len = 0;
 	while (s[i])
 	{
 		if (s[i] == 34 || s[i] == 39)
 		{
-			char q = s[i];
-			i++;
+			q = s[i++];
 			while (s[i] != q && s[i])
-			{
-				dest[len++] = s[i];
-				i++;
-			}
+				dest[len++] = s[i++];
 			i++;
 		}
 		if (s[i] == '\0')
@@ -75,7 +73,7 @@ char	*get_rid_of_quotes(char *s)
 		if (s[i] && s[i] != '\'' && s[i] != '"')
 			i++;
 	}
-	dest[len++] = '\0';
+	dest[len] = '\0';
 	return (free(s), dest);
 }
 

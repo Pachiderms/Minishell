@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/31 14:41:34 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 13:04:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_main(t_main *main)
 	main->pip[1] = -1;
 	main->split = NULL;
 	main->base_split = NULL;
-	main->check = 0;
+	main->ut_nl_err = 0;
 	
 	// Dolalr struct //
 	main->dollars.i = 0;
@@ -168,8 +168,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (init_tokens(main.base_split, &main) == 0)
 					break ;
-				if (main.check == 1)	
-					ft_process(&main, main.cmd);
+				ft_process(&main, main.cmd);
 			}
 			free_end_cmd(&main);
 		}

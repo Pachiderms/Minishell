@@ -70,9 +70,13 @@ int	ft_process(t_main *main, char *cmd)
 				printf(GREY"minishell: %s: No such file or directory\n"RESET,
 					main->tokens[0].value);
 		}
+		// else if (main->ut_nl_err == 1)
+		// 	printf(GREY"minishell: syntax error near unexpected token `newline'\n"RESET);
 		else
+		{
 			printf(GREY"minishell: %s: command not found\n"RESET,
 				main->tokens[0].value);
+		}
 	}
 	return (1);
 }

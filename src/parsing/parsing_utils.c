@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/31 15:55:43 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 11:22:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,71 +78,56 @@ int	count_words(char *no_space)
 	return (word + 1);
 }
 
+int	closed_quotes1(char const *s, int *i, int *_qts, char q)
+{
+	if (*_qts == 1)
+	{
+		while (s[*i] != q && s[*i])
+			*i += 1;
+		if (s[*i] == q)
+		{
+			*_qts = 0;
+			*i += 1;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int	check_open_quotes(char const *s, t_main *main)
 {
 	int i;
 	int s_qts;
 	int d_qts;
-	int tmp = 0;
-	int tmp2 = 0;
-	int r = 0;
-	int r1 = 0;
+	int tmp;
 
 	i = 0;
 	s_qts = 0;
 	d_qts = 0;
+	tmp = 0;
 	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '"')
 		{
 			if (s[i] == '\'')
-			{
-				//printf("s_qts on 1 -> s[i] : %c | i : %d\n", s[i], i);
 				s_qts = 1;
-				tmp = i;
-				i++;
-			}
 			else if (s[i] == '"')
-			{
-				//printf("d_qts on 1 -> s[i] : %c | i : %d\n", s[i], i);
 				d_qts = 1;
-				tmp2 = i;
-				i++;
-			}
+			tmp = i;
+			i++;
 		}
-		if (s_qts == 1)
-		{
-			while (s[i] != '\'' && s[i])
-				i++;
-			if (s[i] == '\'')
-			{
-				//printf("s_qts on 0 -> s[i] : %c | i : %d\n", s[i], i);
-				s_qts = 0;
-				main->s_qs[r++] = tmp;
-				i++;
-			}
-		}
-		else if (d_qts == 1)
-		{
-			while (s[i] != '"' && s[i])
-				i++;
-			if (s[i] == '"')
-			{
-				//printf("s_qts on 0 -> s[i] : %c | i : %d\n", s[i], i);
-				d_qts = 0;
-				main->d_qs[r1++] = tmp2;
-				i++;
-			}
-		}
-		//printf("s[i] : %c | i : %d\n", s[i], i);
+		if (closed_quotes1(s, &i, &s_qts, '\'') == 1)
+			main->s_qs[main->dollars.r++] = tmp;
+		else if (closed_quotes1(s, &i, &d_qts, '"') == 1)
+			main->d_qs[main->dollars.r1++] = tmp;
 		if (s[i] && s[i] != '\'' && s[i] != '"')
 			i++;
 	}
-	main->s_qs[r] = -1;
-	main->d_qs[r1] = -1;
-	printf("s_qs0 : %d | s_qs1 : %d | s_qs2 : %d\n", main->s_qs[0], main->s_qs[1], main->s_qs[2]);
-	printf("d_qs0 : %d | d_qs1 : %d | s_qs2 : %d\n", main->d_qs[0], main->d_qs[1], main->d_qs[2]);
-	printf("s_qts : %d| d_qts : %d\n", s_qts, d_qts);
+	main->s_qs[main->dollars.r++] = -1;
+	main->d_qs[main->dollars.r1++] = -1;
+	main->dollars.r = 0;
+	main->dollars.r1 = 0;
+	//printf("s_qts : %d | d_qts : %d\n", s_qts, d_qts);
 	if (s_qts == 1 || d_qts == 1)
 		return (0);
 	return (1);
@@ -166,6 +151,9 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	printf("no space before dollar : <%s>\n", no_space);
 	no_space = replace_dollar(no_space, main);
 	printf("no space after dollar : <%s>\n", no_space);
+	printf("no space before sc_c : <%s>\n", no_space);
+	no_space = handle_sc_c(no_space, main);
+	printf("no space after sc_c : <%s>\n", no_space);
 	size = count_words(no_space);
 	if (size <= 0)
 		return (NULL);
@@ -176,7 +164,7 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
-		printf("no_space adter calc : <%s>\n", ft_substr(no_space, i, j - i));
+		printf("no_space adter calc : <%s>\n", ft_substr(no_space, i, j - i)); // substr doit etre free
 		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
 		printf("no_space adter quotes rid : <%s>\n", dest[x]);
 		if (dest[x++] == NULL || j < 0)

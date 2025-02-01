@@ -46,6 +46,5 @@ int	init_tokens(char **split, t_main *main)
 	// for(int i=0;split[i];i++)
 	// 	printf("split : <%s> (token : %u)\n", split[i], main->tokens[i].type);
 	main->nb_cmd = get_cmd_number(main, split);
-	main->check = 1;
 	return (1);
 }

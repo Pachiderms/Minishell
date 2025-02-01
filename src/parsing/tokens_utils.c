@@ -78,41 +78,47 @@ void	replace(t_main *main, char **tmp2)
 	{
 		diff = ft_strlen(&ft_strchr(main->env[main->dollars.rep_pos], '=')[1]) - ft_strlen(*(tmp2));
 		update_quotes_pos(main, r_b, r1_b, diff, 0);
+		free(*(tmp2));
+		*(tmp2) = NULL;
 		*tmp2 = ft_strdup(&ft_strchr(main->env[main->dollars.rep_pos], '=')[1]);
 	}
 	else if (main->dollars.rep_pos == -1 || main->dollars.check == 1)
 	{
 		update_quotes_pos(main, r_b, r1_b, ft_strlen(*(tmp2)), 1);
+		free(*(tmp2));
+		*(tmp2) = NULL;
 		*tmp2 = ft_strdup("");
 	}
 	else if (main->dollars.rep_pos == -2)
 	{
 		diff = ft_strlen(ft_itoa(main->last_exit_code)) - 2;
 		update_quotes_pos(main, r_b, r1_b, diff, 0);
+		free(*(tmp2));
+		*(tmp2) = NULL;
 		*tmp2 = ft_strdup(ft_itoa(main->last_exit_code));
 	}
 	else if (main->dollars.rep_pos == -3)
 		*tmp2 = ft_strdup("1000");
 }
 
-char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3)
+char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3) // leaks à gérer, voir last
 {
 	char *final_tmp = NULL;
 	int check = 0;
 
 	if (!tmp && !tmp3)
-		final_tmp = ft_strjoin(final_tmp, replaced_tmp2);
+		final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 0);
 	if (tmp)
 	{
 		check = 1;
-		final_tmp = ft_strjoin(final_tmp, tmp);
-		final_tmp = ft_strjoin(final_tmp, replaced_tmp2);
+		final_tmp = ft_strjoin_free(final_tmp, tmp, 0);
+		final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 0);
 	}
 	if (tmp3)
 	{
 		if (check == 0)
-			final_tmp = ft_strjoin(final_tmp, replaced_tmp2);
-		final_tmp = ft_strjoin(final_tmp, tmp3);
+			final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 0);
+		final_tmp = ft_strjoin_free(final_tmp, tmp3, 0);
 	}
 	return (final_tmp);
 }
@@ -227,8 +233,11 @@ void	clear_dollar(t_main *main)
 			free(main->dollars.tmp3);
 			main->dollars.tmp3 = NULL;
 		}
-		free(main->dollars.tmp2);
-		main->dollars.tmp2 = NULL;
+		if (main->dollars.tmp2)
+		{
+			free(main->dollars.tmp2);
+			main->dollars.tmp2 = NULL;
+		}
 		main->dollars.i = main->dollars.end;
 		main->dollars.j = 0;
 		main->dollars.end = 0;
@@ -251,8 +260,11 @@ void	clear_dollar(t_main *main)
 			free(main->dollars.tmp3);
 			main->dollars.tmp3 = NULL;
 		}
-		free(main->dollars.tmp2);
-		main->dollars.tmp2 = NULL;
+		if (main->dollars.tmp2)
+		{
+			free(main->dollars.tmp2);
+			main->dollars.tmp2 = NULL;
+		}
 		free(main->dollars.final_tmp);
 		main->dollars.final_tmp = NULL;
 		main->dollars.i = 0;
@@ -285,6 +297,7 @@ void	print_values(t_main *main)
 char	*replace_dollar(char *arg, t_main *main)
 {
 	main->dollars.arg_dup = ft_strdup(arg);
+	free(arg);
 	if (main->dollars.final_tmp)
 	{
 		// free(main->dollars.final_tmp);
@@ -295,7 +308,9 @@ char	*replace_dollar(char *arg, t_main *main)
 	{
 		ft_putstr_fd("in while\n", 1);
 		printf("arg_dup : <%s>\n", main->dollars.arg_dup); //
-		if (main->dollars.arg_dup[main->dollars.j] == '$' && (main->dollars.arg_dup[main->dollars.j + 1] == ' ' || main->dollars.arg_dup[main->dollars.j + 1] == '=' || main->dollars.arg_dup[main->dollars.j + 1] == ':' || (main->dollars.arg_dup[main->dollars.j + 1] == '"' && in_dquote(main, main->dollars.arg_dup, main->dollars.j) == 1)))
+		if (main->dollars.arg_dup[main->dollars.j] == '$' && (main->dollars.arg_dup[main->dollars.j + 1] == ' '
+		|| main->dollars.arg_dup[main->dollars.j + 1] == '=' || main->dollars.arg_dup[main->dollars.j + 1] == ':'
+		|| (main->dollars.arg_dup[main->dollars.j + 1] == '"' && in_dquote(main, main->dollars.arg_dup, main->dollars.j) == 1)))
 			main->dollars.j++;
 		while (main->dollars.arg_dup[main->dollars.j] != '$' && main->dollars.arg_dup[main->dollars.j])
 			search_sollar(main, main->dollars.arg_dup);
@@ -307,7 +322,12 @@ char	*replace_dollar(char *arg, t_main *main)
 		main->dollars.i = main->dollars.j;
 		if (main->dollars.arg_dup[main->dollars.i] == '$')
 			main->dollars.i += 1;
-		while (main->dollars.arg_dup[main->dollars.i] != '$' && main->dollars.arg_dup[main->dollars.i] != '?' && main->dollars.arg_dup[main->dollars.i] != '=' && (main->dollars.arg_dup[main->dollars.i] != '"') && (main->dollars.arg_dup[main->dollars.i] != '\'') && main->dollars.arg_dup[main->dollars.i] != ' ' && main->dollars.arg_dup[main->dollars.i] != ':' && !ft_isdigit(main->dollars.arg_dup[main->dollars.i]) && main->dollars.arg_dup[main->dollars.i] != '%' && main->dollars.arg_dup[main->dollars.i] != '\\' && main->dollars.arg_dup[main->dollars.i])
+		while (main->dollars.arg_dup[main->dollars.i] != '$' && main->dollars.arg_dup[main->dollars.i] != '?'
+			&& main->dollars.arg_dup[main->dollars.i] != '=' && (main->dollars.arg_dup[main->dollars.i] != '"')
+			&& (main->dollars.arg_dup[main->dollars.i] != '\'') && main->dollars.arg_dup[main->dollars.i] != ' '
+			&& main->dollars.arg_dup[main->dollars.i] != ':' && !ft_isdigit(main->dollars.arg_dup[main->dollars.i])
+			&& main->dollars.arg_dup[main->dollars.i] != '%' && main->dollars.arg_dup[main->dollars.i] != '\\'
+			&& main->dollars.arg_dup[main->dollars.i])
 			main->dollars.i++;
 		if ((size_t)main->dollars.i != ft_strlen(main->dollars.arg_dup))
 		{ //
@@ -356,4 +376,46 @@ int	handle_sc(t_main *main, char **split, int i)
 		return (1);
 	}
 	return (0);
+}
+// void	redirections_handler(char *arg, t_main *main)
+// {
+// 	int i;
+// 	int len;
+
+// 	i = 0;
+// 	len = 0;
+// 	while (arg[i] != '>' && arg[i] != '<')
+// 		i++;
+// 	if (in_dquote)
+// 	{
+		
+// 	}
+
+// 	else if (ft_strcmp(arg, ">") == 0 || ft_strcmp(arg, "<") == 0 || ft_strcmp(arg, ">>") == 0 || ft_strcmp(arg, "<<") == 0 || ft_strcmp(arg, "<>") == 0)
+// 			main->ut_nl_err = 1;
+// }
+
+char	*handle_sc_c(char *arg, t_main *main)
+{
+	char *arg_without_quotes;
+
+	arg_without_quotes = NULL;
+	if (arg == NULL)
+		return (NULL);
+	// if (redirections_handler(arg, main) == 1)
+	// {
+
+	// }
+	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
+	{
+		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)
+			return (free(arg), ft_strdup(""));
+	}
+	if (main->s_qs[0] > -1 || main->d_qs[0] > -1)
+	{
+		arg_without_quotes = get_rid_of_quotes(ft_strdup(arg));
+		if (ft_strcmp(arg_without_quotes, ":") == 0)
+			return (free(arg_without_quotes), ft_strdup(""));
+	}
+	return (arg);
 }
