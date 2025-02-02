@@ -64,7 +64,9 @@ int	ft_echo(t_main *main, char **cmd)
 	int	nl;
 
 	nl = 1;
-	fd = get_fd_out(cmd);
+	fd = main->cmd_tokens->outfile;
+	if (fd == -1)
+		fd = 1;
 	if (fd < 0 || !cmd[1])
 		return (perror(GREY"minishell"), 1);
 	if (ft_strcmp(cmd[1], "-n") == 0)

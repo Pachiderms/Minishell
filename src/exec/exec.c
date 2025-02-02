@@ -12,12 +12,24 @@
 
 #include "../includes/minishell.h"
 
+char	**prep_builtin(t_cmd *token)
+{
+	char	*join;
+	char	**res;
+
+	join = ft_strjoin(token->cmd, " ");
+	join = ft_strjoin_free(join, token->args, 0);
+	res = ft_split(join, ' ');
+	return (free(join), res);
+}
+
 int	builtin(t_main *main)
 {
 	char	*command;
 	char	**split;
 
-	split = ft_split(main->cmd_tokens->args, ' ');
+	main->nb_cmd = 0;
+	split = prep_builtin(main->cmd_tokens);
 	command = get_cmd(main->cmd_tokens->cmd);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0, split);

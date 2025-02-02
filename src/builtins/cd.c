@@ -97,7 +97,7 @@ int	cd(t_main *main, char **split)
 	// 	return (printf("minishell: cd: too many arguments\n"), free(dir), 0);
 	if (get_dchar_len(split) > 2)
 		return (printf("minishell: cd: too many arguments\n"), free(dir), 0);
-	if (/*main->split_len == 1 &&*/get_dchar_len(split) && (ft_strcmp("cd", split[0]) == 0 || ft_strcmp("/bin/cd", split[0]) == 0))
+	if (get_dchar_len(split) == 1 && (ft_strcmp("cd", split[0]) == 0 || ft_strcmp("/bin/cd", split[0]) == 0))
 	{
 		if (print_home_pwd(main) == 1)
 			return (free(dir), 1);
