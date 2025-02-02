@@ -117,14 +117,14 @@ int	prep_export(t_main *main, char **split)
 	char	*tmp;
 
 	i = 1;
-	if ((ft_strcmp(split[0], "export") == 0 || ft_strcmp(split[0], "export ") == 0) && split[1] == NULL)
+	if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
 	{
 		print_env(main, 1, split);
 		return (0);
 	}
 	while (split[i] && is_sc(split[i]) != 1)
 	{
-		//printf("split : <%s>\n", split[i]);
+		printf("split : '%s'\n", split[i]);
 		tmp = ft_strjoin("export ", split[i]);
 		export(main, tmp);
 		free(tmp);

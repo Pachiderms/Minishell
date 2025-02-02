@@ -53,7 +53,9 @@ int	pwd(t_main *main, char **cmd)
 {
 	char	*pwd;
 
-	if (main->split_len == 2)
+	(void)main;
+	//plus de split_len car plus de split !!
+	if (/*main->split_len*/get_dchar_len(cmd) == 2)
 	{
 		if (check_syntax_pwd(cmd[1]) == 0)
 			return (0);

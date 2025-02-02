@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/01/31 15:15:40 by marvin           ###   ########.fr        #
+#    Updated: 2025/02/01 15:35:56 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFT_NAME = libft.a
 
 LIBFT_LIB = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
 
-SRC = src/main.c src/builtins/env.c src/exec/exec.c src/exec/exec0.c src/exec/exec2.c src/builtins/export.c src/builtins/export1.c src/builtins/export+=.c src/builtins/unset.c src/builtins/unset1.c src/parsing/tokens.c src/parsing/tokens_utils.c src/parsing/tokens_utils1.c src/parsing/parsing_utils.c src/parsing/parsing_utils1.c src/builtins/echo.c src/builtins/cd.c src/builtins/cd1.c src/builtins/pwd.c src/exec/cmd_redirect.c src/utils/free.c src/utils/signals.c src/utils/get_next_line.c src/heredoc.c
+SRC = src/parsing/check.c src/parsing/t_cmd_utils.c src/main.c src/builtins/env.c src/exec/exec.c src/exec/exec2.c src/builtins/export.c src/builtins/export1.c src/builtins/export+=.c src/builtins/unset.c src/builtins/unset1.c src/parsing/tokens_utils.c src/parsing/tokens_utils1.c src/parsing/parsing_utils.c src/parsing/parsing_utils1.c src/builtins/echo.c src/builtins/cd.c src/builtins/cd1.c src/builtins/pwd.c src/exec/cmd_redirect.c src/utils/free.c src/utils/signals.c src/heredoc.c
 
 OBJS := $(SRC:%.c=%.o)
 

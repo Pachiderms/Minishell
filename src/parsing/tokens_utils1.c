@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/01 14:25:36 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/02 13:44:15 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,59 +112,4 @@ char	*get_cmd(char *path)
 		return (&path[8]);
 	else
 		return (path);
-}
-
-int	check_builtin(char *_s)
-{
-	char	*s;
-
-	s = get_cmd(_s);
-	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1)  || !ft_strncmp(s, "/bin/cd", -1))
-		|| !ft_strncmp(s, "pwd", -1) || !ft_strncmp(s, "export", -1)
-		|| !ft_strncmp(s, "unset", -1)
-		|| (!ft_strncmp(s, "env", -1) || !ft_strncmp(s, "/bin/env", -1))
-		|| !ft_strncmp(s, "exit", -1))
-		return (1);
-	return (0);
-}
-
-int	is_cmd(char *s, char *path)
-{
-	int		i;
-	char	*s1;
-	char	*tmp;
-	char	**split;
-
-	i = 0;
-	tmp = NULL;
-	s1 = ft_strjoin("/", get_cmd(s));
-	split = ft_split(path, ':');
-	if (check_builtin(s))
-		return (free_split(split), free(s1), 1);
-	if (ft_strcmp(s, "\0") == 0)
-		return (0);
-	if (ft_strchr(s, '/'))
-		return (0);
-	while (split[i])
-	{
-		tmp = ft_strjoin(split[i], s1);
-		if (access(tmp, R_OK) == 0)
-			return (free(tmp), free_split(split), free(s1), 1);
-		free(tmp);
-		i++;
-	}
-	return (free_split(split), free(s1), 0);
-}
-
-int	is_sc(char *s)
-{
-	if (!s)
-		return (0);
-	if (ft_strcmp(s, "|") == 0 || ft_strcmp(s, "<") == 0
-		|| ft_strcmp(s, ">") == 0 || ft_strcmp(s, "<<") == 0
-		|| ft_strcmp(s, ">>") == 0)
-		return (1);
-	if (ft_strchr(s, '$'))
-		return (2);
-	return (0);
 }

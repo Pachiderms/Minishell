@@ -14,11 +14,10 @@
 
 pid_t	g_signal_pid;
 
-char	**prep_process(char *s)
+char	*prep_process(char *s, char *cmd)
 {
 	char	*res;
 	char	*tmp;
-	char	**f;
 
 	res = NULL;
 	tmp = NULL;
@@ -30,20 +29,23 @@ char	**prep_process(char *s)
 		res = get_rid_of(tmp, '>');
 		free(tmp);
 		tmp = get_rid_of_spaces(res);
-		f = ft_split(tmp, ' ');
-		free(tmp);
-		return (free(res), f);
+		if (cmd)
+			tmp = ft_strjoin_free(" ", tmp, 1);
+		return (free(res), ft_strjoin_free(cmd, tmp, 1));
 	}
 	res = get_rid_of_spaces(s);
-	f = ft_split(res, ' ');
-	return (free(res), f);
+	if (cmd)
+		res = ft_strjoin_free(" ", res, 1);
+	return (ft_strjoin_free(cmd, res, 1));
 }
 
 char	*cook_cmd(char *s)
 {
+	if (!s)
+		return (NULL);
 	if (!ft_strncmp(s, "/bin/", 5))
 		return (ft_strdup(s));
-	else if (!ft_strncmp(s, "/usr/bin/", 8))
+	else if (!ft_strncmp(s, "/usr/bin/", 9))
 		return (ft_strdup(s));
 	else
 		return (ft_strjoin("/usr/bin/", s));
@@ -54,10 +56,9 @@ static void	wait_all(t_main *main)
 	int		status;
 	int		pid;
 	int		len;
-	char	**tmp;
+	t_cmd	*token;
 
-	(void)tmp;
-	tmp = main->split;
+	token = main->cmd_tokens;
 	len = main->nb_cmd;
 	while (len--)
 	{
@@ -67,118 +68,108 @@ static void	wait_all(t_main *main)
 			if (WIFEXITED(status))
 				main->last_exit_code = WEXITSTATUS(status);
 		}
+		if (token->outfile >= 0)
+			close(token->outfile);
+		if (token->infile >= 0)
+			close(token->infile);
+		token = token->next;
 	}
-	if (main->outfile >= 0)
-		close(main->outfile);
-	if (main->infile >= 0)
-		close(main->infile);
 }
 
-static void	redirect_in_out(t_main *main, char **cmd, int *pip)
+static void	redirect_in_out(t_cmd *token)
 {
-	close(pip[0]);
-	if (main->infile >= 0)
+	close(token->pip[0]);
+	if (token->infile >= 0)
 	{
-		dup2(main->infile, 0);
-		close(main->infile);
+		dup2(token->infile, 0);
+		close(token->infile);
 	}
-	if (main->outfile >= 0)
+	if (token->outfile >= 0)
 	{
-		dup2(main->outfile, 1);
+		dup2(token->outfile, 1);
+		close(token->outfile);
 	}
-	if (*(cmd + 1) != NULL)
-		dup2(pip[1], 1);
-	close(pip[1]);
+	if (token->next)
+		dup2(token->pip[1], 1);
+	close(token->pip[1]);
 }
 
-void	child_builtin(t_main *main, char **cmd, int *pip)
+void	child_builtin(t_main *main, t_cmd *token)
 {
 	int	exit_code;
 
-	redirect_in_out(main, cmd, pip);
+	redirect_in_out(token);
 	rl_clear_history();
 	init_signals();
-	exit_code = builtin(main, cmd, cmd[0]);
+	exit_code = builtin(main);
 	free_process(main, exit_code);
 }
 
-void	child_process(t_main *main, char **cmd, int *pip)
+void	child_process(t_main *main, t_cmd *token)
 {
-	char	**path;
-	char 	*ok;
+	char	**split_args;
+	char	*cmd;
 
-	main->outfile = get_fd_out(cmd);
-	path = prep_process(*cmd);
-	if (!is_cmd(path[0], main->path))
-	{
-		free_split(path);
+	if (!token->cmd)
 		free_process(main, 2);
-	}
-	if (check_builtin(path[0]))
-		child_builtin(main, path, pip);
-	free_split(path);
-	if (ft_strrchr(*cmd, '>'))
-		cut_str(*cmd, ft_strrchr(*cmd, '>'));
-	path = prep_process(*cmd);
-	ok = cook_cmd(path[0]);
-	redirect_in_out(main, cmd, pip);
+	if (check_builtin(token->cmd))
+		child_builtin(main, token);
+	cmd = cook_cmd(token->cmd);
+	printf("cmd <%s>\n", cmd);
+	token->args = prep_process(token->args, token->cmd);
+	token->infile = ft_heredoc(token);
+	printf("token fdin %d\n", token->infile);
+	printf("final args <%s>\n", token->args);
+	split_args = ft_split(token->args, ' ');
+	redirect_in_out(token);
 	rl_clear_history();
 	init_signals();
-	execve(ok, path, main->env);
-	free(ok);
-	free_split(path);
+	execve(cmd, split_args, main->env);
+	free(cmd);
+	free_split(split_args);
 	perror("ERROR CHILD");
 	free_process(main, 1);
 }
 
-static void	parent_process(t_main *main, char **cmd, int *pip)
+static void	parent_process(t_cmd *token)
 {
-	close(pip[1]);
-	if (main->infile >= 0)
-		close(main->infile);
-	if (main->infile == -2)
-		main->infile = pip[0];
-	if (*(cmd + 1))
-		main->infile = pip[0];
+	close(token->pip[1]);
+	if (token->infile >= 0)
+		close(token->infile);
+	if (token->next && token->next->infile < 0)
+		token->next->infile = token->pip[0];
 	else
-		close(pip[0]);
+		close(token->pip[0]);
 }
 
-static int	exec_cmd(t_main *main, char **cmd, int *pip)
+static int	exec_cmd(t_main *main, t_cmd *token)
 {
 	g_signal_pid = fork();
 	if (g_signal_pid < 0)
 		free_all_data(main);
 	else if (!g_signal_pid)
 	{
-		if (*cmd)
-			child_process(main, cmd, pip);
+		if (token)
+			child_process(main, token);
 		else
 			free_all_data(main);
 	}
 	else
-		parent_process(main, cmd, pip);
+		parent_process(token);
 	return (1);
 }
 
 int 	exec(t_main *main)
 {
-	char	**tmp;
-	int		*pip;
-	int i;
+	t_cmd	*token;
 
-	i  = 1;
-	pip = main->pip;
-	tmp = main->split;
-	if (pipe(pip) == -1)
-		return (0);
-	exec_cmd(main, tmp, pip);
-	while (tmp[i])
+	token = main->cmd_tokens;
+	while (token)
 	{
-		if (pipe(pip) == -1)
+		if (pipe(token->pip) == -1)
 			return (-1);
-		exec_cmd(main, &tmp[i], pip);
-		i++;
+		exec_cmd(main, token);
+		token = token->next;
 	}
 	wait_all(main);
 	return (1);

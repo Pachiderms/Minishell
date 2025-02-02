@@ -369,23 +369,6 @@ char	*replace_dollar(char *arg, t_main *main)
 	return (main->dollars.final_tmp);
 }
 
-int	handle_sc(t_main *main, char **split, int i)
-{
-	int		sc_type;
-
-	sc_type = is_sc(split[i]);
-	if (sc_type == 1)
-	{
-		main->tokens[i].type = sc;
-		return (1);
-	}
-	if (sc_type == 2)
-	{
-		main->tokens[i].type = argument;
-		return (1);
-	}
-	return (0);
-}
 // void	redirections_handler(char *arg, t_main *main)
 // {
 // 	int i;
@@ -403,28 +386,3 @@ int	handle_sc(t_main *main, char **split, int i)
 // 	else if (ft_strcmp(arg, ">") == 0 || ft_strcmp(arg, "<") == 0 || ft_strcmp(arg, ">>") == 0 || ft_strcmp(arg, "<<") == 0 || ft_strcmp(arg, "<>") == 0)
 // 			main->ut_nl_err = 1;
 // }
-
-char	*handle_sc_c(char *arg, t_main *main)
-{
-	char *arg_without_quotes;
-
-	arg_without_quotes = NULL;
-	if (arg == NULL)
-		return (NULL);
-	// if (redirections_handler(arg, main) == 1)
-	// {
-
-	// }
-	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
-	{
-		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)
-			return (free(arg), ft_strdup(""));
-	}
-	if (main->s_qs[0] > -1 || main->d_qs[0] > -1)
-	{
-		arg_without_quotes = get_rid_of_quotes(ft_strdup(arg));
-		if (ft_strcmp(arg_without_quotes, ":") == 0)
-			return (free(arg_without_quotes), ft_strdup(""));
-	}
-	return (arg);
-}
