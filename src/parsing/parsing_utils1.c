@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/01 16:55:42 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/02 15:22:03 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,14 @@ int     order(char *_s, t_main *main)
 
         (void)main;
         s = cmd_separate(get_rid_of_spaces(_s)); // placer les ' ' manquants/supr ceux en trop
+        if (check_open_quotes(s, main) == 0)
+	        return (0);
+        s = replace_dollar(s, main);
+        s = handle_sc_c(s, main);
+        s = get_rid_of_quotes(s);
         printf("order 0 '%s'\n", s);
+        if (!s || s[0] == '\0')
+                return (0);
         pipes = ft_split(s, '|'); // separer les pipes
         for (int i=0;pipes[i];i++)
                 printf("pipe %d '%s'\n", i, pipes[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/01 17:58:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/02 14:46:00 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_main {
     int		nb_cmd;
     char	*path;
     int     last_exit_code;
+    char    *u_token;
 }	t_main;
 
 // LIBFT
@@ -214,4 +215,7 @@ void    init_signals();
 int	    check_var_exists2(t_main *main, char *arg);
 char	*get_var_name(char *cmd);
 char    *add_char_to_str(char *s, char c, int _free);
+
+char	*handle_sc_c(char *arg, t_main *main);
+int	in_dquote(t_main *main, char *arg_dup, int j);
 #endif

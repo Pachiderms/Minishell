@@ -64,6 +64,8 @@ int	ft_process(t_main *main)
 {
 	t_cmd	*cmd_tokens;
 
+	// if (main->unexpected_token)
+	
 	printf("nb cmd %d\n", main->nb_cmd);
 	cmd_tokens = main->cmd_tokens;
 	if (!ft_strcmp(cmd_tokens->cmd, "cat") || !ft_strcmp(cmd_tokens->cmd, "sleep"))

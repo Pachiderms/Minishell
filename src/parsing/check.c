@@ -35,6 +35,10 @@ int	is_cmd(char *s, char *path)
 
 	i = 0;
 	tmp = NULL;
+	if (ft_strcmp(s, "\0") == 0)
+		return (0);
+	if (ft_strchr(s, '/'))
+		return (0);
 	s1 = ft_strjoin("/", get_cmd(s));
 	split = ft_split(path, ':');
 	if (check_builtin(s))
@@ -63,71 +67,113 @@ int	is_sc(char *s)
 	return (0);
 }
 
+int	closed_quotes1(char const *s, int *i, int *_qts, char q)
+{
+	if (*_qts == 1)
+	{
+		while (s[*i] != q && s[*i])
+			*i += 1;
+		if (s[*i] == q)
+		{
+			*_qts = 0;
+			*i += 1;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int	check_open_quotes(char const *s, t_main *main)
 {
 	int i;
 	int s_qts;
 	int d_qts;
-	int tmp = 0;
-	int tmp2 = 0;
-	int r = 0;
-	int r1 = 0;
+	int tmp;
+
 	i = 0;
 	s_qts = 0;
 	d_qts = 0;
+	tmp = 0;
 	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '"')
 		{
 			if (s[i] == '\'')
-			{
-				//printf("s_qts on 1 -> s[i] : %c | i : %d\n", s[i], i);
 				s_qts = 1;
-				tmp = i;
-				i++;
-			}
 			else if (s[i] == '"')
-			{
-				//printf("d_qts on 1 -> s[i] : %c | i : %d\n", s[i], i);
 				d_qts = 1;
-				tmp2 = i;
-				i++;
-			}
+			tmp = i;
+			i++;
 		}
-		if (s_qts == 1)
-		{
-			while (s[i] != '\'' && s[i])
-				i++;
-			if (s[i] == '\'')
-			{
-				//printf("s_qts on 0 -> s[i] : %c | i : %d\n", s[i], i);
-				s_qts = 0;
-				main->s_qs[r++] = tmp;
-				i++;
-			}
-		}
-		else if (d_qts == 1)
-		{
-			while (s[i] != '"' && s[i])
-				i++;
-			if (s[i] == '"')
-			{
-				//printf("s_qts on 0 -> s[i] : %c | i : %d\n", s[i], i);
-				d_qts = 0;
-				main->d_qs[r1++] = tmp2;
-				i++;
-			}
-		}
-		//printf("s[i] : %c | i : %d\n", s[i], i);
+		if (closed_quotes1(s, &i, &s_qts, '\'') == 1)
+			main->s_qs[main->dollars.r++] = tmp;
+		else if (closed_quotes1(s, &i, &d_qts, '"') == 1)
+			main->d_qs[main->dollars.r1++] = tmp;
 		if (s[i] && s[i] != '\'' && s[i] != '"')
 			i++;
 	}
-	main->s_qs[r] = -1;
-	main->d_qs[r1] = -1;
-	printf("s_qs0 : %d | s_qs1 : %d | s_qs2 : %d\n", main->s_qs[0], main->s_qs[1], main->s_qs[2]);
-	printf("d_qs0 : %d | d_qs1 : %d | s_qs2 : %d\n", main->d_qs[0], main->d_qs[1], main->d_qs[2]);
-	printf("s_qts : %d| d_qts : %d\n", s_qts, d_qts);
+	main->s_qs[main->dollars.r++] = -1;
+	main->d_qs[main->dollars.r1++] = -1;
+	main->dollars.r = 0;
+	main->dollars.r1 = 0;
+	//printf("s_qts : %d | d_qts : %d\n", s_qts, d_qts);
 	if (s_qts == 1 || d_qts == 1)
 		return (0);
 	return (1);
 }
+
+int check_syntax_redirect(char *s, t_main *main)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (s[i])
+	{
+		if (!ft_strncmp(&s[i], ">>", 2) || !ft_strncmp(&s[i], "<<", 2)
+			|| !ft_strncmp(&s[i], "<>", 2))
+		{
+			j = i + 2;
+			while (ft_isspace(s[j]))
+				j++;
+			if (s[j] == '\0')
+				main->u_token = "newline";
+		}
+		else if (!ft_strncmp(&s[i], ">", 1) || !ft_strncmp(&s[i], "<", 1))
+		{
+			j = i + 1;
+			while (ft_isspace(s[j]))
+				j++;
+			if (s[j] == '\0')
+				main->u_token = "newline";
+		}
+		i++;	
+	}
+	printf("u_token : %s\n", main->u_token);
+	return (!main->u_token);
+}
+
+char	*handle_sc_c(char *arg, t_main *main)
+{
+	char *arg_without_quotes;
+
+	arg_without_quotes = NULL;
+	if (arg == NULL)
+		return (NULL);
+	// if (check_syntax_redirect(arg, main) == 0)
+	// 	return (NULL);
+	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
+	{
+		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)
+			return (free(arg), ft_strdup(""));
+	}
+	if (main->s_qs[0] > -1 || main->d_qs[0] > -1)
+	{
+		arg_without_quotes = get_rid_of_quotes(ft_strdup(arg));
+		if (ft_strcmp(arg_without_quotes, ":") == 0)
+			return (free(arg_without_quotes), ft_strdup(""));
+	}
+	return (arg);
+}
+
+
