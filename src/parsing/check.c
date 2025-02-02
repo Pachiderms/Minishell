@@ -46,7 +46,7 @@ int	is_cmd(char *s, char *path)
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);
-		if (access(tmp, R_OK) == 0)
+		if (!ft_strcmp(split[i], tmp))
 			return (free(tmp), free_split(split), free(s1), 1);
 		free(tmp);
 		i++;

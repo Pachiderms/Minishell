@@ -58,22 +58,23 @@ int	echo_dollar(t_main *main, char **cmd)
 	return (ft_putchar_fd('\n', 1), 0);
 }
 
-int	ft_echo(t_main *main, char **cmd)
+int	ft_echo(t_main *main)
 {
-	int	fd;
-	int	nl;
+	(void)main;
+	// int	fd;
+	// int	nl;
 
-	nl = 1;
-	fd = get_fd_out(cmd);
-	if (fd < 0 || !cmd[1])
-		return (perror(GREY"minishell"), 1);
-	if (ft_strcmp(cmd[1], "-n") == 0)
-		nl = 0;
-	if (fd > 1)
-		echo_file(cmd, fd, nl);
-	if (cmd[1][0] == '$')
-		return (echo_dollar(main, cmd));
-	else
-		echo_prompt(cmd, nl);
+	// nl = 1;
+	// fd = get_fd_out(cmd);
+	// if (fd < 0 || !cmd[1])
+	// 	return (perror(GREY"minishell"), 1);
+	// if (ft_strcmp(cmd[1], "-n") == 0)
+	// 	nl = 0;
+	// if (fd > 1)
+	// 	echo_file(cmd, fd, nl);
+	// if (cmd[1][0] == '$')
+	// 	return (echo_dollar(main, cmd));
+	// else
+	// 	echo_prompt(cmd, nl);
 	return (0);
 }

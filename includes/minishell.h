@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/02 16:29:03 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/02 18:19:00 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,38 +136,38 @@ int     ft_heredoc(t_cmd *token);
 
 /// ENV
 int		init_env(char **env, t_main *main);
-int     check_syntax_env(char **split);
-int	    print_env(t_main *main, int check, char **split);
+int     check_syntax_env(char *cmd);
+int	    print_env(t_main *main, int check);
 /// UNSET
 void	unset_env(t_main *main, char *cmd);
 void	unset_export(t_main *main, char *cmd);
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
-int	    prep_unset(t_main *main, char **split);
+int	    prep_unset(t_main *main);
 /// EXPORT
 void    export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
 void	fill_export(t_main *main, char *cmd);
 void	fill_env_export(t_main *main, char *cmd);
 void	print_ascii_order(t_main *main);
-int	    prep_export(t_main *main, char **split);
+int	    prep_export(t_main *main);
 char	*get_var_name(char *cmd);
 int     check_plus(char *cmd);
 char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
 void    remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
-int     ft_echo(t_main *main, char *cmd);
+int     ft_echo(t_main *main);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
 int	    is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
-int		cd(t_main *main, char **cmd);
+int		cd(t_main *main);
 /// PWD
 int     return_to_pwd(t_main *main);
 void    update_oldpwd_pwd(t_main *main);
-int     pwd(t_main *main, char **cmd);
+int     pwd(t_main *main);
 /// UTILS BUILTINS
 int     basic_verif(char *arg, int which);
 int		check_var_exists(char **env, int len, char *cmd);
