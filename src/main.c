@@ -3,31 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:33:45 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/02 15:23:04 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define DEFINE_I
 #include "../includes/minishell.h"
 
-void	init_main(t_main *main)
+void	set_null_main(t_main *main)
 {
 	main->env = NULL;
 	main->env_len = 0;
 	main->export = NULL;
 	main->export_len = 0;
-	main->tokens = NULL;
-	main->tokens_len = 0;
-	main->split_len = 0;
 	main->nb_cmd = 0;
-	main->hc_pos = -1;
 	main->path = NULL;
-	main->cmd = NULL;
-	main->infile = -1;
-	main->outfile = -1;
-	main->pip = NULL;
+	main->cmd_tokens = NULL;
+	main->u_token = NULL;
+
+	// Dolalr struct //
+	main->dollars.i = 0;
+	main->dollars.j = 0;
+	main->dollars.end = 0;
+	main->dollars.r = 0;
+	main->dollars.r1 = 0;
+	main->dollars.rep_pos = 0;
+	main->dollars.check = 0;
+	main->dollars.arg_dup = NULL;
+	main->dollars.tmp = NULL;
+	main->dollars.tmp2 = NULL;
+	main->dollars.tmp3 = NULL;
+	main->dollars.final_tmp = NULL;
 }
 
 char	*get_var_name(char *cmd)
@@ -93,6 +102,18 @@ int	init_env(char **env, t_main *main)
 	return (1);
 }
 
+int	init_main(t_main *main, char **env)
+{
+	set_null_main(main);
+	if (init_env(env, main) == 0)
+		return (free_all_data(main), 0);
+	if (check_var_exists(main->env, main->env_len, "export PATH=") != -1)
+		main->path = env[check_var_exists(main->env, main->env_len, "export PATH=")];
+	else
+		return (free_all_data(main), 0);
+	return (1);
+}
+
 int	only_space_line(char *cmd)
 {
 	int	i;
@@ -112,39 +133,34 @@ int	only_space_line(char *cmd)
 int	main(int argc, char **argv, char **env)
 {
 	static t_main	main;
-	//char	*cmd;
-	char	**split;
+	char	*cmd;
 	static int i;
 
 	(void)argc;
 	(void)argv;
-	main.cmd = NULL;
-	init_main(&main);
-	if (init_env(env, &main) == 0)
-		return (free_all_data(&main), 1);
-	if (check_var_exists(main.env, main.env_len, "export PATH=") != -1)
-		main.path = env[check_var_exists(main.env, main.env_len, "export PATH=")];
-	else
-		return (free_all_data(&main), 1);
+	if (!init_main(&main, env))
+		return (0);
 	init_signals();
-	while (ft_strcmp(main.cmd, "exit") != 0)
+	while (1)
 	{
-		main.cmd = readline(GREEN"minishell> "RESET);
-		if (main.cmd == NULL)
+		cmd = readline(GREEN"minishell> "RESET);
+		if (cmd == NULL)
 		{
 			printf("exit\n");
 			break ;
 		}
-		else if (only_space_line(main.cmd) == 0 && main.cmd)
+		if (only_space_line(cmd) == 0 && cmd)
 		{
-			add_history(main.cmd);
-			split = ft_split_k_q_s(&main, main.cmd, ' ');
-			if (init_tokens(split, &main) == 0)
-				break ;
-			if (ft_process(&main, split, main.cmd) == 0)
-				break ;
-			free_end_cmd(&main, split);
+			add_history(cmd);
+			if (!order(cmd, &main))
+				ft_lstclear(&main.cmd_tokens);
+			else
+			{
+				ft_process(&main);
+				free_end_cmd(&main);
+			}
 		}
+		cat = 0;
 		i++;
 	}
 	free_all_data(&main);

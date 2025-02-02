@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   split_kqs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/26 17:15:49 by tzizi            ###   ########.fr       */
+/*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
+/*   Updated: 2025/02/02 16:15:09 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	**ft_free_split_k_q_s(char **d, int start)
 {
+	start--;
 	while (start >= 0)
 	{
 		free(d[start]);
@@ -21,22 +22,6 @@ char	**ft_free_split_k_q_s(char **d, int start)
 	}
 	free(d);
 	return (0);
-}
-
-int	check_quotes(char const *s, char q)
-{
-	int	i;
-	int	quotes;
-
-	quotes = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == q)
-			quotes++;
-		i++;
-	}
-	return (quotes % 2 == 0);
 }
 
 int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s) // trop de lignes
@@ -51,8 +36,6 @@ int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s) // trop de lignes
 			j = i + 1;
 			if (_s[i] == 34 || _s[i] == 39)
 			{
-				if (!check_quotes(&_s[i], _s[i]))
-					return (-1);
 				while (_s[j] != _s[i] && _s[j])
 					j++;
 				i = j + 1;
@@ -102,25 +85,37 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	int		x;
 	char	**dest;
 	char	*no_space;
+	int		size;
 
 	i = 0;
 	x = 0;
 	j = 0;
 	no_space = get_rid_of_spaces(s);
-	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
+	if (check_open_quotes(no_space, main) == 0)
+		return (NULL);
+	printf("no space before dollar : <%s>\n", no_space);
+	no_space = replace_dollar(no_space, main);
+	printf("no space after dollar : <%s>\n\n", no_space);
+	no_space = handle_sc_c(no_space, main);
+	no_space = get_rid_of_spaces(no_space);
+	printf("no space : %s\n", no_space);
+	size = count_words(no_space);
+	if (size <= 0)
+		return (NULL);
+	dest = malloc((size + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
-		return (0);
+		return (free(no_space), NULL);
 	while (no_space[i])
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
 		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
-		if (dest[x] == NULL || j < 0)
+		printf("no_space[%d] adter rid quotes : <%s>\n", x, dest[x]);
+		if (dest[x++] == NULL || j < 0)
 			return (ft_free_split_k_q_s(dest, x));
-		x++;
 		i += (j - i);
 	}
+	printf("\n");
 	dest[x] = 0;
-	main->split_len = x;
 	return (free(no_space), dest);
 }
