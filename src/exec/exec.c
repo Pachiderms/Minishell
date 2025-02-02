@@ -36,7 +36,7 @@ int	builtin(t_main *main)
 	if (ft_strcmp(command, "export") == 0)
 		main->last_exit_code = prep_export(main, split);
 	if (ft_strcmp(command, "unset") == 0)
-		main->last_exit_code = prep_unset(main, split);
+		main->last_exit_code = prep_unset(main, main->cmd_tokens->args);
 	if (ft_strcmp(command, "echo") == 0)
 		main->last_exit_code = ft_echo(main, split);
 	if (ft_strcmp(command, "cd") == 0)

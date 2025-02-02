@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/02 14:46:00 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:29:03 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
 void    remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
-int     ft_echo(t_main *main, char **cmd);
+int     ft_echo(t_main *main, char *cmd);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
@@ -191,6 +191,8 @@ char    *get_rid_of(char *s, char c);
 int     check_open_quotes(char const *s, t_main *main);
 int	    handle_sc(t_main *main, char **split, int i);
 char	*get_cmd(char *path);
+char	**ft_split_k_q_s(t_main *main, char const *s, char c);
+
 /// EXEC
 int	    ft_process(t_main *main);
 int	    builtin(t_main *main);

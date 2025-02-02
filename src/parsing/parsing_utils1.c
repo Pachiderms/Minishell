@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/02 15:22:03 by zamgar           ###   ########.fr       */
+/*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
+/*   Updated: 2025/02/02 16:19:55 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
         t_cmd   *tmp;
         int     i;
 
-        pipe = ft_split(pipes[0], ' ');
+        pipe = ft_split_k_q_s(main, pipes[0], ' ');
         cmd_tokens = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
                         , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
         if (cmd_tokens->cmd)
@@ -76,7 +76,7 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
         i = 1;
         while (i < get_dchar_len(pipes))
         {
-                pipe = ft_split(pipes[i], ' ');
+                pipe = ft_split_k_q_s(main, pipes[i], ' ');
                 tmp = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
                         , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
                 if (tmp->cmd)
@@ -96,11 +96,6 @@ int     order(char *_s, t_main *main)
 
         (void)main;
         s = cmd_separate(get_rid_of_spaces(_s)); // placer les ' ' manquants/supr ceux en trop
-        if (check_open_quotes(s, main) == 0)
-	        return (0);
-        s = replace_dollar(s, main);
-        s = handle_sc_c(s, main);
-        s = get_rid_of_quotes(s);
         printf("order 0 '%s'\n", s);
         if (!s || s[0] == '\0')
                 return (0);
