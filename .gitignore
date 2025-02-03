@@ -4,4 +4,3 @@
 *.txt
 .vscode/
 minishell
-objs/
