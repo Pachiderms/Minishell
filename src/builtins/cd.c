@@ -88,7 +88,7 @@ int	cd(t_main *main)
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
-	if (main->cmd_tokens->arg_len > 2)
+	if (get_arg_len(main->cmd_tokens->args) > 2)
 		return (printf("minishell: cd: too many arguments\n")
 			, free(dir), 0);
 	if (!main->cmd_tokens->args)
