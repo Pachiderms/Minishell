@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 18:57:54 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 19:28:18 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ typedef struct s_main {
     t_dollar    dollars;
     int     s_qs[42];
     int     d_qs[42];
+    int     cl_s_qs[42];
+    int     cl_d_qs[42];
     int     check;
     int		nb_cmd;
     char	*path;
@@ -223,5 +225,6 @@ char    *add_char_to_str(char *s, char c, int _free);
 
 char	*handle_sc_c(char *arg, t_main *main);
 int	    in_dquote(t_main *main, char *arg_dup, int j);
+void	get_close_quotes(char const *s, t_main *main);
 
 #endif

@@ -106,8 +106,7 @@ int	prep_unset(t_main *main)
 	char	*cmd;
 
 	cmd = main->cmd_tokens->args;
-	if (get_arg_len(&ft_strchr(main->cmd_tokens->args, '=')[1]) > 1)
-		cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
+	cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
 	cmd = ft_strjoin("unset ", cmd);
 	unset(main, cmd);
 	free(cmd);

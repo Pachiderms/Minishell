@@ -67,6 +67,38 @@ int	is_sc(char *s)
 	return (0);
 }
 
+void	get_close_quotes(char const *s, t_main *main)
+{
+	int i;
+	int r;
+	int r1;
+	i = 0;
+	r = 0;
+	r1 = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+		{
+			i++;
+			while (s[i] != '\'')
+				i++;
+			main->cl_s_qs[r++] = i;
+		}
+		if (s[i] == '"')
+		{
+			i++;
+			while (s[i] != '"')
+				i++;
+			main->cl_d_qs[r1++] = i;
+		}
+		i++;
+	}
+	main->cl_s_qs[r] = -1;
+	main->cl_d_qs[r1] = -1;
+	r = 0;
+	r1 = 0;
+}
+
 int	closed_quotes1(char const *s, int *i, int *_qts, char q)
 {
 	if (*_qts == 1)
