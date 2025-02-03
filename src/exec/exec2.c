@@ -78,10 +78,8 @@ void	child_process(t_main *main, t_cmd *token)
 	if (check_builtin(token->cmd))
 		child_builtin(main, token);
 	cmd = cook_cmd(token->cmd);
-	printf("cmd <%s>\n", cmd);
-	token->infile = ft_heredoc(token);
+	token->infile = ft_heredoc(token, 0);
 	token->args = rm_redirections(token->args, token->cmd);
-	printf("token fdin %d\n", token->infile);
 	printf("final args <%s>\n", token->args);
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/01 17:59:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/03 19:10:32 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int write_in_here_doc(int here_doc, char *eof)
     }
     free(tmp);
 	ft_putstr_fd(res, here_doc);
-    return(1);
+    return(free(res), 1);
 }
 
-int ft_heredoc(t_cmd *token)
+int ft_heredoc(t_cmd *token, int builtin)
 {
     int     here_doc;
 
@@ -50,10 +50,9 @@ int ft_heredoc(t_cmd *token)
         unlink("heredoc.tmp");
         return (token->infile);
     }
-    else
+    else if (!builtin)
     {
-        token->hd = 1;
-        token->args = ft_strjoin_free(token->args, "heredoc.tmp", 0);
+        token->args = ft_strjoin_free(token->args, " heredoc.tmp", 0);
     }
     return (here_doc);
 }

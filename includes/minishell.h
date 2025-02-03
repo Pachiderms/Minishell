@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 17:52:11 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 18:57:54 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_cmd
 {
     char    *cmd;
     char    *args;
-    int     hd;
     char    *heredoc_eof;
     int     infile;
     int     outfile;
@@ -133,7 +132,7 @@ t_cmd  *ft_lstlast(t_cmd *lst);
 void    print_t_cmd(t_cmd *cmd);//a supr a la fin
 
 //HERE_DOC
-int     ft_heredoc(t_cmd *token);
+int ft_heredoc(t_cmd *token, int builtin);
 
 /// ENV
 int		init_env(char **env, t_main *main);
@@ -223,5 +222,6 @@ char	*get_var_name(char *cmd);
 char    *add_char_to_str(char *s, char c, int _free);
 
 char	*handle_sc_c(char *arg, t_main *main);
-int	in_dquote(t_main *main, char *arg_dup, int j);
+int	    in_dquote(t_main *main, char *arg_dup, int j);
+
 #endif

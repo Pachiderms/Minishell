@@ -17,6 +17,8 @@ int	builtin(t_main *main)
 	char	*command;
 
 	main->nb_cmd = 0;
+	if (main->cmd_tokens->heredoc_eof)
+			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1);
 	command = get_cmd(main->cmd_tokens->cmd);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
