@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 18:41:21 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 18:46:58 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ char    *rm_redirections(char *s, char *cmd)
     {
         i += skip_files(&s[i], '>', '<');
         if (s[i] == '<')
-        {
             i += skip_infiles(&s[i], '<', '>');
-            printf("i < %d\n", i);
-        }
         tmp = add_char_to_str(tmp, s[i], 1);
         i++;
     }
