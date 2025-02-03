@@ -49,14 +49,13 @@ int	check_syntax_pwd(char *cmd)
 	return (1);
 }
 
-int	pwd(t_main *main, char **cmd)
+int	pwd(t_main *main)
 {
 	char	*pwd;
 
-	(void)main;
-	if (get_dchar_len(cmd) == 2)
+	if (main->cmd_tokens->args)
 	{
-		if (check_syntax_pwd(cmd[1]) == 0)
+		if (check_syntax_pwd(main->cmd_tokens->args) == 0)
 			return (0);
 	}
 	pwd = getcwd(NULL, 0);

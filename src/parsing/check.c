@@ -46,7 +46,7 @@ int	is_cmd(char *s, char *path)
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);
-		if (access(tmp, R_OK) == 0)
+		if (!ft_strcmp(split[i], tmp))
 			return (free(tmp), free_split(split), free(s1), 1);
 		free(tmp);
 		i++;
@@ -120,6 +120,39 @@ int	check_open_quotes(char const *s, t_main *main)
 	if (s_qts == 1 || d_qts == 1)
 		return (0);
 	return (1);
+}
+
+void	get_close_quotes(char const *s, t_main *main)
+{
+	int i;
+	int r;
+	int r1;
+
+	i = 0;
+	r = 0;
+	r1 = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+		{
+			i++;
+			while (s[i] != '\'')
+				i++;
+			main->cl_s_qs[r++] = i;
+		}
+		if (s[i] == '"')
+		{
+			i++;
+			while (s[i] != '"')
+				i++;
+			main->cl_d_qs[r1++] = i;
+		}
+		i++;
+	}
+	main->cl_s_qs[r] = -1;
+	main->cl_d_qs[r1] = -1;
+	r = 0;
+	r1 = 0;
 }
 
 int check_syntax_redirect(char *s, t_main *main)

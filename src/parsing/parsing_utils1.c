@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/02 16:19:55 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/03 17:52:30 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
         cmd_tokens = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
                         , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
         if (cmd_tokens->cmd)
-                main->nb_cmd++;
+                main->nb_cmd++;   
         free_split(pipe);
         i = 1;
         while (i < get_dchar_len(pipes))

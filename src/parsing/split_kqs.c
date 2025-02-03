@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/02 16:15:09 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/03 19:14:25 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	count_words(char *no_space)
 		}
 		i++;
 	}
+	if (ft_strcmp(no_space, "") == 0)
+		return (0);
 	return (word + 1);
 }
 
@@ -93,29 +95,51 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	no_space = get_rid_of_spaces(s);
 	if (check_open_quotes(no_space, main) == 0)
 		return (NULL);
+	//
+	get_close_quotes(no_space, main);
+	int r = 0;
+	int r1 = 0;
+	printf("single quotes :\n");
+	while (main->s_qs[r] != -1)
+	{
+		printf("opened -> main->s_qs[%d] : %d\n", r, main->s_qs[r]);
+		printf("closed -> main->cl_s_qs[%d] : %d\n", r, main->cl_s_qs[r]);
+		r++;
+	}
+	printf("\ndouble quotes :\n");
+	while (main->d_qs[r1] != -1)
+	{
+		printf("opened -> main->d_qs[%d] : %d\n", r1, main->d_qs[r1]);
+		printf("closed -> main->cl_d_qs[%d] : %d\n", r1, main->cl_d_qs[r1]);
+		r1++;
+	}
+	exit(0);
+	//
 	printf("no space before dollar : <%s>\n", no_space);
 	no_space = replace_dollar(no_space, main);
 	printf("no space after dollar : <%s>\n\n", no_space);
 	no_space = handle_sc_c(no_space, main);
-	no_space = get_rid_of_spaces(no_space);
-	printf("no space : %s\n", no_space);
-	size = count_words(no_space);
+	char *tmp = get_rid_of_spaces(no_space);
+	free(no_space);
+	printf("no space : %s\n", tmp);
+	size = count_words(tmp);
 	if (size <= 0)
-		return (NULL);
+		return (free(tmp), NULL);
+	printf("dest size : %d\n", size);
 	dest = malloc((size + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
-		return (free(no_space), NULL);
-	while (no_space[i])
+		return (free(tmp), NULL);
+	while (tmp[i])
 	{
-		i = ft_calc_k_q_s(i, 0, c, no_space);
-		j = ft_calc_k_q_s(i, 1, c, no_space);
-		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
+		i = ft_calc_k_q_s(i, 0, c, tmp);
+		j = ft_calc_k_q_s(i, 1, c, tmp);
+		dest[x] = get_rid_of_quotes(ft_substr(tmp, i, j - i));
 		printf("no_space[%d] adter rid quotes : <%s>\n", x, dest[x]);
 		if (dest[x++] == NULL || j < 0)
-			return (ft_free_split_k_q_s(dest, x));
+			return (free(tmp), ft_free_split_k_q_s(dest, x));
 		i += (j - i);
 	}
 	printf("\n");
 	dest[x] = 0;
-	return (free(no_space), dest);
+	return (free(tmp), dest);
 }

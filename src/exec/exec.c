@@ -12,37 +12,24 @@
 
 #include "../includes/minishell.h"
 
-char	**prep_builtin(t_cmd *token)
-{
-	char	*join;
-	char	**res;
-
-	join = ft_strjoin(token->cmd, " ");
-	join = ft_strjoin_free(join, token->args, 0);
-	res = ft_split(join, ' ');
-	return (free(join), res);
-}
-
 int	builtin(t_main *main)
 {
 	char	*command;
-	char	**split;
 
 	main->nb_cmd = 0;
-	split = prep_builtin(main->cmd_tokens);
 	command = get_cmd(main->cmd_tokens->cmd);
 	if (ft_strcmp(command, "env") == 0)
-		main->last_exit_code = print_env(main, 0, split);
+		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
-		main->last_exit_code = prep_export(main, split);
+		main->last_exit_code = prep_export(main);
 	if (ft_strcmp(command, "unset") == 0)
-		main->last_exit_code = prep_unset(main, main->cmd_tokens->args);
+		main->last_exit_code = prep_unset(main);
 	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = ft_echo(main, split);
+		main->last_exit_code = ft_echo(main);
 	if (ft_strcmp(command, "cd") == 0)
-		main->last_exit_code = cd(main, split);
+		main->last_exit_code = cd(main);
 	if (ft_strcmp(command, "pwd") == 0)
-		main->last_exit_code = pwd(main, split);
+		main->last_exit_code = pwd(main);
 	if (ft_strcmp(command, "exit") == 0)
 	{
 		printf("exit\n");
