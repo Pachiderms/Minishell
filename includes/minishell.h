@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 19:28:18 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 21:22:24 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,8 @@ char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
 void    remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
-int	    prep_echo(t_main *main, char *args);
-void	get_arg_solo(char *s, char **tmp, int to_print);
+int	    ft_echo(t_main *main);
+char    *find_newline(char *s);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD

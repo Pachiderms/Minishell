@@ -27,7 +27,7 @@ int	builtin(t_main *main)
 	if (ft_strcmp(command, "unset") == 0)
 		main->last_exit_code = prep_unset(main);
 	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = prep_echo(main, main->cmd_tokens->args);
+		main->last_exit_code = ft_echo(main);
 	if (ft_strcmp(command, "cd") == 0)
 		main->last_exit_code = cd(main);
 	if (ft_strcmp(command, "pwd") == 0)

@@ -49,28 +49,29 @@ int	echo_dollar(t_main *main, char *arg)
 	return (ft_putchar_fd('\n', 1), 0);
 }
 
-int	ft_echo(t_main *main, char *arg, char *to_print)
+int	ft_echo(t_main *main)
 {
 	int		fd;
-	int		nl;
+	char		*nl;
 
-	nl = ft_strncmp(arg, "-n", 2) == 0;
+	nl = find_newline(main->cmd_tokens->args);
+	printf("nl '%s'\n", nl);
 	fd = main->cmd_tokens->outfile;
 	if (fd == -1)
 		fd = 1;
-	if (fd < 0 || !arg)
-		return (perror(GREY"minishell"), 1);
-	if (arg[0] == '$')
-		return (echo_dollar(main, arg));
-	else
-	{
-		if (nl)
-			ft_putendl_fd(to_print, fd);
-		else
-			ft_putstr_fd(to_print, fd);
-		if (fd > 1)
-			close(fd);
-	}
+	// if (fd < 0 || !arg)
+	// 	return (perror(GREY"minishell"), 1);
+	// if (arg[0] == '$')
+	// 	return (echo_dollar(main, ));
+	// else
+	// {
+	// 	if (nl)
+	// 		ft_putendl_fd(, fd);
+	// 	else
+	// 		ft_putstr_fd(, fd);
+	// 	if (fd > 1)
+	// 		close(fd);
+	// }
 	return (0);
 }
 

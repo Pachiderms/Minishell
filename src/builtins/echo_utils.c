@@ -6,37 +6,53 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 16:51:44 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 17:33:58 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 21:54:47 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	get_arg_solo(char *s, char **tmp, int to_print)
+int check_after_nl(char *s)
 {
-    int     i;
-	int		j;
+    int i;
+    int space;
 
-    i = 0;
+    i = 2;
+    space = 0;
     if (!s)
-            return ;
-    while(++i < (int)ft_strlen(s) - 1)
-	{
-		j = i;
-		while (i < (int)ft_strlen(s) - 1)
+        return (0);
+    while (s[i])
+    {
+        if (!space && s[i] != 'n')
+            return (ft_isspace(s[i]));
+        while (ft_isspace(s[i]))
         {
-            if (ft_isspace(s[i]))
-                break ;
-			i++;
+            space = 1;
+            i++;
         }
-        if (!ft_isspace(s[i - 1]))
+        if (!ft_strncmp(&s[i], "-n", 2))
         {
-               printf("%d %s\n", i, &s[i]);
-			break ;
+            space = 0;
+            i += 2;
         }
-	}
-    if (to_print)
-        *tmp = ft_substr(s, j, i - j);
-    else
-        *tmp = ft_substr(s, 0, i);
+        i++;
+    }
+    return (1);
+}
+
+char    *find_newline(char *s)
+{
+    int i;
+
+    i = -1;
+    while (s[++i])
+    {
+        if (!ft_isspace(s[i]))
+            break   ;
+    }
+    if (ft_strncmp(&s[i], "-n", 2) == 0)
+    {
+        printf("check %d\n", check_after_nl(&s[i]));
+    }
+    return (NULL);
 }
