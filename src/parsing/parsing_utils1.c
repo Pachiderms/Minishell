@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 19:38:15 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 22:51:38 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
                 main->nb_cmd++;
         free_split(pipe);
         i = 1;
-        while (i < get_dchar_len(pipes))
+        while (i < get_dchar_len(pipes))//                 cat vnebv | ls
         {
                 pipe = ft_split_k_q_s(main, pipes[i], ' ');
                 tmp = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
