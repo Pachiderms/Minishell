@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 14:53:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/03 17:31:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ int     get_arg_len(char *arg)
         words = 0;
         i = 1;
         if (!arg)
-                return (0);  
+                return (0);
+        if (ft_strlen(arg) == 1 && !ft_isspace(arg[0]))
+                return (1);
         while(i < (int)ft_strlen(arg) - 1)
 	{
 		while (i < (int)ft_strlen(arg) - 1)
@@ -77,7 +79,7 @@ int     get_arg_len(char *arg)
                                 break ;
 			i++;
                 }
-                if (!ft_isspace(arg[i - 1]) && !ft_isspace(arg[i + 1]))
+                if (!ft_isspace(arg[i - 1]))
                 {
                         printf("%d %s\n", i, &arg[i]);
 			words++;
@@ -95,6 +97,7 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
         t_cmd   *tmp;
         int     i;
 
+        //cat test.txt | grep ligne | wc -l > out.txt
         pipe = ft_split_k_q_s(main, pipes[0], ' ');
         cmd_tokens = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
                         , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));

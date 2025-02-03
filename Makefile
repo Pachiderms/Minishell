@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+         #
+#    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/02/02 16:15:35 by zamgar           ###   ########.fr        #
+#    Updated: 2025/02/03 17:47:10 by tzizi            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFT_NAME = libft.a
 
 LIBFT_LIB = $(addprefix $(LIBFT_PATH), $(LIBFT_NAME))
 
-SRC = src/parsing/split_kqs.c src/parsing/check.c src/parsing/t_cmd_utils.c src/main.c src/builtins/env.c src/exec/exec.c src/exec/exec2.c src/builtins/export.c src/builtins/export1.c src/builtins/export+=.c src/builtins/unset.c src/builtins/unset1.c src/parsing/tokens_utils.c src/parsing/tokens_utils1.c src/parsing/parsing_utils.c src/parsing/parsing_utils1.c src/builtins/echo.c src/builtins/cd.c src/builtins/cd1.c src/builtins/pwd.c src/exec/cmd_redirect.c src/utils/free.c src/utils/signals.c src/heredoc.c
+SRC = src/exec/exec2_utils.c src/builtins/echo_utils.c src/parsing/split_kqs.c src/parsing/check.c src/parsing/t_cmd_utils.c src/main.c src/builtins/env.c src/exec/exec.c src/exec/exec2.c src/builtins/export.c src/builtins/export1.c src/builtins/export+=.c src/builtins/unset.c src/builtins/unset1.c src/parsing/tokens_utils.c src/parsing/tokens_utils1.c src/parsing/parsing_utils.c src/parsing/parsing_utils1.c src/builtins/echo.c src/builtins/cd.c src/builtins/cd1.c src/builtins/pwd.c src/exec/cmd_redirect.c src/utils/free.c src/utils/signals.c src/heredoc.c
 
 OBJS := $(SRC:%.c=%.o)
 

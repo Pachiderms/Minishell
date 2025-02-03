@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 16:23:45 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 17:52:11 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,8 @@ char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
 void    remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
-int     ft_echo(t_main *main);
+int	    prep_echo(t_main *main, char *args);
+void	get_arg_solo(char *s, char **tmp, int to_print);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
@@ -199,7 +200,9 @@ int	    ft_process(t_main *main);
 int	    builtin(t_main *main);
 /// PIPEX
 char    **prep_cmd_exec(t_main *main);
-int     launch_process(t_main *main);
+int     exec(t_main *main);
+char    *rm_redirections(char *s, char *cmd);
+char	*cook_cmd(char *s);
 
 /// FREE
 void	free_all_data(t_main *main);

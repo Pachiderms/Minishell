@@ -25,7 +25,7 @@ int	builtin(t_main *main)
 	if (ft_strcmp(command, "unset") == 0)
 		main->last_exit_code = prep_unset(main);
 	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = ft_echo(main);
+		main->last_exit_code = prep_echo(main, main->cmd_tokens->args);
 	if (ft_strcmp(command, "cd") == 0)
 		main->last_exit_code = cd(main);
 	if (ft_strcmp(command, "pwd") == 0)
@@ -76,7 +76,7 @@ int	ft_process(t_main *main)
 			if (check_builtin(cmd_tokens->cmd))
 				return (builtin(main));
 		}
-		main->last_exit_code = launch_process(main);
+		main->last_exit_code = exec(main);
 		main->nb_cmd = 0;
 	}
 	else if (cmd_tokens->args)
