@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/02 18:19:00 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/03 14:36:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_cmd
 {
     char    *cmd;
     char    *args;
+    int     arg_len;
     int     hd;
     char    *heredoc_eof;
     int     infile;
@@ -114,6 +115,7 @@ char    *ft_itoa(int n);
 
 //NEW PARSING
 int 	get_dchar_len(char **split);
+int     get_arg_len(char *arg);
 int     order(char *s, t_main *main);
 char	*find_cmd(char **s, t_main *main);
 char	*find_args(char **s, t_main *main);

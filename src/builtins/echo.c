@@ -58,23 +58,43 @@ int	echo_dollar(t_main *main, char **cmd)
 	return (ft_putchar_fd('\n', 1), 0);
 }
 
+char	**prep_echo(char *args)
+{
+	char	**res;
+	char	*tmp;
+	int		words;
+	int		i;
+
+	res = NULL;
+	tmp = NULL;
+	words = get_arg_len(args);
+	(void)i;
+	i = 0;
+	if (words <= 0)
+		return (NULL);
+	return (NULL);
+}
+
 int	ft_echo(t_main *main)
 {
-	(void)main;
-	// int	fd;
-	// int	nl;
+	int		fd;
+	int		nl;
+	char	**cmd;
 
-	// nl = 1;
-	// fd = get_fd_out(cmd);
-	// if (fd < 0 || !cmd[1])
-	// 	return (perror(GREY"minishell"), 1);
-	// if (ft_strcmp(cmd[1], "-n") == 0)
-	// 	nl = 0;
-	// if (fd > 1)
-	// 	echo_file(cmd, fd, nl);
-	// if (cmd[1][0] == '$')
-	// 	return (echo_dollar(main, cmd));
-	// else
-	// 	echo_prompt(cmd, nl);
+	nl = 1;
+	fd = main->cmd_tokens->outfile;
+	if (fd == -1)
+		fd = 1;
+	cmd = prep_echo(main->cmd_tokens->args);
+	if (fd < 0 || !cmd)
+		return (perror(GREY"minishell"), 1);
+	if (ft_strcmp(cmd[0], "-n") == 0)
+		nl = 0;
+	if (fd > 1)
+		echo_file(cmd, fd, nl);
+	if (cmd[0][0] == '$')
+		return (echo_dollar(main, cmd));
+	else
+		echo_prompt(cmd, nl);
 	return (0);
 }

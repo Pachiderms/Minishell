@@ -56,6 +56,7 @@ t_cmd  *ft_lstnew(int infile, int outfile, char *heredoc_eof, char *cmd, char *a
             node->args = args;
         else
             node->args = NULL;
+        node->arg_len = get_arg_len(node->args);
         if (infile > 0)
                 node->infile = infile;
         else

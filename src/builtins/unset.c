@@ -106,20 +106,10 @@ int	prep_unset(t_main *main)
 	char	*cmd;
 
 	cmd = main->cmd_tokens->args;
-	cmd = cut_str(cmd, ft_strchr(cmd, ' '));
+	if (get_arg_len(&ft_strchr(main->cmd_tokens->args, '=')[1]) > 1)
+		cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
 	cmd = ft_strjoin("unset ", cmd);
 	unset(main, cmd);
 	free(cmd);
-	// int		i;
-	// char	*tmp;
-
-	// i = 1;
-	// while (split[i] && is_sc(split[i]) != 1)
-	// {
-	// 	tmp = ft_strjoin("unset ", split[i]);
-	// 	unset(main, tmp);
-	// 	free(tmp);
-	// 	i++;
-	// }
 	return (0);
 }

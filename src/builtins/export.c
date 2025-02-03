@@ -116,27 +116,10 @@ int	prep_export(t_main *main)
 	char	*cmd;
 
 	cmd = main->cmd_tokens->args;
-	cmd = cut_str(cmd, ft_strchr(cmd, ' '));
+	if (get_arg_len(&ft_strchr(main->cmd_tokens->args, '=')[1]) > 1)
+		cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
 	cmd = ft_strjoin("export ", cmd);
 	export(main, cmd);
 	free(cmd);
-	// int		i;
-	// char	*tmp;
-
-
-	// i = 1;
-	// if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
-	// {
-	// 	print_env(main, 1, split);
-	// 	return (0);
-	// }
-	// while (split[i] && is_sc(split[i]) != 1)
-	// {
-	// 	printf("split : '%s'\n", split[i]);
-	// 	tmp = ft_strjoin("export ", split[i]);
-	// 	export(main, tmp);
-	// 	free(tmp);
-	// 	i++;
-	// }
 	return (0);
 }

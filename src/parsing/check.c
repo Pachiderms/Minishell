@@ -35,7 +35,7 @@ int	is_cmd(char *s, char *path)
 
 	i = 0;
 	tmp = NULL;
-	if (ft_strcmp(s, "\0") == 0)
+	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
 		return (0);
 	if (ft_strchr(s, '/'))
 		return (0);
@@ -46,7 +46,7 @@ int	is_cmd(char *s, char *path)
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);
-		if (!ft_strcmp(split[i], tmp))
+		if (access(tmp, F_OK) == 0)
 			return (free(tmp), free_split(split), free(s1), 1);
 		free(tmp);
 		i++;
