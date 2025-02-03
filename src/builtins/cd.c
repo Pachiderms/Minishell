@@ -81,30 +81,24 @@ int	print_home_pwd(t_main *main)
 	return (0);
 }
 
-int	cd(t_main *main, char **split)
+int	cd(t_main *main)
 {
 	char	*dir;
-	/* chdir_value = chdir("");
-	char *pwd = getcwd(NULL, 0);
-	printf("pwd : %s\n", pwd);
-	printf("chdir_value : %d\n", chdir_value);
-	exit(0); */
+
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
-	//plus de split_len car plus de split !!
-	// if (main->split_len > 2)
-	// 	return (printf("minishell: cd: too many arguments\n"), free(dir), 0);
-	if (get_dchar_len(split) > 2)
-		return (printf("minishell: cd: too many arguments\n"), free(dir), 0);
-	if (/*main->split_len == 1 &&*/get_dchar_len(split) && (ft_strcmp("cd", split[0]) == 0 || ft_strcmp("/bin/cd", split[0]) == 0))
+	if (get_arg_len(main->cmd_tokens->args) > 2)
+		return (printf("minishell: cd: too many arguments\n")
+			, free(dir), 0);
+	if (!main->cmd_tokens->args)
 	{
 		if (print_home_pwd(main) == 1)
 			return (free(dir), 1);
 	}
 	else
 	{
-		if (check_syntax_cd(main, split[1]) == 1)
+		if (check_syntax_cd(main, main->cmd_tokens->args) == 1)
 		{
 			update_oldpwd_pwd(main);
 			return (free(dir), 1);

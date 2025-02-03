@@ -107,7 +107,7 @@ char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3) // leaks à gérer
 	int check = 0;
 
 	if (!tmp && !tmp3)
-		final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 0);
+		final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 1);
 	if (tmp)
 	{
 		check = 1;

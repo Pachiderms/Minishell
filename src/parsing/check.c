@@ -35,7 +35,7 @@ int	is_cmd(char *s, char *path)
 
 	i = 0;
 	tmp = NULL;
-	if (ft_strcmp(s, "\0") == 0)
+	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
 		return (0);
 	if (ft_strchr(s, '/'))
 		return (0);
@@ -46,7 +46,7 @@ int	is_cmd(char *s, char *path)
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);
-		if (access(tmp, R_OK) == 0)
+		if (access(tmp, F_OK) == 0)
 			return (free(tmp), free_split(split), free(s1), 1);
 		free(tmp);
 		i++;
@@ -65,6 +65,38 @@ int	is_sc(char *s)
 	if (ft_strchr(s, '$'))
 		return (2);
 	return (0);
+}
+
+void	get_close_quotes(char const *s, t_main *main)
+{
+	int i;
+	int r;
+	int r1;
+	i = 0;
+	r = 0;
+	r1 = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+		{
+			i++;
+			while (s[i] != '\'')
+				i++;
+			main->cl_s_qs[r++] = i;
+		}
+		if (s[i] == '"')
+		{
+			i++;
+			while (s[i] != '"')
+				i++;
+			main->cl_d_qs[r1++] = i;
+		}
+		i++;
+	}
+	main->cl_s_qs[r] = -1;
+	main->cl_d_qs[r1] = -1;
+	r = 0;
+	r1 = 0;
 }
 
 int	closed_quotes1(char const *s, int *i, int *_qts, char q)

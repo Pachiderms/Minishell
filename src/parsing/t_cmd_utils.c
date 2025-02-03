@@ -68,7 +68,6 @@ t_cmd  *ft_lstnew(int infile, int outfile, char *heredoc_eof, char *cmd, char *a
                 node->heredoc_eof = ft_strdup(heredoc_eof);
         else
                 node->heredoc_eof = NULL;
-        node->hd = 0;
         node->next = NULL;
         return (node);
 }

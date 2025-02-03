@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/01 18:32:29 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/03 18:53:34 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	free_process(t_main *main, int exit_code)
 void	free_end_cmd(t_main *main)
 {
 	ft_lstclear(&main->cmd_tokens);
+	if (access("heredoc.tmp", F_OK) == 0)
+		unlink("heredoc.tmp");
 }
 
 void	free_split(char **split)

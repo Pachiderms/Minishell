@@ -101,18 +101,14 @@ void	unset(t_main *main, char *cmd)
 	return ;
 }
 
-int	prep_unset(t_main *main, char **split)
+int	prep_unset(t_main *main)
 {
-	int		i;
-	char	*tmp;
+	char	*cmd;
 
-	i = 1;
-	while (split[i] && is_sc(split[i]) != 1)
-	{
-		tmp = ft_strjoin("unset ", split[i]);
-		unset(main, tmp);
-		free(tmp);
-		i++;
-	}
+	cmd = main->cmd_tokens->args;
+	cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
+	cmd = ft_strjoin("unset ", cmd);
+	unset(main, cmd);
+	free(cmd);
 	return (0);
 }

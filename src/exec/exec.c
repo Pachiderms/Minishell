@@ -15,22 +15,23 @@
 int	builtin(t_main *main)
 {
 	char	*command;
-	char	**split;
 
-	split = ft_split(main->cmd_tokens->args, ' ');
+	main->nb_cmd = 0;
+	if (main->cmd_tokens->heredoc_eof)
+			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1);
 	command = get_cmd(main->cmd_tokens->cmd);
 	if (ft_strcmp(command, "env") == 0)
-		main->last_exit_code = print_env(main, 0, split);
+		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
-		main->last_exit_code = prep_export(main, split);
+		main->last_exit_code = prep_export(main);
 	if (ft_strcmp(command, "unset") == 0)
-		main->last_exit_code = prep_unset(main, split);
+		main->last_exit_code = prep_unset(main);
 	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = ft_echo(main, split);
+		main->last_exit_code = prep_echo(main, main->cmd_tokens->args);
 	if (ft_strcmp(command, "cd") == 0)
-		main->last_exit_code = cd(main, split);
+		main->last_exit_code = cd(main);
 	if (ft_strcmp(command, "pwd") == 0)
-		main->last_exit_code = pwd(main, split);
+		main->last_exit_code = pwd(main);
 	if (ft_strcmp(command, "exit") == 0)
 	{
 		printf("exit\n");
@@ -77,7 +78,7 @@ int	ft_process(t_main *main)
 			if (check_builtin(cmd_tokens->cmd))
 				return (builtin(main));
 		}
-		main->last_exit_code = launch_process(main);
+		main->last_exit_code = exec(main);
 		main->nb_cmd = 0;
 	}
 	else if (cmd_tokens->args)

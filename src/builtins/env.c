@@ -66,13 +66,15 @@ void	print_ascii_order(t_main *main)
 	free_env(sort_env, main->export_len);
 }
 
-int	check_syntax_env(char **split)
+int	check_syntax_env(char *cmd)
 {
 	int		i;
+	char	**split;
 
+	split = ft_split(cmd, ' ');
 	i = 1;
 	if (ft_strcmp(split[0], "env") == 0 && split[1] == NULL)
-		return (1);
+		return (free_split(split), 1);
 	if (ft_strcmp(split[0], "env") == 0 && split[1] != NULL)
 	{
 		while (split[i])
@@ -81,21 +83,25 @@ int	check_syntax_env(char **split)
 				i++;
 			else
 				return (printf("env: ‘%s’: No such file or directory\n"
-						, split[i]), 0);
+						, split[i]), free_split(split), 0);
 		}
 	}
-	return (1);
+	return (free_split(split), 1);
 }
 
-int	print_env(t_main *main, int check, char **split)
+int	print_env(t_main *main, int check)
 {
 	int	i;
+	char	*cmd;
 
+	cmd = main->cmd_tokens->args;
+	cmd = cut_str(cmd, ft_strchr(cmd, ' '));
+	cmd = ft_strjoin("env ", cmd);
 	i = 0;
 	if (check == 0)
 	{
-		if (check_syntax_env(split) == 0)
-			return (1);
+		if (check_syntax_env(cmd) == 0)
+			return (free(cmd), 1);
 		while (i < main->env_len)
 		{
 			printf("%s\n", main->env[i]);
@@ -109,5 +115,5 @@ int	print_env(t_main *main, int check, char **split)
 		
 		printf("Export Len : %d\n", main->export_len);
 	}
-	return (0);
+	return (free(cmd), 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/02 15:22:03 by zamgar           ###   ########.fr       */
+/*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
+/*   Updated: 2025/02/03 19:38:15 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,37 @@ char    *cmd_separate(char *s)
         return (free(s), res);
 }
 
+int     get_arg_len(char *arg)
+{
+        int     words;
+        int     i;
+
+        words = 0;
+        i = 1;
+        if (!arg)
+                return (0);
+        printf("arg '%s'\n", arg);
+        if (ft_strlen(arg) == 1 && !ft_isspace(arg[0]))
+                return (1);
+        while(i < (int)ft_strlen(arg) - 1)
+	{
+		while (i < (int)ft_strlen(arg) - 1)
+                {
+                        if (ft_isspace(arg[i]))
+                                break ;
+			i++;
+                }
+                if (!ft_isspace(arg[i - 1]))
+                {
+                        printf("%d %s\n", i, &arg[i]);
+			words++;
+                }
+		i++;
+	}
+        printf("words %d\n", words);
+        return (words);
+}
+
 t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
 {
         char    **pipe;
@@ -67,7 +98,8 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
         t_cmd   *tmp;
         int     i;
 
-        pipe = ft_split(pipes[0], ' ');
+        //cat test.txt | grep ligne | wc -l > out.txt
+        pipe = ft_split_k_q_s(main, pipes[0], ' ');
         cmd_tokens = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
                         , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
         if (cmd_tokens->cmd)
@@ -76,7 +108,7 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
         i = 1;
         while (i < get_dchar_len(pipes))
         {
-                pipe = ft_split(pipes[i], ' ');
+                pipe = ft_split_k_q_s(main, pipes[i], ' ');
                 tmp = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
                         , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
                 if (tmp->cmd)
@@ -96,11 +128,6 @@ int     order(char *_s, t_main *main)
 
         (void)main;
         s = cmd_separate(get_rid_of_spaces(_s)); // placer les ' ' manquants/supr ceux en trop
-        if (check_open_quotes(s, main) == 0)
-	        return (0);
-        s = replace_dollar(s, main);
-        s = handle_sc_c(s, main);
-        s = get_rid_of_quotes(s);
         printf("order 0 '%s'\n", s);
         if (!s || s[0] == '\0')
                 return (0);
