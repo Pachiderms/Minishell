@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 00:30:51 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 04:20:12 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ void	sub_process(t_main *main, char *cmd)
 			free_end_cmd(main);
 		}
 		free(cmd);
+		free(main->cmd_no_quotes);
+		main->cmd_no_quotes = NULL;
+		free(main->cmd_quotes);
+		main->cmd_quotes = NULL;
 	}
 }
 

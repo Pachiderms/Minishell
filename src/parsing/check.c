@@ -142,6 +142,7 @@ char	*handle_sc_c(char *arg, t_main *main)
 		arg_without_quotes = get_rid_of_quotes(ft_strdup(arg));
 		if (ft_strcmp(arg_without_quotes, ":") == 0)
 			return (free(arg_without_quotes), ft_strdup(""));
+		free(arg_without_quotes);
 	}
 	return (arg);
 }

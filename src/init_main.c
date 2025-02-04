@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 00:29:29 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 04:19:57 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	set_null_main(t_main *main)
 	main->path = NULL;
 	main->cmd_tokens = NULL;
 	main->u_token = NULL;
-
-	// Dolalr struct //
+	main->cmd_no_quotes = NULL;
+	main->cmd_quotes = NULL;
 	main->dollars.i = 0;
 	main->dollars.j = 0;
 	main->dollars.end = 0;

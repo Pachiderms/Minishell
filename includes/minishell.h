@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 03:11:51 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 03:38:27 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct s_main
 	char		*path;
 	int			last_exit_code;
 	char		*u_token;
+	char		*cmd_no_quotes;
+    char		*cmd_quotes;
 }	t_main;
 
 // LIBFT
@@ -137,7 +139,7 @@ t_cmd	*ft_lstlast(t_cmd *lst);
 void	print_t_cmd(t_cmd *cmd);//a supr a la fin
 
 //HERE_DOC
-int		ft_heredoc(t_cmd *token, int builtin);
+int		ft_heredoc(t_cmd *token, int builtin, t_main *main);
 
 /// ENV
 int		init_env(char **env, t_main *main);
@@ -197,6 +199,8 @@ char	*get_rid_of(char *s, char c);
 /// UTILS TOKENS
 int		check_open_quotes(char const *s, t_main *main);
 int		handle_sc(t_main *main, char **split, int i);
+int		in_dquote(t_main *main, char *arg_dup, int j);
+int		in_squote(t_main *main, char *arg_dup, int j);
 char	*get_cmd(char *path);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 int		count_words(char *no_space);
@@ -236,7 +240,6 @@ char	*get_var_name(char *cmd);
 char	*add_char_to_str(char *s, char c, int _free);
 
 char	*handle_sc_c(char *arg, t_main *main);
-int		in_dquote(t_main *main, char *arg_dup, int j);
 void	get_close_quotes(char const *s, t_main *main);
 
 #endif

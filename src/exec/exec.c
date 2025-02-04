@@ -18,7 +18,7 @@ void	builtin(t_main *main)
 
 	main->nb_cmd = 0;
 	if (main->cmd_tokens->heredoc_eof)
-			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1);
+			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1, main);
 	command = get_cmd(main->cmd_tokens->cmd);
 	main->cmd_tokens->args = rm_redirections(main->cmd_tokens->args,
 			main->cmd_tokens->cmd);
@@ -44,7 +44,7 @@ void	builtin(t_main *main)
 int	no_cmd(t_main *main)
 {
 	if (main->cmd_tokens->heredoc_eof)
-		ft_heredoc(main->cmd_tokens, 1);
+		ft_heredoc(main->cmd_tokens, 1, main);
 	else if (ft_strchr(main->cmd_tokens->args, '/'))
 	{
 		if (chdir(main->cmd_tokens->args) == 0)

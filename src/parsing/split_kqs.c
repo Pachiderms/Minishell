@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/04 01:33:46 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 03:47:58 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ char	*cook_nospace(t_main *main, char const *s)
 	no_space = replace_dollar(no_space, main);
 	printf("no space after dollar : <%s>\n\n", no_space);
 	no_space = handle_sc_c(no_space, main);
+	if (!main->cmd_quotes)
+		main->cmd_quotes = ft_strdup(no_space);
+	if (!main->cmd_no_quotes)
+		main->cmd_no_quotes = get_rid_of_quotes(ft_strdup(no_space));
+	printf("quotes : <%s>\n", main->cmd_quotes);
+	printf("no_quotes : <%s>\n", main->cmd_no_quotes);
 	tmp = get_rid_of_spaces(no_space);
 	free(no_space);
 	printf("no space : %s\n", tmp);
