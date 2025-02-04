@@ -32,7 +32,7 @@ void	child_process(t_main *main, t_cmd *token)
 		child_builtin(main, token);
 	cmd = cook_cmd(token->cmd);
 	token->infile = ft_heredoc(token, 0, main);
-	token->args = rm_redirections(token->args, token->cmd);
+	token->args = rm_redirections(token, token->cmd, 0);
 	printf("final args <%s>\n", token->args);
 	printf("infile %d\n", token->infile);
 	split_args = ft_split(token->args, ' ');

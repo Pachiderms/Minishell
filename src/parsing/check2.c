@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 00:08:00 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 06:39:39 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,73 @@ int	is_sc(char *s)
 	if (ft_strchr(s, '$'))
 		return (2);
 	return (0);
+}
+int	check_global_syntax(char *arg, t_main *main)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (ft_strncmp(&arg[i], "<<", 2) == 0
+			|| ft_strncmp(&arg[i], ">>", 2) == 0
+			|| ft_strncmp(&arg[i], "<>", 2) == 0)
+		{
+			j = i + skip_char(&arg[i + 2], ' ', 0) + 2;
+			printf("arg la i %d j %d %s\n", i , j, &arg[j]);
+			if (i != j)
+			{
+				if (ft_strncmp(&arg[j], "<<", 2) == 0)
+					main->u_token = "<<";
+				else if (ft_strncmp(&arg[j], ">>", 2) == 0)
+					main->u_token = ">>";
+				else if (ft_strncmp(&arg[j], "<>", 2) == 0)
+					main->u_token = "<>";
+				else if (ft_strncmp(&arg[j], "><", 2) == 0)
+					main->u_token = "><";
+				else if (ft_strncmp(&arg[j], "<", 1) == 0)
+					main->u_token = "<";
+				else if (ft_strncmp(&arg[j], ">", 1) == 0)
+					main->u_token = ">";
+			}
+			if (arg[i + 2] == '\0')
+				main->u_token = "newline";
+			else if (arg[i + 2] == arg[i])
+			{
+				if (arg[i] == '>')
+					main->u_token = ">>";
+				else if (arg[i] == '<')
+					main->u_token = "<<";
+			}
+		}
+		else if (ft_strncmp(&arg[i], "<", 1) == 0
+			|| ft_strncmp(&arg[i], ">", 1) == 0)
+		{
+			j = i + skip_char(&arg[i + 1], ' ', 0) + 1;
+			printf("arg la i %d j %d %s\n", i , j, &arg[j]);
+			if (i != j)
+			{
+				if (ft_strncmp(&arg[j], "<<", 2) == 0)
+					main->u_token = "<<";
+				else if (ft_strncmp(&arg[j], ">>", 2) == 0)
+					main->u_token = ">>";
+				else if (ft_strncmp(&arg[j], "<>", 2) == 0)
+					main->u_token = "<>";
+				else if (ft_strncmp(&arg[j], "><", 2) == 0)
+					main->u_token = "><";
+				else if (ft_strncmp(&arg[j], "<", 1) == 0)
+					main->u_token = "<";
+				else if (ft_strncmp(&arg[j], ">", 1) == 0)
+					main->u_token = ">";
+			}
+			if (arg[i + 1] == '\0')
+				main->u_token = "newline";
+		}
+		if (main->u_token)
+			break ;
+		i++;
+	}
+	printf("u token %s\n", main->u_token);
+	return (main->u_token == NULL);
 }

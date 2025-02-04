@@ -132,6 +132,8 @@ char	*handle_sc_c(char *arg, t_main *main)
 	arg_without_quotes = NULL;
 	if (arg == NULL)
 		return (NULL);
+	if (check_global_syntax(arg, main) == 0)
+		return (printf("ok"), arg);
 	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
 	{
 		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)

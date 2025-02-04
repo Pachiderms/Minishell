@@ -51,7 +51,7 @@ t_cmd	*ft_lstnew(t_main *main, char **cmd)
 	node->cmd = find_cmd(cmd, main);
 	node->args = find_args(cmd, main);
 	node->infile = -1;
-	node->outfile = get_fd_out(cmd);
+	node->outfile = get_fd_out(cmd, main);
 	node->heredoc_eof = find_heredoc_eof(cmd);
 	node->next = NULL;
 	return (node);

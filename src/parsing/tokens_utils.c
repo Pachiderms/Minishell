@@ -91,11 +91,13 @@ void	replace(t_main *main, char **tmp2)
 	}
 	else if (main->dollars.rep_pos == -2)
 	{
-		diff = ft_strlen(ft_itoa(main->last_exit_code)) - 2;
+		char *tmp = ft_itoa(main->last_exit_code);
+		diff = ft_strlen(tmp) - 2;
+		free(tmp);
 		update_quotes_pos(main, r_b, r1_b, diff, 0);
 		free(*(tmp2));
 		*(tmp2) = NULL;
-		*tmp2 = ft_strdup(ft_itoa(main->last_exit_code));
+		*tmp2 = ft_itoa(main->last_exit_code);
 	}
 	else if (main->dollars.rep_pos == -3)
 		*tmp2 = ft_strdup("1000");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 16:51:44 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 23:53:47 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 07:24:48 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_after_nl(char *s)
 	while (s[i])
 	{
 		if (ft_isspace(s[i]) && !space)
-		j = i;
+			j = i;
 		while (ft_isspace(s[i]))
 		{
 			space = 1;

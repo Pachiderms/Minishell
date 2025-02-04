@@ -19,9 +19,11 @@ void	builtin(t_main *main)
 	main->nb_cmd = 0;
 	if (main->cmd_tokens->heredoc_eof)
 			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1, main);
+	printf("args enter builtin <%s>\n", main->cmd_tokens->args);
 	command = get_cmd(main->cmd_tokens->cmd);
-	main->cmd_tokens->args = rm_redirections(main->cmd_tokens->args,
-			main->cmd_tokens->cmd);
+	main->cmd_tokens->args = rm_redirections(main->cmd_tokens,
+			main->cmd_tokens->cmd, 1);
+	printf("args before builtin <%s>\n", main->cmd_tokens->args);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -68,6 +70,14 @@ int	ft_process(t_main *main)
 {
 	t_cmd	*cmd_tokens;
 
+	if (main->u_token)
+	{
+		main->last_exit_code = 2;
+		if (main->last_ofile)
+			unlink(main->last_ofile);
+		printf("minishell: syntax error near unexpected token `%s'\n", main->u_token);
+		return (1);
+	}
 	printf("nb cmd %d\n", main->nb_cmd);
 	cmd_tokens = main->cmd_tokens;
 	if (!ft_strcmp(cmd_tokens->cmd, "cat")
