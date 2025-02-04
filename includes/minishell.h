@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 08:22:03 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 18:53:59 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,6 @@ void	remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
 int		ft_echo(t_main *main);
 char	*find_newline(char *s);
-int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd, t_main *main);
 /// CD
 int		is_special_case(char *actual_arg);
@@ -244,5 +243,6 @@ char	*add_char_to_str(char *s, char c, int _free);
 
 char	*handle_sc_c(char *arg, t_main *main);
 void	get_close_quotes(char const *s, t_main *main);
+int		ft_error(char *type, char *msg);
 
 #endif

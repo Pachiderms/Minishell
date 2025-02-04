@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_kqs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/04 07:14:23 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 18:31:21 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	**fill_dest(char **dest, char *no_space, char c)
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
-		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i)); //get_rid_of_quotes(ft_substr(no_space, i, j - i));
+		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
 		printf("no_space[%d] after rid quotes : <%s>\n", x, dest[x]);
 		if (dest[x++] == NULL || j < 0)
 			return (free(no_space), ft_free_split_k_q_s(dest, x), NULL);

@@ -28,8 +28,7 @@ int	handle_chdir(t_main *main, char *actual_arg, int chdir_value)
 	{
 		if (return_to_pwd(main) == 0)
 			return (0);
-		return (printf("minishell: cd: %s: No such file or directory\n"
-				, actual_arg), 0);
+		return (ft_error("nsfod", actual_arg));
 	}
 	return (1);
 }
@@ -43,8 +42,7 @@ int	check_syntax_cd(t_main *main, char *arg)
 
 	i = 0;
 	if (arg[0] == '-' && arg[1] && ft_strcmp(arg, "--") != 0)
-		return (printf(
-				"minishell: cd: -%c: invalid option\n", arg[1]), free(arg), 0);
+		return (free(arg), ft_error("io", &arg[1]));
 	while (arg[i])
 	{
 		actual_arg = get_actual_arg(main, &arg[i]);

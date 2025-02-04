@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 02:59:09 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 19:38:19 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ void	fill_env_export(t_main *main, char *cmd)
 	if (replace_pos == -1)
 		add_pos(main, cmd, i, 0);
 	if (replace_pos == -1)
-		i++;
-	main->env[i] = NULL;
+		main->env[i + 1] = NULL;
 	fill_export(main, cmd);
 }
 

@@ -82,8 +82,7 @@ int	check_syntax_env(char *cmd)
 			if (ft_strcmp(split[i], "env") == 0)
 				i++;
 			else
-				return (printf("env: ‘%s’: No such file or directory\n"
-						, split[i]), free_split(split), 0);
+				return (free_split(split), ft_error("nsfod", split[i]));
 		}
 	}
 	return (free_split(split), 1);

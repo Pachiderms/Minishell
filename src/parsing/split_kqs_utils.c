@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_kqs1.c                                       :+:      :+:    :+:   */
+/*   split_kqs_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/04 01:34:00 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 18:32:15 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	count_words(char *no_space)
 
 	i = 0;
 	word = 0;
-	if (!no_space)
+	if (!no_space || !ft_strcmp(no_space, ""))
 		return (0);
 	while (no_space[i])
 	{
@@ -77,7 +77,5 @@ int	count_words(char *no_space)
 		}
 		i++;
 	}
-	if (ft_strcmp(no_space, "") == 0)
-		return (0);
 	return (word + 1);
 }

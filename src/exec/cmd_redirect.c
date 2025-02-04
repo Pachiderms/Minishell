@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 06:49:40 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 18:33:15 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,28 +115,6 @@ int	get_fd_out(char **cmd, t_main *main)
 			fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
 			if (fd > 1)
 				update_lastofile(main, get_next(&cmd[i], ">"));
-		}
-		i++;
-	}
-	return (fd);
-}
-
-int	get_fd_in(char **cmd)
-{
-	int	i;
-	int	fd;
-
-	i = 0;
-	fd = -1;
-	if (cmd == NULL)
-		return (fd);
-	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
-	{
-		if (get_next(&cmd[i], "<"))
-		{
-			if (fd > 0)
-				close (fd);
-			fd = handle_opening_infile(get_next(&cmd[i], "<"), 0);
 		}
 		i++;
 	}

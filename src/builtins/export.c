@@ -45,8 +45,7 @@ int	check_ko_export(char *arg)
 	while (arg[i++])
 	{
 		if (arg[i] == '!' && arg[i + 1] != '=')
-			return (printf("minishell: %s: event not found\n", ft_strchr(arg, '!'))
-				, 0);
+			return (ft_error("evnf", ft_strchr(arg, '!')));
 	}
 	i = 0;
 	while (arg[i] != '=' && arg[i])
@@ -57,8 +56,7 @@ int	check_ko_export(char *arg)
 			|| arg[i] == '*' || arg[i] == '#'
 			|| (arg[i] == '+' && arg[i + 1] != '=')
 			|| arg[i] == ' ' || arg[i] == '!')
-			return (printf("minishell: export: ‘%s’: not a valid identifier\n", arg)
-				, 0);
+			return (ft_error("nvid", arg));
 		i++;
 	}
 	return (1);
