@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	builtin(t_main *main)
+void	builtin(t_main *main)
 {
 	char	*command;
 
@@ -20,6 +20,8 @@ int	builtin(t_main *main)
 	if (main->cmd_tokens->heredoc_eof)
 			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1);
 	command = get_cmd(main->cmd_tokens->cmd);
+	main->cmd_tokens->args = rm_redirections(main->cmd_tokens->args,
+			main->cmd_tokens->cmd);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -37,12 +39,13 @@ int	builtin(t_main *main)
 		printf("exit\n");
 		free_process(main, -42);
 	}
-	return (1);
 }
 
 int	no_cmd(t_main *main)
 {
-	if (ft_strchr(main->cmd_tokens->args, '/'))
+	if (main->cmd_tokens->heredoc_eof)
+		ft_heredoc(main->cmd_tokens, 1);
+	else if (ft_strchr(main->cmd_tokens->args, '/'))
 	{
 		if (chdir(main->cmd_tokens->args) == 0)
 		{
@@ -65,23 +68,25 @@ int	ft_process(t_main *main)
 {
 	t_cmd	*cmd_tokens;
 
-	// if (main->unexpected_token)
-	
 	printf("nb cmd %d\n", main->nb_cmd);
 	cmd_tokens = main->cmd_tokens;
-	if (!ft_strcmp(cmd_tokens->cmd, "cat") || !ft_strcmp(cmd_tokens->cmd, "sleep"))
+	if (!ft_strcmp(cmd_tokens->cmd, "cat")
+		|| !ft_strcmp(cmd_tokens->cmd, "sleep"))
 		cat = 1;
 	if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)
 		{
 			if (check_builtin(cmd_tokens->cmd))
-				return (builtin(main));
+			{
+				builtin(main);
+				return (1);
+			}
 		}
 		main->last_exit_code = exec(main);
 		main->nb_cmd = 0;
 	}
-	else if (cmd_tokens->args)
+	else if (cmd_tokens->args || cmd_tokens->heredoc_eof)
 		main->last_exit_code = no_cmd(main);
 	return (1);
 }
