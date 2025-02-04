@@ -3,71 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   exec2_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 18:46:58 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 10:57:53 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int skip_files(char *s, char r, char ns)
+int	skip_files(char *s, char r, char ns)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (s[i] == r)
-    {
-        while(s[i])
-        {
-            if (s[i] != r && !ft_isspace(s[i]))
-                break ;
-            i++;
-        }
-        while (s[i])
-        {
-            if (ft_isspace(s[i]) || s[i] == ns)
-                break ;
-            i++;
-        }
-    }
-    return (i);
+	i = 0;
+	if (s[i] == r)
+	{
+		while (s[i])
+		{
+			if (s[i] != r && !ft_isspace(s[i]))
+				break ;
+			i++;
+		}
+		while (s[i])
+		{
+			if (ft_isspace(s[i]) || s[i] == ns)
+				break ;
+			i++;
+		}
+	}
+	return (i);
 }
 
-int skip_infiles(char *s, int r, int ns)
+int	skip_infiles(char *s, int r, int ns)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (s[i] == '<')
-        i++;
-    if (!ft_strchr(&s[i], r))
-        return (i);
-    return (skip_files(s, r, ns));
+	i = 0;
+	while (s[i] == '<')
+		i++;
+	if (!ft_strchr(&s[i], r))
+		return (i);
+	return (skip_files(s, r, ns));
 }
 
-char    *rm_redirections(char *s, char *cmd)
+char	*rm_redirections(t_cmd *token, char *cmd, int builtin)
 {
-    int     i;
-    char    *tmp;
-    char    *res;
+	int		i;
+	char	*tmp;
+	char	*res;
 
-    tmp = NULL;
-    i = 0;
-    if (!s)
-        return (NULL);
-    while (i < (int)ft_strlen(s))
-    {
-        i += skip_files(&s[i], '>', '<');
-        if (s[i] == '<')
-            i += skip_infiles(&s[i], '<', '>');
-        tmp = add_char_to_str(tmp, s[i], 1);
-        i++;
-    }
-    res = ft_strjoin(cmd, " ");
-    res = ft_strjoin_free(res, tmp, 0);
-    return (free(tmp), get_rid_of_spaces(res));
+	tmp = NULL;
+	res = NULL;
+	i = 0;
+	if (!token->args)
+		return (NULL);
+	if (token->args[0] == '\0')
+		return (free(token->args), ft_strdup("\0"));
+	while (i < (int)ft_strlen(token->args))
+	{
+		i += skip_files(&token->args[i], '>', '<');
+		if (token->args[i] == '<')
+			i += skip_infiles(&token->args[i], '<', '>');
+		tmp = add_char_to_str(tmp, token->args[i], 1);
+		i++;
+	}
+	if (!builtin)
+		res = ft_strjoin(cmd, " ");
+	res = ft_strjoin_free(res, tmp, 0);
+	free(token->args);
+	token->args = NULL;
+	return (free(tmp), res);
 }
 
 char	*cook_cmd(char *s)

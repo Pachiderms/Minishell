@@ -3,40 +3,90 @@
 /*                                                        :::      ::::::::   */
 /*   echo_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 16:51:44 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 17:33:58 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 07:24:48 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	get_arg_solo(char *s, char **tmp, int to_print)
+int	regular_fornl(char c, int space)
 {
-    int     i;
-	int		j;
-
-    i = 0;
-    if (!s)
-            return ;
-    while(++i < (int)ft_strlen(s) - 1)
+	if (space)
 	{
-		j = i;
-		while (i < (int)ft_strlen(s) - 1)
-        {
-            if (ft_isspace(s[i]))
-                break ;
-			i++;
-        }
-        if (!ft_isspace(s[i - 1]))
-        {
-               printf("%d %s\n", i, &s[i]);
-			break ;
-        }
+		if (c != 'n' && c != '-')
+			return (0);
+		return (1);
 	}
-    if (to_print)
-        *tmp = ft_substr(s, j, i - j);
-    else
-        *tmp = ft_substr(s, 0, i);
+	return (c == 'n');
+}
+
+int	check_after_nl(char *s)
+{
+	int	i;
+	int	j;
+	int	space;
+
+	i = 2;
+	j = 0;
+	space = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+	{
+		if (ft_isspace(s[i]) && !space)
+			j = i;
+		while (ft_isspace(s[i]))
+		{
+			space = 1;
+			i++;
+		}
+		if (!regular_fornl(s[i], space))
+			return (j);
+		if (!ft_strncmp(&s[i], "-n", 2) && space)
+			space = 0;
+		i++;
+	}
+	return (j);
+}
+
+int	is_tn(char *s)
+{
+	if (!s)
+		return (0);
+	if (*s != '-')
+		return (0);
+	s++;
+	while (*s)
+	{
+		if (*s != 'n')
+			return (0);
+		s++;
+	}
+	return (1);
+}
+
+char	*find_newline(char *s)
+{
+	int		i;
+	char	*a_nl;
+
+	i = -1;
+	a_nl = NULL;
+	if (!s)
+		return (NULL);
+	while (s[++i])
+	{
+		if (!ft_isspace(s[i]))
+			break ;
+	}
+	if (ft_strncmp(&s[i], "-n", 2) == 0)
+	a_nl = &s[check_after_nl(&s[i])];
+	if (is_tn(a_nl))
+		return ("\0");
+	if (!ft_strcmp(a_nl, s))
+		return (NULL);
+	return (a_nl);
 }

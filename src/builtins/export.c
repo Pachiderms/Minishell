@@ -70,6 +70,8 @@ int	check_syntax_export(char *cmd)
 	char	*arg;
 
 	i = 0;
+	if (!cmd)
+		return (0);
 	arg = &ft_strchr(cmd, ' ')[1];
 	if (check_ko_export(arg) == 0)
 		return (0);
@@ -116,6 +118,8 @@ int	prep_export(t_main *main)
 	char	*cmd;
 
 	cmd = main->cmd_tokens->args;
+	if (!check_syntax_export(cmd))
+		return (0);
 	if (get_arg_len(&ft_strchr(main->cmd_tokens->args, '=')[1]) > 1)
 		cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
 	cmd = ft_strjoin("export ", cmd);

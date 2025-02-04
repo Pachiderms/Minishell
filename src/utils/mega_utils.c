@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   mega_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 15:28:59 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 02:51:02 by tzizi            ###   ########.fr       */
+/*   Created: 2025/02/04 00:01:27 by tzizi             #+#    #+#             */
+/*   Updated: 2025/02/04 00:15:03 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_strrchr(const char *s, int c)
+int	skip_char(char *s, int c, int diff)
 {
-	int				i;
-	unsigned char	*_s;
+	int	i;
 
-	if (!s)
-		return (NULL);
-	i = ft_strlen(s);
-	_s = (unsigned char *)s;
-	while (i >= 0)
+	i = 0;
+	if (!diff)
 	{
-		if (_s[i] == (unsigned char)c)
-			return ((char *)(_s + i));
-		i--;
+		while (s[i])
+		{
+			if (s[i] != c)
+				break ;
+			i++;
+		}
 	}
-	return (NULL);
+	else
+	{
+		while (s[i])
+		{
+			if (s[i] == c)
+				break ;
+			i++;
+		}
+	}
+	return (i);
 }
