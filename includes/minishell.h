@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 20:16:40 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 20:48:44 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,31 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void	ft_lstadd_front(t_cmd **lst, t_cmd *new);
 t_cmd	*ft_lstlast(t_cmd *lst);
 void	print_t_cmd(t_cmd *cmd);//a supr a la fin
+
+/// DOLLAR
+char	*replace_dollar(char *arg, t_main *main);
+void	update_index(t_main *main);
+void	end_things(t_main *main);
+void	begin_things(t_main *main, char *arg);
+void	arg_replace(char **arg_dup, char *final_tmp);
+int		begin_verif(char c, char cpl1, t_main *main);
+void	clear_dollar(t_main *main);
+void	free_tmps(t_main *main);
+char	*create_end_str(t_main *main, char *arg_dup);
+int		big_while(char c, int which);
+void	create_and_replace_tmp2(t_main *main);
+void	search_sollar(t_main *main, char *arg_dup);
+void	del_backslash(char **final_tmp);
+char	*fill_test(char *tmp, int size);
+int		in_dquote(t_main *main, char *arg_dup, int j);
+int		in_squote(t_main *main, char *arg_dup, int j);
+char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3);
+void	replace(t_main *main, char **tmp2);
+void	replace_existing(t_main *main, char **tmp2);
+void	replace_minus2(t_main *main, char **tmp2);
+void	update_dq_pos(t_main *main, int r, int r1, int diff);
+void	update_sq_pos(t_main *main, int r, int r1, int diff);
+char	*cut_str(char *str, char *cut);
 
 //HERE_DOC
 int		ft_heredoc(t_cmd *token, int builtin, t_main *main);
