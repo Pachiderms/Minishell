@@ -104,22 +104,21 @@ void	replace(t_main *main, char **tmp2)
 char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3) // leaks à gérer, voir last
 {
 	char *final_tmp = NULL;
-	int check = 0;
 
+	if (!tmp && !replaced_tmp2 && !tmp3)
+		return (final_tmp);
 	if (!tmp && !tmp3)
-		final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 1);
-	if (tmp)
-	{
-		check = 1;
-		final_tmp = ft_strjoin_free(final_tmp, tmp, 0);
 		final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 0);
-	}
-	if (tmp3)
-	{
-		if (check == 0)
-			final_tmp = ft_strjoin_free(final_tmp, replaced_tmp2, 0);
+	else if (!replaced_tmp2 && !tmp3)
+		final_tmp = ft_strjoin_free(final_tmp, tmp, 0);
+	else if (!tmp && !replaced_tmp2)
 		final_tmp = ft_strjoin_free(final_tmp, tmp3, 0);
-	}
+	else if (!tmp)
+		final_tmp = ft_strjoin(replaced_tmp2, tmp3);
+	else if (!replaced_tmp2)
+		final_tmp = ft_strjoin(tmp, tmp3);
+	else if (!tmp3)
+		final_tmp = ft_strjoin(tmp, replaced_tmp2);
 	return (final_tmp);
 }
 
@@ -128,6 +127,25 @@ void	arg_replace(char **arg_dup, char *final_tmp)
 	free(*arg_dup);
 	*arg_dup = NULL;
 	*arg_dup = ft_strdup(final_tmp);
+}
+
+int	in_squote(t_main *main, char *arg_dup, int j)
+{
+	int i = 0;
+	int r = 0;
+	while (main->s_qs[r] != -1)
+	{
+		i = main->s_qs[r];
+		int begin = i;
+		i++;
+		while (arg_dup[i] != '\'')
+			i++;
+		int end = i;
+		if (j > begin && j < end)
+			return (1);
+		r++;
+	}
+	return (0);
 }
 
 int	in_dquote(t_main *main, char *arg_dup, int j)
@@ -231,6 +249,7 @@ char	*create_end_str(t_main *main, char *arg_dup)
 
 void	clear_dollar(t_main *main)
 {
+	//printf("end : %d | arg_dup len : %ld\n", main->dollars.end, ft_strlen(main->dollars.arg_dup));
 	if ((size_t)main->dollars.end == ft_strlen(main->dollars.arg_dup))
 	{
 		if (main->dollars.tmp)
@@ -309,10 +328,7 @@ char	*replace_dollar(char *arg, t_main *main)
 	main->dollars.arg_dup = ft_strdup(arg);
 	free(arg);
 	if (main->dollars.final_tmp)
-	{
-		// free(main->dollars.final_tmp);
 		main->dollars.final_tmp = NULL;
-	}
 	//print_values(main);
 	while (main->dollars.arg_dup[main->dollars.i])
 	{

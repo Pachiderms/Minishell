@@ -10,46 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 pid_t	g_signal_pid;
-
-char	*prep_process(char *s, char *cmd)
-{
-	char	*res;
-	char	*tmp;
-
-	res = NULL;
-	tmp = NULL;
-	if (ft_strchr(s, '<') || ft_strchr(s, '>'))
-	{
-		res = get_rid_of_spaces(s);
-		tmp = get_rid_of(res, '<');
-		free(res);
-		res = get_rid_of(tmp, '>');
-		free(tmp);
-		tmp = get_rid_of_spaces(res);
-		if (cmd)
-			tmp = ft_strjoin_free(" ", tmp, 1);
-		return (free(res), ft_strjoin_free(cmd, tmp, 1));
-	}
-	res = get_rid_of_spaces(s);
-	if (cmd)
-		res = ft_strjoin_free(" ", res, 1);
-	return (ft_strjoin_free(cmd, res, 1));
-}
-
-char	*cook_cmd(char *s)
-{
-	if (!s)
-		return (NULL);
-	if (!ft_strncmp(s, "/bin/", 5))
-		return (ft_strdup(s));
-	else if (!ft_strncmp(s, "/usr/bin/", 9))
-		return (ft_strdup(s));
-	else
-		return (ft_strjoin("/usr/bin/", s));
-}
 
 static void	wait_all(t_main *main)
 {
@@ -96,13 +59,11 @@ static void	redirect_in_out(t_cmd *token)
 
 void	child_builtin(t_main *main, t_cmd *token)
 {
-	int	exit_code;
-
 	redirect_in_out(token);
 	rl_clear_history();
 	init_signals();
-	exit_code = builtin(main);
-	free_process(main, exit_code);
+	builtin(main);
+	free_process(main, main->last_exit_code);
 }
 
 void	child_process(t_main *main, t_cmd *token)
@@ -115,10 +76,8 @@ void	child_process(t_main *main, t_cmd *token)
 	if (check_builtin(token->cmd))
 		child_builtin(main, token);
 	cmd = cook_cmd(token->cmd);
-	printf("cmd <%s>\n", cmd);
-	token->args = prep_process(token->args, token->cmd);
-	token->infile = ft_heredoc(token);
-	printf("token fdin %d\n", token->infile);
+	token->infile = ft_heredoc(token, 0, main);
+	token->args = rm_redirections(token->args, token->cmd);
 	printf("final args <%s>\n", token->args);
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);
@@ -173,9 +132,4 @@ int 	exec(t_main *main)
 	}
 	wait_all(main);
 	return (1);
-}
-
-int	launch_process(t_main *main)
-{
-	return (exec(main));
 }

@@ -88,7 +88,7 @@ int	cd(t_main *main)
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
-	if (ft_strrchr(main->cmd_tokens->args, ' '))
+	if (get_arg_len(main->cmd_tokens->args) > 2)
 		return (printf("minishell: cd: too many arguments\n")
 			, free(dir), 0);
 	if (!main->cmd_tokens->args)
@@ -100,7 +100,6 @@ int	cd(t_main *main)
 	{
 		if (check_syntax_cd(main, main->cmd_tokens->args) == 1)
 		{
-			printf("arg '%s'\n", main->cmd_tokens->args);
 			update_oldpwd_pwd(main);
 			return (free(dir), 1);
 		}

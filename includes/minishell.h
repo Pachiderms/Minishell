@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 18:49:26 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 02:22:19 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_cmd
 {
     char    *cmd;
     char    *args;
-    int     hd;
     char    *heredoc_eof;
     int     infile;
     int     outfile;
@@ -88,6 +87,8 @@ typedef struct s_main {
     char	*path;
     int     last_exit_code;
     char    *u_token;
+    char    *cmd_no_quotes;
+    char    *cmd_quotes;
 }	t_main;
 
 // LIBFT
@@ -116,6 +117,7 @@ char    *ft_itoa(int n);
 
 //NEW PARSING
 int 	get_dchar_len(char **split);
+int     get_arg_len(char *arg);
 int     order(char *s, t_main *main);
 char	*find_cmd(char **s, t_main *main);
 char	*find_args(char **s, t_main *main);
@@ -134,7 +136,7 @@ t_cmd  *ft_lstlast(t_cmd *lst);
 void    print_t_cmd(t_cmd *cmd);//a supr a la fin
 
 //HERE_DOC
-int     ft_heredoc(t_cmd *token);
+int ft_heredoc(t_cmd *token, int builtin, t_main *main);
 
 /// ENV
 int		init_env(char **env, t_main *main);
@@ -159,7 +161,8 @@ char    *get_without_plus(char *cmd);
 char    *get_plus_str(t_main *main, char *cmd);
 void    remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
-int     ft_echo(t_main *main);
+int	    prep_echo(t_main *main, char *args);
+void	get_arg_solo(char *s, char **tmp, int to_print);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
@@ -197,10 +200,12 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 
 /// EXEC
 int	    ft_process(t_main *main);
-int	    builtin(t_main *main);
+void	builtin(t_main *main);
 /// PIPEX
 char    **prep_cmd_exec(t_main *main);
-int     launch_process(t_main *main);
+int     exec(t_main *main);
+char    *rm_redirections(char *s, char *cmd);
+char	*cook_cmd(char *s);
 
 /// FREE
 void	free_all_data(t_main *main);
@@ -221,6 +226,8 @@ char	*get_var_name(char *cmd);
 char    *add_char_to_str(char *s, char c, int _free);
 
 char	*handle_sc_c(char *arg, t_main *main);
-int	in_dquote(t_main *main, char *arg_dup, int j);
+int	    in_dquote(t_main *main, char *arg_dup, int j);
+int	in_squote(t_main *main, char *arg_dup, int j);
 void	get_close_quotes(char const *s, t_main *main);
+
 #endif

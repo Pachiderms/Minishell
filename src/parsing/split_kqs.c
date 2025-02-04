@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/03 19:14:25 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 03:16:32 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,37 +95,20 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	no_space = get_rid_of_spaces(s);
 	if (check_open_quotes(no_space, main) == 0)
 		return (NULL);
-	//
 	get_close_quotes(no_space, main);
-	int r = 0;
-	int r1 = 0;
-	printf("single quotes :\n");
-	while (main->s_qs[r] != -1)
-	{
-		printf("opened -> main->s_qs[%d] : %d\n", r, main->s_qs[r]);
-		printf("closed -> main->cl_s_qs[%d] : %d\n", r, main->cl_s_qs[r]);
-		r++;
-	}
-	printf("\ndouble quotes :\n");
-	while (main->d_qs[r1] != -1)
-	{
-		printf("opened -> main->d_qs[%d] : %d\n", r1, main->d_qs[r1]);
-		printf("closed -> main->cl_d_qs[%d] : %d\n", r1, main->cl_d_qs[r1]);
-		r1++;
-	}
-	exit(0);
-	//
-	printf("no space before dollar : <%s>\n", no_space);
 	no_space = replace_dollar(no_space, main);
-	printf("no space after dollar : <%s>\n\n", no_space);
 	no_space = handle_sc_c(no_space, main);
+	if (!main->cmd_quotes)
+		main->cmd_quotes = ft_strdup(no_space);
+	if (!main->cmd_no_quotes)
+		main->cmd_no_quotes = get_rid_of_quotes(ft_strdup(no_space));
+	printf("quotes : <%s>\n", main->cmd_quotes);
+	printf("no_quotes : <%s>\n", main->cmd_no_quotes);
 	char *tmp = get_rid_of_spaces(no_space);
 	free(no_space);
-	printf("no space : %s\n", tmp);
 	size = count_words(tmp);
 	if (size <= 0)
 		return (free(tmp), NULL);
-	printf("dest size : %d\n", size);
 	dest = malloc((size + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (free(tmp), NULL);
