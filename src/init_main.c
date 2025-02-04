@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 12:16:17 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 08:22:28 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	set_null_main(t_main *main)
 	main->export_len = 0;
 	main->nb_cmd = 0;
 	main->path = NULL;
+	main->current_path = NULL;
 	main->cmd_tokens = NULL;
 	main->u_token = NULL;
 	main->last_ofile = NULL;
@@ -120,5 +121,7 @@ int	init_main(t_main *main, char **env)
 				main->env, main->env_len, "export PATH=")];
 	else
 		return (free_all_data(main), 0);
+	main->current_path =  env[check_var_exists(
+				main->env, main->env_len, "export PATH=")];
 	return (1);
 }

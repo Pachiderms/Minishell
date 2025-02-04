@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 12:11:39 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 08:37:33 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,17 @@ char	*find_args(char **s, t_main *main)
 	int		i;
 	char	*res;
 	char	*previous;
+	char	*cmd;
 
 	i = 0;
 	res = NULL;
 	previous = NULL;
 	if (!s)
 		return (NULL);
+	cmd = find_cmd(s, main);
 	while (s[i])
 	{
-		if (!is_cmd(s[i], main->path)
+		if ((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)
 			&& !ft_strnstr(s[i], "<<", ft_strlen(s[i]))
 			&& ft_strcmp(previous, "<<") != 0)
 		{
@@ -48,6 +50,8 @@ char	*find_args(char **s, t_main *main)
 		previous = s[i];
 		i++;
 	}
+	if (cmd)
+		free(cmd);
 	return (res);
 }
 

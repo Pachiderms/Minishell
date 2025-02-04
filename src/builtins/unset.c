@@ -103,11 +103,20 @@ void	unset(t_main *main, char *cmd)
 int	prep_unset(t_main *main)
 {
 	char	*cmd;
+	char	**to_unset;
+	int		i;
 
-	cmd = main->cmd_tokens->args;
-	cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
-	cmd = ft_strjoin("unset ", cmd);
-	unset(main, cmd);
-	free(cmd);
-	return (0);
+	if (!main->cmd_tokens->args)
+		return (print_env(main, 1), 0);
+	to_unset = ft_split_k_q_s(main, main->cmd_quotes, ' ');
+	i = 1;
+	while (to_unset[i])
+	{
+		printf("split %s\n", to_unset[i]);
+		cmd = ft_strjoin("export ", to_unset[i]);
+		unset(main, cmd);
+		free(cmd);
+		i++;
+	}
+	return (free_split(to_unset), 0);
 }

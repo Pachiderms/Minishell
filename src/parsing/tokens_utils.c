@@ -82,12 +82,12 @@ void	replace(t_main *main, char **tmp2)
 		*(tmp2) = NULL;
 		*tmp2 = ft_strdup(&ft_strchr(main->env[main->dollars.rep_pos], '=')[1]);
 	}
-	else if (main->dollars.rep_pos == -1 || main->dollars.check == 1)
+	else if (main->dollars.rep_pos == -1 || main->dollars.check == 1) // a voir deuxieme condition
 	{
 		update_quotes_pos(main, r_b, r1_b, ft_strlen(*(tmp2)), 1);
 		free(*(tmp2));
 		*(tmp2) = NULL;
-		*tmp2 = ft_strdup("");
+		*tmp2 = NULL;
 	}
 	else if (main->dollars.rep_pos == -2)
 	{
@@ -359,7 +359,8 @@ char	*replace_dollar(char *arg, t_main *main)
 			&& (main->dollars.arg_dup[main->dollars.i] != '\'') && main->dollars.arg_dup[main->dollars.i] != ' '
 			&& main->dollars.arg_dup[main->dollars.i] != ':' && !ft_isdigit(main->dollars.arg_dup[main->dollars.i])
 			&& main->dollars.arg_dup[main->dollars.i] != '%' && main->dollars.arg_dup[main->dollars.i] != '\\'
-			&& main->dollars.arg_dup[main->dollars.i] != ']' && main->dollars.arg_dup[main->dollars.i])
+			&& main->dollars.arg_dup[main->dollars.i] != ']' && main->dollars.arg_dup[main->dollars.i] != '.'
+			&& main->dollars.arg_dup[main->dollars.i])
 			main->dollars.i++;
 		if ((size_t)main->dollars.i != ft_strlen(main->dollars.arg_dup))
 		{ //

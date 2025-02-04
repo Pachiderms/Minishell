@@ -95,10 +95,12 @@ void	fill_env_export(t_main *main, char *cmd)
 		if (i == replace_pos)
 			i++;
 	}
-	main->env[i] = NULL;
 	free_env(tmp, main->env_len);
 	if (replace_pos == -1)
 		add_pos(main, cmd, i, 0);
+	if (replace_pos == -1)
+		i++;
+	main->env[i] = NULL;
 	fill_export(main, cmd);
 }
 
