@@ -47,18 +47,18 @@ int	basic_verif(char *arg, int which)
 		if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
 			return (0);
 		if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
-			return (ft_error("nvid", arg));
+			return (ft_error_export("nvid", arg));
 		if (arg[0] == '-' && arg[1])
-			return (ft_error("io", &arg[1]));
+			return (ft_error_export("io", &arg[1]));
 	}
 	if (which == 1)
 	{
 		if (arg[0] == '_' && arg[1] == '\0')
 			return (0);
 		if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
-			return (ft_error("nvid", arg));
+			return (ft_error_unset("nvi", arg));
 		if (arg[0] == '-' && arg[1])
-			return (ft_error("io", &arg[1]));
+			return (ft_error_unset("io", &arg[1]));
 	}
 	return (1);
 }
@@ -77,7 +77,7 @@ int	check_syntax_unset(char *cmd)
 		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.' || arg[i] == '+'
 			|| arg[i] == '{' || arg[i] == '}' || arg[i] == '-' || arg[i] == '*'
 			|| arg[i] == '#' || arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
-			return (ft_error("nvid", arg));
+			return (ft_error_unset("nvid", arg));
 	}
 	i = 0;
 	while (arg[i++])
@@ -111,7 +111,7 @@ int	prep_unset(t_main *main)
 	while (to_unset[i])
 	{
 		printf("split %s\n", to_unset[i]);
-		cmd = ft_strjoin("export ", to_unset[i]);
+		cmd = ft_strjoin("unset ", to_unset[i]);
 		unset(main, cmd);
 		free(cmd);
 		i++;

@@ -28,7 +28,7 @@ int	handle_chdir(t_main *main, char *actual_arg, int chdir_value)
 	{
 		if (return_to_pwd(main) == 0)
 			return (0);
-		return (ft_error("nsfod", actual_arg));
+		return (ft_error_cd("nsfod", actual_arg));
 	}
 	return (1);
 }
@@ -42,7 +42,7 @@ int	check_syntax_cd(t_main *main, char *arg)
 
 	i = 0;
 	if (arg[0] == '-' && arg[1] && ft_strcmp(arg, "--") != 0)
-		return (free(arg), ft_error("io", &arg[1]));
+		return (free(arg), ft_error_cd("io", &arg[1]));
 	while (arg[i])
 	{
 		actual_arg = get_actual_arg(main, &arg[i]);
@@ -68,10 +68,7 @@ int	print_home_pwd(t_main *main)
 	home_pos = 0;
 	home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
 	if (home_pos == -1)
-	{
-		printf("minishell: cd: HOME not set\n");
-		return (0);
-	}
+		return (ft_error_cd("home", NULL));
 	chdir_value = chdir(&ft_strchr(main->env[home_pos], '=')[1]);
 	if (chdir_value == -1)
 		return (0);
@@ -88,8 +85,7 @@ int	cd(t_main *main)
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
 	if (get_arg_len(main->cmd_tokens->args) > 2)
-		return (printf("minishell: cd: too many arguments\n")
-			, free(dir), 0);
+		return (free(dir), ft_error_cd("tma", NULL));
 	if (!main->cmd_tokens->args)
 	{
 		if (print_home_pwd(main) == 1)

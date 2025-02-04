@@ -82,7 +82,7 @@ int	check_syntax_env(char *cmd)
 			if (ft_strcmp(split[i], "env") == 0)
 				i++;
 			else
-				return (free_split(split), ft_error("nsfod", split[i]));
+				return (free_split(split), ft_error_export("env", split[i]));
 		}
 	}
 	return (free_split(split), 1);

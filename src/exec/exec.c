@@ -60,21 +60,25 @@ int	no_cmd(t_main *main)
 	return (127);
 }
 
+int	u_ttoken(t_main *main)
+{
+	main->last_exit_code = 2;
+	if (main->last_ofile)
+		unlink(main->last_ofile);
+	return (ft_error("serr", main->u_token));
+}
+
 int	ft_process(t_main *main)
 {
 	printf("nb cmd %d\n", main->nb_cmd);
 	if (main->u_token)
-	{
-		main->last_exit_code = 2;
-		if (main->last_ofile)
-			unlink(main->last_ofile);
-		return (ft_error("serr", main->u_token));
-	}
+		return (u_ttoken(main));
 	if (!main->current_path && main->cmd_tokens->cmd
 		&& !check_builtin(main->cmd_tokens->cmd))
 		return (ft_error("nsfod", main->cmd_tokens->cmd));
-	g_cat = !ft_strcmp(main->cmd_tokens->cmd, "cat")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep");
+	if (!ft_strcmp(main->cmd_tokens->cmd, "cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep"))
+		g_cat = 1;
 	if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)

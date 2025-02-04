@@ -56,7 +56,7 @@ int	check_ko_export(char *arg)
 			|| arg[i] == '*' || arg[i] == '#'
 			|| (arg[i] == '+' && arg[i + 1] != '=')
 			|| arg[i] == ' ' || arg[i] == '!')
-			return (ft_error("nvid", arg));
+			return (ft_error_export("nvid", arg));
 		i++;
 	}
 	return (1);
