@@ -62,7 +62,7 @@ int	no_cmd(t_main *main)
 	}
 	else
 		printf(GREY"minishell: %s: command not found\n"RESET,
-			main->arg[0]);
+			main->cmd_tokens->args);
 	return (127);
 }
 
@@ -78,6 +78,8 @@ int	ft_process(t_main *main)
 		printf("minishell: syntax error near unexpected token `%s'\n", main->u_token);
 		return (1);
 	}
+	if (!main->current_path && main->cmd_tokens->cmd && !check_builtin(main->cmd_tokens->cmd))
+		return (printf("bash: %s: No such file or directory\n", main->cmd_tokens->cmd), 2);
 	printf("nb cmd %d\n", main->nb_cmd);
 	cmd_tokens = main->cmd_tokens;
 	if (!ft_strcmp(cmd_tokens->cmd, "cat")

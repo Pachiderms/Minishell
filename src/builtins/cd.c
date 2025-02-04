@@ -53,7 +53,7 @@ int	check_syntax_cd(t_main *main, char *arg)
 		special_case = is_special_case(&arg[i]);
 		chdir_value = chdir(actual_arg);
 		if (handle_chdir(main, actual_arg, chdir_value) == 0)
-			return (0);
+			return (free(actual_arg), 0);
 		if (special_case == 1)
 			return (1);
 		i = actualise_index(arg, actual_arg, i);

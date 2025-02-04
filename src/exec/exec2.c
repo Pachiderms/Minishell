@@ -34,7 +34,6 @@ void	child_process(t_main *main, t_cmd *token)
 	token->infile = ft_heredoc(token, 0, main);
 	token->args = rm_redirections(token, token->cmd, 0);
 	printf("final args <%s>\n", token->args);
-	printf("infile %d\n", token->infile);
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);
 	rl_clear_history();

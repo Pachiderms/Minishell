@@ -20,11 +20,10 @@ void	set_null_main(t_main *main)
 	main->export_len = 0;
 	main->nb_cmd = 0;
 	main->path = NULL;
+	main->current_path = NULL;
 	main->cmd_tokens = NULL;
 	main->u_token = NULL;
 	main->last_ofile = NULL;
-	main->total_len = 0;
-	main->k = 0;
 	main->cmd_no_quotes = NULL;
 	main->cmd_quotes = NULL;
 	main->dollars.i = 0;
@@ -122,5 +121,7 @@ int	init_main(t_main *main, char **env)
 				main->env, main->env_len, "export PATH=")];
 	else
 		return (free_all_data(main), 0);
+	main->current_path =  env[check_var_exists(
+				main->env, main->env_len, "export PATH=")];
 	return (1);
 }

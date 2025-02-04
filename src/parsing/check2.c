@@ -38,6 +38,8 @@ int	is_cmd(char *s, char *path)
 	tmp = NULL;
 	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
 		return (0);
+	if (!ft_strncmp(&s[0], "./", 2))
+		return (1);
 	if (ft_strchr(s, '/'))
 		return (0);
 	s1 = ft_strjoin("/", get_cmd(s));
