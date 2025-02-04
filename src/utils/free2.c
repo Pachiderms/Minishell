@@ -1,56 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 00:16:47 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 03:22:15 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_process(t_main *main, int exit_code)
+void	clear_node(t_cmd *node)
 {
-	free_all_data(main);
-	exit (exit_code);
+	if (!node)
+		return ;
+	if (node->cmd)
+		free(node->cmd);
+	if (node->args)
+		free(node->args);
+	if (node->infile > 0)
+		close(node->infile);
+	if (node->outfile > 1)
+		close(node->outfile);
+	if (node->heredoc_eof)
+		free(node->heredoc_eof);
+	node->cmd = NULL;
+	node->args = NULL;
+	node->heredoc_eof = NULL;
+	node->next = NULL;
 }
 
-void	free_end_cmd(t_main *main)
+void	ft_lstclear(t_cmd **lst)
 {
-	ft_lstclear(&main->cmd_tokens);
-	if (access("heredoc.tmp", F_OK) == 0)
-		unlink("heredoc.tmp");
-}
-
-void	free_split(char **split)
-{
-	int	i;
-	int	len;
-
-	len = 0;
-	i = 0;
-	if (!split)
+	if (*lst == NULL)
 		return ;
-	len = get_dchar_len(split);
-	if (len <= 0)
-		return ;
-	while (i < len)
+	else if ((*lst)->next == NULL)
 	{
-		free(split[i]);
-		i++;
+		ft_lstdelone(*lst);
+		*lst = NULL;
 	}
-	free(split);
-	split = NULL;
+	else
+	{
+		ft_lstclear(&(*lst)->next);
+		ft_lstdelone(*lst);
+		*lst = NULL;
+	}
 }
 
-void	free_all_data(t_main *main)
+void	ft_lstdelone(t_cmd *lst)
 {
-	if (main->env)
-		free_env(main->env, main->env_len);
-	if (main->export)
-		free_env(main->export, main->export_len);
-	ft_lstclear(&main->cmd_tokens);
+	clear_node(lst);
+	free(lst);
 }

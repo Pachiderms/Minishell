@@ -14,7 +14,7 @@
 
 int	ft_echo(t_main *main)
 {
-	int		fd;
+	int			fd;
 	char		*nl;
 
 	nl = find_newline(main->cmd_tokens->args);

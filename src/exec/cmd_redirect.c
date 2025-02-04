@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 19:21:41 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 02:04:24 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	handle_opening_outfile(char *file, int append)
 {
 	int		fd;
 
-	fd = -1;
 	if (append)
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
@@ -47,7 +46,7 @@ int	handle_opening_infile(char *file, int heredoc)
 	int		fd;
 
 	fd = -1;
-	if (heredoc) // heredoc
+	if (heredoc)
 	{
 		fd = open("heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
 		if (fd < 0)
@@ -90,7 +89,7 @@ int	get_fd_out(char **cmd)
 	int	fd;
 
 	i = 0;
-	fd = 1;
+	fd = -1;
 	if (cmd == NULL)
 		return (fd);
 	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
@@ -114,7 +113,7 @@ int	get_fd_in(char **cmd)
 	int	fd;
 
 	i = 0;
-	fd = 0;
+	fd = -1;
 	if (cmd == NULL)
 		return (fd);
 	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)

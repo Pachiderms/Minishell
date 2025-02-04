@@ -12,66 +12,12 @@
 
 #include "../../includes/minishell.h"
 
-int	check_builtin(char *_s)
-{
-	char	*s;
-
-	s = get_cmd(_s);
-	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1)  || !ft_strncmp(s, "/bin/cd", -1))
-		|| !ft_strncmp(s, "pwd", -1) || !ft_strncmp(s, "export", -1)
-		|| !ft_strncmp(s, "unset", -1)
-		|| (!ft_strncmp(s, "env", -1) || !ft_strncmp(s, "/bin/env", -1))
-		|| !ft_strncmp(s, "exit", -1))
-		return (1);
-	return (0);
-}
-
-int	is_cmd(char *s, char *path)
-{
-	int		i;
-	char	*s1;
-	char	*tmp;
-	char	**split;
-
-	i = 0;
-	tmp = NULL;
-	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
-		return (0);
-	if (ft_strchr(s, '/'))
-		return (0);
-	s1 = ft_strjoin("/", get_cmd(s));
-	split = ft_split(path, ':');
-	if (check_builtin(s))
-		return (free_split(split), free(s1), 1);
-	while (split[i])
-	{
-		tmp = ft_strjoin(split[i], s1);
-		if (access(tmp, F_OK) == 0)
-			return (free(tmp), free_split(split), free(s1), 1);
-		free(tmp);
-		i++;
-	}
-	return (free_split(split), free(s1), 0);
-}
-
-int	is_sc(char *s)
-{
-	if (!s)
-		return (0);
-	if (ft_strcmp(s, "|") == 0 || ft_strcmp(s, "<") == 0
-		|| ft_strcmp(s, ">") == 0 || ft_strcmp(s, "<<") == 0
-		|| ft_strcmp(s, ">>") == 0)
-		return (1);
-	if (ft_strchr(s, '$'))
-		return (2);
-	return (0);
-}
-
 void	get_close_quotes(char const *s, t_main *main)
 {
-	int i;
-	int r;
-	int r1;
+	int	i;
+	int	r;
+	int	r1;
+
 	i = 0;
 	r = 0;
 	r1 = 0;
@@ -80,23 +26,19 @@ void	get_close_quotes(char const *s, t_main *main)
 		if (s[i] == '\'')
 		{
 			i++;
-			while (s[i] != '\'')
-				i++;
+			i += skip_char((char *)&s[i], '\'', 1);
 			main->cl_s_qs[r++] = i;
 		}
 		if (s[i] == '"')
 		{
 			i++;
-			while (s[i] != '"')
-				i++;
+			i += skip_char((char *)&s[i], '"', 1);
 			main->cl_d_qs[r1++] = i;
 		}
 		i++;
 	}
 	main->cl_s_qs[r] = -1;
 	main->cl_d_qs[r1] = -1;
-	r = 0;
-	r1 = 0;
 }
 
 int	closed_quotes1(char const *s, int *i, int *_qts, char q)
@@ -117,10 +59,10 @@ int	closed_quotes1(char const *s, int *i, int *_qts, char q)
 
 int	check_open_quotes(char const *s, t_main *main)
 {
-	int i;
-	int s_qts;
-	int d_qts;
-	int tmp;
+	int	i;
+	int	s_qts;
+	int	d_qts;
+	int	tmp;
 
 	i = 0;
 	s_qts = 0;
@@ -148,19 +90,18 @@ int	check_open_quotes(char const *s, t_main *main)
 	main->d_qs[main->dollars.r1++] = -1;
 	main->dollars.r = 0;
 	main->dollars.r1 = 0;
-	//printf("s_qts : %d | d_qts : %d\n", s_qts, d_qts);
 	if (s_qts == 1 || d_qts == 1)
 		return (0);
 	return (1);
 }
 
-int check_syntax_redirect(char *s, t_main *main)
+int	check_syntax_redirect(char *s, t_main *main)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
-	i = 0;
-	while (s[i])
+	i = -1;
+	while (s[++i])
 	{
 		if (!ft_strncmp(&s[i], ">>", 2) || !ft_strncmp(&s[i], "<<", 2)
 			|| !ft_strncmp(&s[i], "<>", 2))
@@ -179,7 +120,6 @@ int check_syntax_redirect(char *s, t_main *main)
 			if (s[j] == '\0')
 				main->u_token = "newline";
 		}
-		i++;	
 	}
 	printf("u_token : %s\n", main->u_token);
 	return (!main->u_token);
@@ -187,13 +127,11 @@ int check_syntax_redirect(char *s, t_main *main)
 
 char	*handle_sc_c(char *arg, t_main *main)
 {
-	char *arg_without_quotes;
+	char	*arg_without_quotes;
 
 	arg_without_quotes = NULL;
 	if (arg == NULL)
 		return (NULL);
-	// if (check_syntax_redirect(arg, main) == 0)
-	// 	return (NULL);
 	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
 	{
 		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)
@@ -207,5 +145,3 @@ char	*handle_sc_c(char *arg, t_main *main)
 	}
 	return (arg);
 }
-
-

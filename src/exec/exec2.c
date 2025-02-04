@@ -12,60 +12,13 @@
 
 #include "../../includes/minishell.h"
 
-pid_t	g_signal_pid;
-
-static void	wait_all(t_main *main)
-{
-	int		status;
-	int		pid;
-	int		len;
-	t_cmd	*token;
-
-	token = main->cmd_tokens;
-	len = main->nb_cmd;
-	while (len--)
-	{
-		pid = waitpid(0, &status, 0);
-		if (pid == g_signal_pid)
-		{
-			if (WIFEXITED(status))
-				main->last_exit_code = WEXITSTATUS(status);
-		}
-		if (token->outfile >= 0)
-			close(token->outfile);
-		if (token->infile >= 0)
-			close(token->infile);
-		token = token->next;
-	}
-}
-
-static void	redirect_in_out(t_cmd *token)
-{
-	close(token->pip[0]);
-	if (token->infile >= 0)
-	{
-		dup2(token->infile, 0);
-		close(token->infile);
-	}
-	if (token->outfile >= 0)
-	{
-		dup2(token->outfile, 1);
-		close(token->outfile);
-	}
-	if (token->next)
-		dup2(token->pip[1], 1);
-	close(token->pip[1]);
-}
-
 void	child_builtin(t_main *main, t_cmd *token)
 {
-	int	exit_code;
-
 	redirect_in_out(token);
 	rl_clear_history();
 	init_signals();
-	exit_code = builtin(main);
-	free_process(main, exit_code);
+	builtin(main);
+	free_process(main, main->last_exit_code);
 }
 
 void	child_process(t_main *main, t_cmd *token)
@@ -81,6 +34,7 @@ void	child_process(t_main *main, t_cmd *token)
 	token->infile = ft_heredoc(token, 0);
 	token->args = rm_redirections(token->args, token->cmd);
 	printf("final args <%s>\n", token->args);
+	printf("infile %d\n", token->infile);
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);
 	rl_clear_history();
@@ -92,7 +46,7 @@ void	child_process(t_main *main, t_cmd *token)
 	free_process(main, 1);
 }
 
-static void	parent_process(t_cmd *token)
+void	parent_process(t_cmd *token)
 {
 	close(token->pip[1]);
 	if (token->infile >= 0)
@@ -103,24 +57,7 @@ static void	parent_process(t_cmd *token)
 		close(token->pip[0]);
 }
 
-static int	exec_cmd(t_main *main, t_cmd *token)
-{
-	g_signal_pid = fork();
-	if (g_signal_pid < 0)
-		free_all_data(main);
-	else if (!g_signal_pid)
-	{
-		if (token)
-			child_process(main, token);
-		else
-			free_all_data(main);
-	}
-	else
-		parent_process(token);
-	return (1);
-}
-
-int 	exec(t_main *main)
+int	exec(t_main *main)
 {
 	t_cmd	*token;
 

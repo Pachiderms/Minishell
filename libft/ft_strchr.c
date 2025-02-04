@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 18:00:39 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:14 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 02:40:49 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ char	*ft_strchr(const char *s, int c)
 	}
 	if (_s[i] == (unsigned char)c)
 		return ((char *)(_s + i));
-	return (0);
+	return (NULL);
 }

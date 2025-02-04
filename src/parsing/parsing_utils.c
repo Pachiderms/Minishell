@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/02 19:08:33 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 01:45:12 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*find_args(char **s, t_main *main)
 			if (s[i + 1])
 				res = ft_strjoin_free(res, " ", 0);
 		}
-		previous= s[i];
+		previous = s[i];
 		i++;
 	}
 	return (res);
@@ -77,7 +77,7 @@ char	*find_heredoc_eof(char **s)
 	while (s[i])
 	{
 		if (get_next(&s[i], "<<"))
-			return (get_next(&s[i], "<<"));
+			return (ft_strdup(get_next(&s[i], "<<")));
 		i++;
 	}
 	return (NULL);

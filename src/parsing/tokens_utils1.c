@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/02 13:44:15 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 02:01:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	s_len(char *s)
 {
-	int i;
-	int len;
-	char q;
+	int		i;
+	int		len;
+	char	q;
 
 	i = 0;
 	len = 0;
@@ -47,7 +47,7 @@ char	*get_rid_of_quotes(char *s)
 	int		i;
 	int		len;
 	char	*dest;
-	char 	q;
+	char	q;
 
 	i = 0;
 	if (!s)
