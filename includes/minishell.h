@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 18:53:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 20:00:12 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,9 @@
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
 
+extern int	g_cat;
+
 enum e_type {command, argument, sc};
-
-# ifdef DEFINE_I
-
-int			cat = 0;
-# else
-
-extern int	cat;
-# endif
 
 typedef struct s_cmd
 {
@@ -90,7 +84,7 @@ typedef struct s_main
 	char		*u_token;
 	char		*last_ofile;
 	char		*cmd_no_quotes;
-    char		*cmd_quotes;
+	char		*cmd_quotes;
 }	t_main;
 
 // LIBFT

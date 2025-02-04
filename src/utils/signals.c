@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 18:51:07 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 20:00:48 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	sigint(int sig)
 {
 	(void)sig;
 	printf("\n");
-	if (cat == 0)
+	if (g_cat == 0)
 		rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -26,9 +26,9 @@ void	sigint(int sig)
 void	sigquit(int sig)
 {
 	(void)sig;
-	if (cat == 1)
+	if (g_cat == 1)
 		printf("Quit (core dumped)\n");
-	if (cat == 0)
+	if (g_cat == 0)
 		rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

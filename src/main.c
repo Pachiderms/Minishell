@@ -6,12 +6,13 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 19:25:12 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 20:00:31 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define DEFINE_I
 #include "../includes/minishell.h"
+
+int	g_cat;
 
 int	only_space_line(char *cmd)
 {
@@ -64,7 +65,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	cat = 0;
+	g_cat = 0;
 	if (!init_main(&main, env))
 		return (0);
 	init_signals();
@@ -77,7 +78,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		}
 		sub_process(&main, cmd);
-		cat = 0;
+		g_cat = 0;
 		i++;
 	}
 	free_all_data(&main);

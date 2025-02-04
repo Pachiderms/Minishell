@@ -73,7 +73,7 @@ int	ft_process(t_main *main)
 	if (!main->current_path && main->cmd_tokens->cmd
 		&& !check_builtin(main->cmd_tokens->cmd))
 		return (ft_error("nsfod", main->cmd_tokens->cmd));
-	cat = !ft_strcmp(main->cmd_tokens->cmd, "cat")
+	g_cat = !ft_strcmp(main->cmd_tokens->cmd, "cat")
 		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep");
 	if (main->nb_cmd >= 1)
 	{
