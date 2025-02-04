@@ -224,6 +224,31 @@ int		exec(t_main *main);
 char	*rm_redirections(t_cmd *token, char *cmd, int builtin);
 char	*cook_cmd(char *s);
 
+/// DOLLAR
+char	*replace_dollar(char *arg, t_main *main);
+void	update_index(t_main *main);
+void	end_things(t_main *main);
+void	begin_things(t_main *main, char *arg);
+void	arg_replace(char **arg_dup, char *final_tmp);
+int		begin_verif(char c, char cpl1, t_main *main);
+void	clear_dollar(t_main *main);
+void	free_tmps(t_main *main);
+char	*create_end_str(t_main *main, char *arg_dup);
+int		big_while(char c, int which);
+void	create_and_replace_tmp2(t_main *main);
+void	search_sollar(t_main *main, char *arg_dup);
+void	del_backslash(char **final_tmp);
+char	*fill_test(char *tmp, int size);
+int		in_dquote(t_main *main, char *arg_dup, int j);
+int		in_squote(t_main *main, char *arg_dup, int j);
+char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3);
+void	replace(t_main *main, char **tmp2);
+void	replace_existing(t_main *main, char **tmp2);
+void	replace_minus2(t_main *main, char **tmp2);
+void	update_dq_pos(t_main *main, int r, int r1, int diff);
+void	update_sq_pos(t_main *main, int r, int r1, int diff);
+char	*cut_str(char *str, char *cut);
+
 /// FREE
 void	free_all_data(t_main *main);
 void	free_process(t_main *main, int exit_code);
