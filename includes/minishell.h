@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 20:48:44 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 18:55:34 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,9 @@ typedef struct s_main
 	char		*current_path;
 	int			last_exit_code;
 	char		*u_token;
+	char		*cmdnf;
 	char		*last_ofile;
-	char		*cmd_no_quotes;
+	int			in_quotes[1024];
 	char		*cmd_quotes;
 }	t_main;
 
@@ -118,9 +119,9 @@ int		init_main(t_main *main, char **env);
 int		get_dchar_len(char **split);
 int		get_arg_len(char *arg);
 int		order(char *s, t_main *main);
-char	*find_cmd(char **s, t_main *main);
-char	*find_args(char **s, t_main *main);
-char	*find_heredoc_eof(char **s);
+char	*find_cmd(char *s, t_main *main);
+char	*find_args(char *_s, t_main *main, char *cmd);
+char	*find_heredoc_eof(char *_s, t_main *main);
 char	*get_next(char **cmd, char *tf);
 
 //t_cmd utils
@@ -128,7 +129,7 @@ void	ft_lstclear(t_cmd **lst);
 void	ft_lstdelone(t_cmd *lst);
 void	clear_node(t_cmd *node);
 int		ft_lstsize(t_cmd *lst);
-t_cmd	*ft_lstnew(t_main *main, char **cmd);
+t_cmd	*ft_lstnew(t_main *main, char *cmd);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void	ft_lstadd_front(t_cmd **lst, t_cmd *new);
 t_cmd	*ft_lstlast(t_cmd *lst);
@@ -223,7 +224,7 @@ int		handle_sc(t_main *main, char **split, int i);
 int		in_dquote(t_main *main, char *arg_dup, int j);
 int		in_squote(t_main *main, char *arg_dup, int j);
 char	*get_cmd(char *path);
-char	**ft_split_k_q_s(t_main *main, char const *s, char c);
+char	**ft_split_k_q_s(t_main *main, char const *s, char c, int rmquotes);
 int		count_words(char *no_space);
 int		ft_calc_k_q_s(int i, int diff, char _c, char const *_s);
 char	**ft_free_split_k_q_s(char **d, int start);
@@ -239,7 +240,7 @@ void	builtin(t_main *main);
 /// PIPEX
 char	**prep_cmd_exec(t_main *main);
 int		exec(t_main *main);
-char	*rm_redirections(t_cmd *token, char *cmd, int builtin);
+char	*rm_redirections(t_cmd *token, char *cmd, int builtin, t_main *main);
 char	*cook_cmd(char *s);
 
 /// FREE
@@ -267,4 +268,6 @@ int		ft_error_unset(char *type, char *msg);
 int		ft_error_export(char *type, char *msg);
 int		ft_error_cd(char *type, char *msg);
 int		ft_error_pwd(char *type, char *msg);
+
+void	free_string(char *s);
 #endif

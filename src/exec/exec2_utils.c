@@ -3,19 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   exec2_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 08:57:01 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 18:45:47 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	skip_files(char *s, char r, char ns)
+int	was_in_quotes(char *s, t_main *main)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (main->cmd_quotes[i])
+	{
+		if (main->cmd_quotes[i] == 34 || main->cmd_quotes[i] == 39)
+		{
+			i++;
+			if (i + 1 > (int)ft_strlen(main->cmd_quotes))
+				break ;
+			if (ft_strncmp(s, &main->cmd_quotes[i],
+				ft_strlen(s)) == 0)
+			{
+				j = i;
+				while (main->cmd_quotes[j] && 
+					main->cmd_quotes[j] != main->cmd_quotes[i - 1])
+						j++;
+				printf("found '%s'\nwait= '%s'\n",
+					ft_substr(main->cmd_quotes, i, j - i), s);
+				return (1);
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	skip_files(char *s, char r, char ns, t_main *main)
 {
 	int	i;
 
+	if (!s)
+		return (0);
+	if (was_in_quotes(s, main))
+		return (0);
 	i = 0;
 	if (s[i] == r)
 	{
@@ -35,19 +70,25 @@ int	skip_files(char *s, char r, char ns)
 	return (i);
 }
 
-int	skip_infiles(char *s, int r, int ns)
+int	skip_infiles(char *s, int r, int ns, t_main *main)
 {
 	int	i;
 
+	if (!s)
+		return (0);
+	if (was_in_quotes(s, main))
+		return (0);
 	i = 0;
+	if (s[0] != '<')
+		return (0);
 	while (s[i] == '<')
 		i++;
 	if (!ft_strchr(&s[i], r))
 		return (i);
-	return (skip_files(s, r, ns));
+	return (skip_files(s, r, ns, main));
 }
 
-char	*rm_redirections(t_cmd *token, char *cmd, int builtin)
+char	*rm_redirections(t_cmd *token, char *cmd, int builtin, t_main *main)
 {
 	int		i;
 	char	*tmp;
@@ -60,10 +101,12 @@ char	*rm_redirections(t_cmd *token, char *cmd, int builtin)
 		return (NULL);
 	while (i < (int)ft_strlen(token->args))
 	{
-		i += skip_files(&token->args[i], '>', '<');
-		if (token->args[i] == '<')
-			i += skip_infiles(&token->args[i], '<', '>');
+		printf("arg[%d] %s\n", i, &token->args[i]);
+		i += skip_files(&token->args[i], '>', '<', main);
+		i += skip_infiles(&token->args[i], '<', '>', main);
+		printf("i skip %d\n", i);
 		tmp = add_char_to_str(tmp, token->args[i], 1);
+		printf("tmp %s\n", tmp);
 		i++;
 	}
 	if (!builtin)
@@ -72,6 +115,7 @@ char	*rm_redirections(t_cmd *token, char *cmd, int builtin)
 		res = ft_strjoin_free(res, tmp, 0);
 	free(token->args);
 	token->args = NULL;
+	printf("rm redir res %s\n", res);
 	return (free(tmp), res);
 }
 

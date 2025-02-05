@@ -106,13 +106,10 @@ int	print_env(t_main *main, int check)
 			printf("%s\n", main->env[i]);
 			i++;
 		}
-		printf("Env Len : %d | Export Len : %d\n",
-			main->env_len, main->export_len);
 	}
 	if (check == 1)
 	{
 		print_ascii_order(main);
-		printf("Export Len : %d\n", main->export_len);
 	}
 	return (free(cmd), 0);
 }

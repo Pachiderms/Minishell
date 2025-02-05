@@ -41,20 +41,22 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new)
 		ft_lstlast(*lst)->next = new;
 }
 
-t_cmd	*ft_lstnew(t_main *main, char **cmd)
+t_cmd	*ft_lstnew(t_main *main, char *cmd)
 {
 	t_cmd	*node;
+	char	**split;
 
 	node = malloc(sizeof(t_cmd));
 	if (node == NULL)
 		return (NULL);
 	node->cmd = find_cmd(cmd, main);
-	node->args = find_args(cmd, main);
+	node->args = find_args(cmd, main, node->cmd);
 	node->infile = -1;
-	node->outfile = get_fd_out(cmd, main);
-	node->heredoc_eof = find_heredoc_eof(cmd);
+	split = ft_split_k_q_s(main, cmd, ' ', 1);
+	node->outfile = get_fd_out(split, main);
+	node->heredoc_eof = find_heredoc_eof(cmd, main);
 	node->next = NULL;
-	return (node);
+	return (free_split(split), node);
 }
 
 t_cmd	*ft_lstlast(t_cmd *lst)

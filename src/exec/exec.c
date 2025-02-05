@@ -21,7 +21,7 @@ void	builtin(t_main *main)
 			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1, main);
 	command = get_cmd(main->cmd_tokens->cmd);
 	main->cmd_tokens->args = rm_redirections(main->cmd_tokens,
-			main->cmd_tokens->cmd, 1);
+			main->cmd_tokens->cmd, 1, main);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -70,7 +70,6 @@ int	u_ttoken(t_main *main)
 
 int	ft_process(t_main *main)
 {
-	printf("nb cmd %d\n", main->nb_cmd);
 	if (main->u_token)
 		return (u_ttoken(main));
 	if (!main->current_path && main->cmd_tokens->cmd

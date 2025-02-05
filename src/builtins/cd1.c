@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 20:21:06 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 15:16:39 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ char	*get_actual_arg(t_main *main, char *arg)
 		oldpwd_pos = check_var_exists(main->env, main->env_len,
 				"export OLDPWD=");
 		actual_arg = &ft_strchr(main->env[oldpwd_pos], '=')[1];
-		printf("%s\n", actual_arg);
 	}
 	if (handle_home_case(main, actual_arg) == NULL)
 		return (NULL);

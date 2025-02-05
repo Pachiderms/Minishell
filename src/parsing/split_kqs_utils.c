@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/04 18:32:15 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 15:22:26 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	count_words(char *no_space)
 	word = 0;
 	if (!no_space || !ft_strcmp(no_space, ""))
 		return (0);
-	while (no_space[i])
+	while (i < (int)ft_strlen(no_space))
 	{
 		if (ft_isspace(no_space[i]) == 1)
 		{

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 18:30:22 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 18:57:49 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*add_char_to_str(char *s, char c, int _free)
 	int		len;
 	int		i;
 
+	if (!c)
+		return (s);
 	len = ft_strlen(s);
 	res = malloc((len + 2) * sizeof(char));
 	if (!res)
@@ -81,7 +83,6 @@ int	get_arg_len(char *arg)
 		}
 		if (!ft_isspace(arg[i - 1]))
 		{
-			printf("%d %s\n", i, &arg[i]);
 			words++;
 		}
 		i++;
@@ -91,26 +92,25 @@ int	get_arg_len(char *arg)
 
 t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 {
-	char	**pipe;
 	t_cmd	*cmd_tokens;
 	t_cmd	*tmp;
 	int		i;
 
-	pipe = ft_split_k_q_s(main, pipes[0], ' ');
-	cmd_tokens = ft_lstnew(main, pipe);
+	if (!pipes)
+		return (NULL);
+	for(int i=0; pipes[i];i++)
+		printf("pipe[%d] %s\n", i, pipes[i]);
+	cmd_tokens = ft_lstnew(main, pipes[0]);
 	if (cmd_tokens->cmd)
 		main->nb_cmd++;
-	free_split(pipe);
 	i = 0;
 	while (++i < get_dchar_len(pipes))
 	{
-		pipe = ft_split_k_q_s(main, pipes[i], ' ');
-		tmp = ft_lstnew(main, pipe);
+		tmp = ft_lstnew(main, pipes[i]);
 		if (tmp->cmd)
 			main->nb_cmd++;
 		ft_lstadd_back(&cmd_tokens, tmp);
 		tmp = tmp->next;
-		free_split(pipe);
 	}
 	return (cmd_tokens);
 }
@@ -124,8 +124,14 @@ int	order(char *_s, t_main *main)
 	s = get_rid_of_spaces(_s);
 	if (!s || s[0] == '\0')
 		return (0);
-	pipes = ft_split_k_q_s(main, s, '|');
+	if (check_open_quotes(s, main) == 0)
+		return (free(s), 0);
+	get_close_quotes(s, main);
+	pipes = ft_split_k_q_s(main, s, '|', 0);
 	main->cmd_tokens = init_cmd_tokens(pipes, main);
+	if (!main->cmd_tokens)
+		return (0);
+	main->cmdnf = malloc((main->nb_cmd + 1) * sizeof(char));
 	print_t_cmd(main->cmd_tokens);
 	return (free(s), free_split(pipes), 1);
 }

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/04 04:15:28 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 17:06:09 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*get_rid_of_quotes(char *s)
 			i++;
 	}
 	dest[len] = '\0';
-	return (free(s), dest);
+	return (dest);
 }
 
 char	*get_rid_of(char *s, char c)
@@ -85,6 +85,8 @@ char	*get_rid_of(char *s, char c)
 
 	i = -1;
 	len = 0;
+	if (!s)
+		return (NULL);
 	while (s[++i])
 	{
 		if (s[i] != c)
@@ -106,10 +108,15 @@ char	*get_rid_of(char *s, char c)
 
 char	*get_cmd(char *path)
 {
-	if (!ft_strncmp(path, "/bin/", 5))
-		return (&path[5]);
-	else if (!ft_strncmp(path, "/usr/bin/", 8))
-		return (&path[8]);
-	else
-		return (path);
+	if (ft_strlen(path) >= 5)
+	{
+		if (!ft_strncmp(path, "/bin/", 5))
+			return (&path[5]);
+	}
+	else if (ft_strlen(path) >= 8)
+	{
+		if (!ft_strncmp(path, "/usr/bin/", 8))
+			return (&path[8]);
+	}
+	return (path);
 }

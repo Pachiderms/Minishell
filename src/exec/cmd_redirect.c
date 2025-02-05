@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 18:33:15 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 17:46:22 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ int	handle_opening_infile(char *file, int heredoc)
 
 char	*get_next(char **cmd, char *tf)
 {
+	if (!cmd)
+		return (NULL);
+	if (!*cmd)
+		return (NULL);
 	if (ft_strcmp(*cmd, tf) == 0)
 	{
 		if (*(cmd + 1))
@@ -100,21 +104,24 @@ int	get_fd_out(char **cmd, t_main *main)
 
 	i = 0;
 	fd = -1;
-	if (cmd == NULL)
+	if (cmd == NULL || !cmd[1])
 		return (fd);
-	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
+	while (cmd[i])
 	{
-		if (get_next(&cmd[i], ">>"))
+		if (main->in_quotes[i] != 1)
 		{
-			fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
-			if (fd > 1)
-				update_lastofile(main, get_next(&cmd[i], ">>"));
-		}
-		else if (get_next(&cmd[i], ">"))
-		{
-			fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
-			if (fd > 1)
-				update_lastofile(main, get_next(&cmd[i], ">"));
+			if (get_next(&cmd[i], ">>"))
+			{
+				fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
+				if (fd > 1)
+					update_lastofile(main, get_next(&cmd[i], ">>"));
+			}
+			else if (get_next(&cmd[i], ">"))
+			{
+				fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
+				if (fd > 1)
+					update_lastofile(main, get_next(&cmd[i], ">"));
+			}
 		}
 		i++;
 	}
