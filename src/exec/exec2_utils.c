@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/05 18:45:47 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:04:29 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	was_in_quotes(char *s, t_main *main)
 			if (i + 1 > (int)ft_strlen(main->cmd_quotes))
 				break ;
 			if (ft_strncmp(s, &main->cmd_quotes[i],
-				ft_strlen(s)) == 0)
+					ft_strlen(s)) == 0)
 			{
 				j = i;
-				while (main->cmd_quotes[j] && 
-					main->cmd_quotes[j] != main->cmd_quotes[i - 1])
+				while (main->cmd_quotes[j]
+					&& main->cmd_quotes[j] != main->cmd_quotes[i - 1])
 						j++;
 				printf("found '%s'\nwait= '%s'\n",
 					ft_substr(main->cmd_quotes, i, j - i), s);

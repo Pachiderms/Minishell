@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/05 17:40:45 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:03:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,11 @@ char	*find_cmd(char *_s, t_main *main)
 	if (!_s)
 		return (NULL);
 	s = ft_split_k_q_s(main, _s, ' ', 1);
-	for(int i=0; s[i];i++)
-		printf("pipe[%d] %s\n", i, s[i]);
 	if (!s)
 		return (NULL);
 	cmd = NULL;
 	while (s[i])
 	{
-		printf("here in pipe '%s'\n", s[i]);
 		if (is_cmd(s[i], main->path) && !cmd)
 			cmd = ft_strdup(s[i]);
 		i++;
@@ -94,8 +91,11 @@ char	*find_heredoc_eof(char *_s, t_main *main)
 		return (NULL);
 	while (s[i])
 	{
-		if (get_next(&s[i], "<<"))
-			hd = ft_strjoin_free(hd, get_next(&s[i], "<<"), 0);
+		if (main->in_quotes[i] != 1)
+		{
+			if (get_next(&s[i], "<<"))
+				hd = ft_strjoin_free(hd, get_next(&s[i], "<<"), 0);
+		}
 		i++;
 	}
 	return (free_split(s), hd);

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/05 18:04:23 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:01:35 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ char	*cook_nospace(t_main *main, char const *s)
 
 char	**fill_dest(char **dest, char *no_space, char c, t_main *main)
 {
-	int	i;
-	int	j;
-	int	x;
+	int		i;
+	int		j;
+	int		x;
 	char	*tmp;
 
 	i = 0;

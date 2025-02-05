@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 18:55:34 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:06:10 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_main
 	char		*current_path;
 	int			last_exit_code;
 	char		*u_token;
-	char		*cmdnf;
+	char		**cmdnf;
 	char		*last_ofile;
 	int			in_quotes[1024];
 	char		*cmd_quotes;

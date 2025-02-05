@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 18:57:49 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:23:45 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 
 	if (!pipes)
 		return (NULL);
-	for(int i=0; pipes[i];i++)
-		printf("pipe[%d] %s\n", i, pipes[i]);
 	cmd_tokens = ft_lstnew(main, pipes[0]);
 	if (cmd_tokens->cmd)
 		main->nb_cmd++;
@@ -132,6 +130,7 @@ int	order(char *_s, t_main *main)
 	if (!main->cmd_tokens)
 		return (0);
 	main->cmdnf = malloc((main->nb_cmd + 1) * sizeof(char));
+	main->cmdnf[0] = NULL;
 	print_t_cmd(main->cmd_tokens);
 	return (free(s), free_split(pipes), 1);
 }
