@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 16:22:09 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:33:59 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	sub_process(t_main *main, char *cmd)
 			main->current_path = NULL;
 		add_history(cmd);
 		if (!order(cmd, main))
-			ft_lstclear(&main->cmd_tokens);
+			free_end_cmd(main);
 		else
 		{
 			ft_process(main);

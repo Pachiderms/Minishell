@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 21:08:42 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/04 02:27:35 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:41:09 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	exec_cmd(t_main *main, t_cmd *token)
 		free_all_data(main);
 	else if (!g_signal_pid)
 	{
-		if (token)
+		if (token->cmd)
 			child_process(main, token);
 		else
 			free_all_data(main);
