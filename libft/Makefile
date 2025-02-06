@@ -6,7 +6,7 @@
 #    By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2025/02/06 11:10:43 by zamgar           ###   ########.fr        #
+#    Updated: 2025/02/06 14:04:36 by zamgar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ SRC =	ft_atoi.c \
 	ft_strnstr.c \
 	ft_putnbr_fd.c \
 	ft_itoa.c \
-	ft_isalpha.c
+	ft_isalpha.c \
+	ft_strnstr.c \
 
 BFILES =	ft_atoi.o \
 		ft_calloc.o	\
@@ -50,7 +51,8 @@ BFILES =	ft_atoi.o \
 		ft_strnstr.o \
 		ft_putnbr_fd.o \
 		ft_itoa.o \
-		ft_isalpha.o
+		ft_isalpha.o \
+		ft_strnstr.o
 
 OBJS = ${SRC:.c=.o}
 

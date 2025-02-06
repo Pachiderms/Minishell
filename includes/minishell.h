@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 15:31:06 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:30:30 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
 
-extern int	g_cat;
+extern pid_t	g_signal_pid;
 
 enum e_type {command, argument, sc};
 
@@ -42,6 +42,7 @@ typedef struct s_cmd
 	char			*cmd;
 	char			*args;
 	char			*heredoc_eof;
+	char			*no_file;
 	int				infile;
 	int				outfile;
 	int				pip[2];
@@ -71,19 +72,19 @@ typedef struct s_main
 	char		**export;
 	int			export_len;
 	t_cmd		*cmd_tokens;
-	int			lastcmd;
 	t_dollar	dollars;
 	int			s_qs[42];
 	int			d_qs[42];
 	int			cl_s_qs[42];
 	int			cl_d_qs[42];
+	int			lastcmd;
 	int			check;
 	int			nb_cmd;
 	char		*path;
 	char		*current_path;
 	int			last_exit_code;
-	char		*u_token;
 	char		*noFile;
+	char		*u_token;
 	char		**cmdnf;
 	char		*last_ofile;
 	int			in_quotes[1024];
@@ -112,6 +113,7 @@ int		ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_itoa(int n);
 int		ft_isalpha(int c);
+char	*ft_strnstr(const char *str, const char *tofind, size_t n);
 
 // MINISHELL
 
@@ -123,7 +125,7 @@ int		get_dchar_len(char **split);
 int		get_arg_len(char *arg);
 int		order(char *s, t_main *main);
 char	*find_cmd(char *s, t_main *main);
-char	*find_args(char *_s, t_main *main, char *cmd);
+char	*find_args(char *_s, t_main *main, char *cmd, t_cmd *token);
 char	*find_heredoc_eof(char *_s, t_main *main);
 char	*get_next(char **cmd, char *tf);
 int		was_in_quotes(char *_s, t_main *main, char *base);
@@ -165,7 +167,7 @@ void	update_sq_pos(t_main *main, int r, int r1, int diff);
 char	*cut_str(char *str, char *cut);
 
 //HERE_DOC
-int		ft_heredoc(t_cmd *token, int builtin, t_main *main);
+int		ft_heredoc(t_cmd *token, int builtin);
 
 /// ENV
 int		init_env(char **env, t_main *main);
@@ -193,7 +195,7 @@ void	remake_env_fill(char **tmp, t_main *main, int which);
 int		ft_echo(t_main *main);
 char	*find_newline(char *s);
 int		get_fd_out(char **cmd, t_main *main);
-int		get_fd_in(char **cmd, t_main *main);
+int		get_fd_in(char **cmd, t_main *main, t_cmd *token);
 /// CD
 int		is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
@@ -261,6 +263,7 @@ void	free_split(char **split);
 void	sigint(int sig);
 void	sigquit(int sig);
 void	init_signals(void);
+void	init_signals2(void);
 
 /// OTHERS
 int		check_var_exists2(t_main *main, char *arg);

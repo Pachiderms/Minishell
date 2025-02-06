@@ -26,18 +26,26 @@ void	child_process(t_main *main, t_cmd *token)
 	char	**split_args;
 	char	*cmd;
 
+	if (token->no_file)
+	{
+		main->last_exit_code = ft_error("nosfod", token->no_file);
+		free_process(main, 1);
+	}
 	if (!token->cmd)
 		free_process(main, 2);
 	if (check_builtin(token->cmd))
 		child_builtin(main, token);
-	cmd = cook_cmd(token->cmd);
-	token->infile = ft_heredoc(token, 0, main);
+	if (!ft_strncmp(token->cmd, "./", 2))
+		cmd = ft_strdup(token->cmd);
+	else
+		cmd = cook_cmd(token->cmd);
+	token->infile = ft_heredoc(token, 0);
 	token->args = rm_redirections(token, token->cmd, 0, main);
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);
 	rl_clear_history();
-	init_signals();
-	execve(cmd, split_args, main->env);
+	init_signals2();
+	execve(cmd, split_args, main->env); // leak cd
 	free(cmd);
 	free_split(split_args);
 	perror("execve");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 15:02:22 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 16:59:27 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 void	free_process(t_main *main, int exit_code)
 {
-	g_cat = 0;
 	free_all_data(main);
 	exit (exit_code);
 }
 
 void	free_end_cmd(t_main *main)
 {
-	g_cat = 0;
 	if (main->cmd_tokens)
 		ft_lstclear(&main->cmd_tokens);
 	main->lastcmd = -1;

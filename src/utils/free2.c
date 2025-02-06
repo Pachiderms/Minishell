@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 14:40:41 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:29:11 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ void	clear_node(t_cmd *node)
 		close(node->outfile);
 	if (node->heredoc_eof)
 		free(node->heredoc_eof);
-	if (node->args)
+	if (node->no_file)
+		free(node->no_file);
 	node->cmd = NULL;
+	node->no_file  = NULL;
 	node->args = NULL;
 	node->heredoc_eof = NULL;
 	node->next = NULL;

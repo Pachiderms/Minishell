@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 15:55:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:28:21 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ char	*get_next(char **cmd, char *tf)
 	return (NULL);
 }
 
-void	update_lastofile(t_main *main, char *s, int fd, int ignore)
+void	update_lastofile(t_main *main, char *s, int fd, t_cmd *token)
 {
-	if (fd > 1 && s && ignore)
+	if (fd > 1 && s && !token)
 	{
 		if (main->last_ofile)
 		{
@@ -94,14 +94,14 @@ void	update_lastofile(t_main *main, char *s, int fd, int ignore)
 		}
 		main->last_ofile = ft_strdup(s);
 	}
-	else if (fd == -2 && s && !ignore)
+	else if (fd == -2 && s && token)
 	{
-		if (main->noFile)
+		if (token->no_file)
 		{
-			free(main->noFile);
-			main->noFile = NULL;
+			free(token->no_file);
+			token->no_file = NULL;
 		}
-		main->noFile = ft_strdup(s);
+		token->no_file = ft_strdup(s);
 		if (fd > 0)
 		{
 			close(fd);
@@ -126,12 +126,12 @@ int	get_fd_out(char **cmd, t_main *main)
 			if (get_next(&cmd[i], ">>"))
 			{
 				fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
-				update_lastofile(main, get_next(&cmd[i], ">>"), fd, 1);
+				update_lastofile(main, get_next(&cmd[i], ">>"), fd, NULL);
 			}
 			else if (get_next(&cmd[i], ">"))
 			{
 				fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
-				update_lastofile(main, get_next(&cmd[i], ">"), fd, 1);
+				update_lastofile(main, get_next(&cmd[i], ">"), fd, NULL);
 			}
 		}
 		i++;
@@ -139,7 +139,7 @@ int	get_fd_out(char **cmd, t_main *main)
 	return (fd);
 }
 
-int	get_fd_in(char **cmd, t_main *main)
+int	get_fd_in(char **cmd, t_main *main, t_cmd *token)
 {
 	int	i;
 	int	fd;
@@ -150,13 +150,13 @@ int	get_fd_in(char **cmd, t_main *main)
 		return (fd);
 	while (cmd[i])
 	{
-		if (get_next(&cmd[i], "<"))
+		if (get_next(&cmd[i], "<") && !get_next(&cmd[i], "<<"))
 		{
 			if (fd > 0)
 				close (fd);
 			fd = handle_opening_infile(get_next(&cmd[i], "<"), 0);
 			if (fd == -2)
-				update_lastofile(main, get_next(&cmd[i], "<"), fd, 0);
+				update_lastofile(main, get_next(&cmd[i], "<"), fd, token);
 		}
 		i++;
 	}

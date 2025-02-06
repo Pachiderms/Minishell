@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 16:19:01 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:32:25 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_cat = 0;
+pid_t	g_signal_pid;
 
 int	only_space_line(char *cmd)
 {
@@ -44,8 +44,6 @@ void	sub_process(t_main *main, char *cmd)
 		{
 			if (main->u_token)
 				main->last_exit_code = u_ttoken(main);
-			else if (main->noFile)
-				main->last_exit_code = ft_error("nosfod", main->noFile);
 			free_end_cmd(main);
 		}
 		else
@@ -79,7 +77,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		}
 		sub_process(&main, cmd);
-		g_cat = 0;
+		g_signal_pid = 0;
 	}
 	free_all_data(&main);
 	rl_clear_history();

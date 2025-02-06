@@ -18,10 +18,12 @@ void	builtin(t_main *main)
 
 	main->nb_cmd = 0;
 	if (main->cmd_tokens->heredoc_eof)
-			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1, main);
+			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1);
 	command = get_cmd(main->cmd_tokens->cmd);
 	main->cmd_tokens->args = rm_redirections(main->cmd_tokens,
 			main->cmd_tokens->cmd, 1, main);
+	if (main->cmd_tokens->no_file)
+		main->last_exit_code = ft_error("nosfod", main->cmd_tokens->no_file);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -65,7 +67,9 @@ int	no_cmd(t_main *main)
 		if (!token->cmd)
 		{
 			if (token->heredoc_eof)
-				ft_heredoc(token, 1, main);
+				ft_heredoc(token, 1);
+			else if (token->no_file)
+				main->last_exit_code = ft_error("nosfod", token->no_file);
 			else if (ft_strchr(token->args, '/'))
 			{
 				if (chdir(token->args) == 0)
@@ -104,8 +108,12 @@ int	ft_process(t_main *main)
 		&& !check_builtin(main->cmd_tokens->cmd))
 		return (ft_error("nsfod", main->cmd_tokens->cmd));
 	if (!ft_strcmp(main->cmd_tokens->cmd, "cat")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep"))
-		g_cat = 1;
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "grep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/grep"))
+		g_signal_pid = 1;
 	if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)

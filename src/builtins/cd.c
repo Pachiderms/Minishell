@@ -101,3 +101,24 @@ int	cd(t_main *main)
 	}
 	return (free(dir), 1);
 }
+
+// int	cd(t_main *main)
+// {
+// 	char	*dir;
+// 	int		res;
+
+// 	dir = getcwd(NULL, 0);
+// 	if (!dir)
+// 		return (perror("getcwd"), free(dir), 1);
+// 	free(dir);
+// 	if (get_arg_len(main->cmd_tokens->args) >= 2)
+// 			return (ft_error_cd("tma", NULL));
+// 	res = chdir(main->cmd_tokens->args);
+// 	if (res == 0)
+// 		update_oldpwd_pwd(main);
+// 	if (res == -1)
+// 		res *= -1;
+// 	if (res == 1)
+// 		perror(main->cmd_tokens->args);
+// 	return (res);
+// }

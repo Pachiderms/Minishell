@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec42.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 21:08:42 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/06 16:16:55 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 16:48:39 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-pid_t	g_signal_pid;
 
 void	wait_all(t_main *main)
 {

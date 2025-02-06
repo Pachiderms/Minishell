@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 15:02:01 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 16:49:46 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ void	set_null_main(t_main *main)
 	main->path = NULL;
 	main->current_path = NULL;
 	main->cmd_tokens = NULL;
-	main->lastcmd = -1;
 	main->u_token = NULL;
-	main->noFile = NULL;
 	main->last_ofile = NULL;
-	main->last_exit_code = 0;
 	main->cmd_quotes = NULL;
 	main->dollars.i = 0;
 	main->dollars.j = 0;
 	main->dollars.end = 0;
 	main->dollars.r = 0;
 	main->dollars.r1 = 0;
+	main->last_exit_code = 0;
+	main->noFile = NULL;
+	main->lastcmd = -1;
 	main->dollars.rep_pos = 0;
 	main->dollars.check = 0;
 	main->dollars.arg_dup = NULL;
@@ -40,6 +40,7 @@ void	set_null_main(t_main *main)
 	main->dollars.tmp2 = NULL;
 	main->dollars.tmp3 = NULL;
 	main->dollars.final_tmp = NULL;
+	g_signal_pid = 0;
 }
 
 char	*get_var_name(char *cmd)

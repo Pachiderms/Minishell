@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 13:00:51 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 14:06:42 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	is_cmd(char *s, char *path)
 		return (0);
 	if (!ft_strncmp(&s[0], "./", 2))
 		return (1);
-	if (ft_strchr(s, '/'))
+	if (ft_strchr(s, '/') && !ft_strnstr(s, "/bin/", ft_strlen(s)))
 		return (0);
 	s1 = ft_strjoin("/", get_cmd(s));
 	split = ft_split(path, ':');

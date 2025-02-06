@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 16:27:56 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 18:17:12 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,32 @@ char	*add_char_to_str(char *s, char c, int _free)
 	if (_free)
 		free(s);
 	return (res);
+}
+
+char    *cmd_separate(char *s, t_main *main)
+{
+        char    *res;
+        int             i;
+		int		j;
+
+        i = 0;
+        res = NULL;
+        while (s[i])
+        {
+			j = i;
+			i += was_in_quotes(&s[i], main, ft_substr(&s[i], 0, ft_strlen(&s[i])));
+			if (j != i)
+				printf("j %d\n", j);
+                if (s[i + 1] == '>' || s[i + 1] == '|')
+                {
+                        if (!ft_isspace(s[i]))
+                                res = add_char_to_str(res, s[i], 1);
+                        i++;
+                }               
+                res = add_char_to_str(res, s[i], 1);
+                i++;
+        }
+        return (free(s), res);
 }
 
 int	get_arg_len(char *arg)
@@ -93,8 +119,7 @@ int	order(char *_s, t_main *main)
 	char	*s;
 	char	**pipes;
 
-	(void)main;
-	s = get_rid_of_spaces(_s);
+	s = cmd_separate(get_rid_of_spaces(_s), main);
 	if (!s || s[0] == '\0')
 		return (0);
 	if (check_open_quotes(s, main) == 0)
