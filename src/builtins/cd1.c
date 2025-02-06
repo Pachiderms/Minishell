@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 14:21:07 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/04 20:21:06 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	*handle_home_case(t_main *main, char *actual_arg)
 		home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
 		if (home_pos == -1)
 		{
-			printf("minishell: cd: HOME not set\n");
+			ft_error_cd("home", NULL);
 			return (NULL);
 		}
 		actual_arg = ft_strdup(&ft_strchr(main->env[home_pos], '=')[1]);

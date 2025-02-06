@@ -6,12 +6,13 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 04:26:51 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 14:43:14 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define DEFINE_I
 #include "../includes/minishell.h"
+
+int	g_cat;
 
 int	only_space_line(char *cmd)
 {
@@ -33,6 +34,11 @@ void	sub_process(t_main *main, char *cmd)
 {
 	if (only_space_line(cmd) == 0 && cmd)
 	{
+		if (check_var_exists(main->env, main->env_len, "export PATH=") != -1)
+			main->current_path = main->env[check_var_exists(main->env,
+					main->env_len, "export PATH=")];
+		else
+			main->current_path = NULL;
 		add_history(cmd);
 		if (!order(cmd, main))
 			ft_lstclear(&main->cmd_tokens);
@@ -42,7 +48,6 @@ void	sub_process(t_main *main, char *cmd)
 			free_end_cmd(main);
 		}
 		free(cmd);
-		
 		if (main->cmd_no_quotes)
 			free(main->cmd_no_quotes);
 		main->cmd_no_quotes = NULL;
@@ -60,16 +65,12 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	g_cat = 0;
 	if (!init_main(&main, env))
 		return (0);
 	init_signals();
 	while (1)
 	{
-		if (check_var_exists(main.env, main.env_len, "export PATH=") != -1)
-			main.current_path = env[check_var_exists(
-				main.env, main.env_len, "export PATH=")];
-		else
-			main.current_path = NULL;
 		cmd = readline(GREEN"minishell> "RESET);
 		if (cmd == NULL)
 		{
@@ -77,7 +78,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		}
 		sub_process(&main, cmd);
-		cat = 0;
+		g_cat = 0;
 		i++;
 	}
 	free_all_data(&main);

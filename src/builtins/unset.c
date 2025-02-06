@@ -47,18 +47,18 @@ int	basic_verif(char *arg, int which)
 		if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
 			return (0);
 		if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
-			return (printf("minishell: export: ‘%s’: not a valid identifier\n", arg), 0);
+			return (ft_error_export("nvid", arg));
 		if (arg[0] == '-' && arg[1])
-			return (printf("minishell: export: -%c: invalid option\n", arg[1]), 0);
+			return (ft_error_export("io", &arg[1]));
 	}
 	if (which == 1)
 	{
 		if (arg[0] == '_' && arg[1] == '\0')
 			return (0);
 		if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
-			return (printf("minishell: unset: ‘%s’: not a valid identifier\n", arg), 0);
+			return (ft_error_unset("nvi", arg));
 		if (arg[0] == '-' && arg[1])
-			return (printf("minishell: unset: -%c: invalid option\n", arg[1]), 0);
+			return (ft_error_unset("io", &arg[1]));
 	}
 	return (1);
 }
@@ -77,15 +77,13 @@ int	check_syntax_unset(char *cmd)
 		if (arg[i] == '=' || arg[i] == '?' || arg[i] == '.' || arg[i] == '+'
 			|| arg[i] == '{' || arg[i] == '}' || arg[i] == '-' || arg[i] == '*'
 			|| arg[i] == '#' || arg[i] == '@' || arg[i] == '^' || arg[i] == '~')
-			return (printf("minishell: unset: ‘%s’: not a valid identifier\n", arg)
-				, 0);
+			return (ft_error_unset("nvid", arg));
 	}
 	i = 0;
 	while (arg[i++])
 	{
 		if (arg[i] == '!')
-			return (printf("minishell: %s: event not found\n", ft_strchr(arg, '!'))
-				, 0);
+			return (ft_error("evnf", ft_strchr(arg, '!')));
 	}
 	return (1);
 }
@@ -96,7 +94,7 @@ void	unset(t_main *main, char *cmd)
 		return ;
 	unset_env(main, cmd);
 	unset_export(main, cmd);
-	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
+	//printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	return ;
 }
 
@@ -107,13 +105,13 @@ int	prep_unset(t_main *main)
 	int		i;
 
 	if (!main->cmd_tokens->args)
-		return (print_env(main, 1), 0);
+		return (0);
 	to_unset = ft_split_k_q_s(main, main->cmd_quotes, ' ');
 	i = 1;
 	while (to_unset[i])
 	{
-		printf("split %s\n", to_unset[i]);
-		cmd = ft_strjoin("export ", to_unset[i]);
+		//printf("split %s\n", to_unset[i]);
+		cmd = ft_strjoin("unset ", to_unset[i]);
 		unset(main, cmd);
 		free(cmd);
 		i++;

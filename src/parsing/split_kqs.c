@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/04 07:14:23 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 15:19:28 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ char	*cook_nospace(t_main *main, char const *s)
 	char	*tmp;
 
 	no_space = get_rid_of_spaces(s);
-	if (check_open_quotes(no_space, main) == 0)
-		return (NULL);
-	get_close_quotes(no_space, main);
 	no_space = replace_dollar(no_space, main);
 	if (!no_space)
 		return (NULL);
@@ -29,11 +26,11 @@ char	*cook_nospace(t_main *main, char const *s)
 		main->cmd_quotes = ft_strdup(no_space);
 	if (!main->cmd_no_quotes)
 		main->cmd_no_quotes = get_rid_of_quotes(ft_strdup(no_space));
-	printf("quotes : <%s>\n", main->cmd_quotes);
-	printf("no_quotes : <%s>\n", main->cmd_no_quotes);
+	//printf("quotes : <%s>\n", main->cmd_quotes);
+	//printf("no_quotes : <%s>\n", main->cmd_no_quotes);
 	tmp = get_rid_of_spaces(no_space);
 	free(no_space);
-	printf("no space : %s\n", tmp);
+	//printf("no space : %s\n", tmp);
 	return (tmp);
 }
 
@@ -50,8 +47,8 @@ char	**fill_dest(char **dest, char *no_space, char c)
 	{
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
-		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i)); //get_rid_of_quotes(ft_substr(no_space, i, j - i));
-		printf("no_space[%d] after rid quotes : <%s>\n", x, dest[x]);
+		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
+		//printf("no_space[%d] after rid quotes : <%s>\n", x, dest[x]);
 		if (dest[x++] == NULL || j < 0)
 			return (free(no_space), ft_free_split_k_q_s(dest, x), NULL);
 		i += (j - i);
@@ -66,9 +63,6 @@ char	*cook_nospace2(t_main *main, char const *s)
 	char	*tmp;
 
 	no_space = get_rid_of_spaces(s);
-	if (check_open_quotes(no_space, main) == 0)
-		return (NULL);
-	get_close_quotes(no_space, main);
 	no_space = handle_sc_c(no_space, main);
 	tmp = get_rid_of_spaces(no_space);
 	free(no_space);
@@ -89,7 +83,7 @@ char	**fill_dest2(char **dest, char *no_space, char c)
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
 		dest[x] = ft_substr(no_space, i, j - i);
-		printf("no_space[%d] after pipe split : <%s>\n", x, dest[x]);
+		//printf("no_space[%d] after pipe split : <%s>\n", x, dest[x]);
 		if (dest[x++] == NULL || j < 0)
 			return (free(no_space), ft_free_split_k_q_s(dest, x), NULL);
 		i += (j - i);

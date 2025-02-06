@@ -19,11 +19,12 @@ void	builtin(t_main *main)
 	main->nb_cmd = 0;
 	if (main->cmd_tokens->heredoc_eof)
 			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1, main);
-	printf("args enter builtin <%s>\n", main->cmd_tokens->args);
 	command = get_cmd(main->cmd_tokens->cmd);
 	main->cmd_tokens->args = rm_redirections(main->cmd_tokens,
 			main->cmd_tokens->cmd, 1);
-	printf("args before builtin <%s>\n", main->cmd_tokens->args);
+	//printf("command : %s\n", command);
+	//printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n", main->cmd_tokens->infile,
+		//main->cmd_tokens->outfile, main->cmd_tokens->heredoc_eof, main->cmd_tokens->cmd, main->cmd_tokens->args);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -38,8 +39,11 @@ void	builtin(t_main *main)
 		main->last_exit_code = pwd(main);
 	if (ft_strcmp(command, "exit") == 0)
 	{
-		printf("exit\n");
-		free_process(main, -42);
+		main->last_exit_code = ft_exit(main);
+		if (main->last_exit_code >= 0 && main->last_exit_code <= 255)
+			free_process(main, main->last_exit_code);
+		else if (main->last_exit_code == -1)
+			 main->last_exit_code = 1;
 	}
 }
 
@@ -51,54 +55,50 @@ int	no_cmd(t_main *main)
 	{
 		if (chdir(main->cmd_tokens->args) == 0)
 		{
-			printf(GREY"minishell: %s: Is a directory\n"RESET,
-				main->cmd_tokens->args);
 			return_to_pwd(main);
-			return (126);
+			return (ft_error("dir", main->cmd_tokens->args));
 		}
 		else
-			printf(GREY"minishell: %s: No such file or directory\n"RESET,
-				main->cmd_tokens->args);
+			return (ft_error("nosfod", main->cmd_tokens->args));
 	}
 	else
-		printf(GREY"minishell: %s: command not found\n"RESET,
-			main->cmd_tokens->args);
+		return (ft_error("cnf", main->cmd_tokens->args));
 	return (127);
+}
+
+int	u_ttoken(t_main *main)
+{
+	main->last_exit_code = 2;
+	if (main->last_ofile)
+		unlink(main->last_ofile);
+	return (ft_error("serr", main->u_token));
 }
 
 int	ft_process(t_main *main)
 {
-	t_cmd	*cmd_tokens;
-
+	//printf("nb cmd %d\n", main->nb_cmd);
 	if (main->u_token)
-	{
-		main->last_exit_code = 2;
-		if (main->last_ofile)
-			unlink(main->last_ofile);
-		printf("minishell: syntax error near unexpected token `%s'\n", main->u_token);
-		return (1);
-	}
-	if (!main->current_path && main->cmd_tokens->cmd && !check_builtin(main->cmd_tokens->cmd))
-		return (printf("bash: %s: No such file or directory\n", main->cmd_tokens->cmd), 2);
-	printf("nb cmd %d\n", main->nb_cmd);
-	cmd_tokens = main->cmd_tokens;
-	if (!ft_strcmp(cmd_tokens->cmd, "cat")
-		|| !ft_strcmp(cmd_tokens->cmd, "sleep"))
-		cat = 1;
+		return (u_ttoken(main));
+	if (!main->current_path && main->cmd_tokens->cmd
+		&& !check_builtin(main->cmd_tokens->cmd))
+		return (ft_error("nsfod", main->cmd_tokens->cmd));
+	if (!ft_strcmp(main->cmd_tokens->cmd, "cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep"))
+		g_cat = 1;
 	if (main->nb_cmd >= 1)
 	{
-		if (main->nb_cmd == 1)
+		if (main->nb_cmd == 1) // || (main->nb_cmd >= 1 && !ft_strcmp(main->cmd_tokens->cmd, "exit")) 
 		{
-			if (check_builtin(cmd_tokens->cmd))
+			if (check_builtin(main->cmd_tokens->cmd))
 			{
 				builtin(main);
 				return (1);
 			}
 		}
-		main->last_exit_code = exec(main);
+		exec(main);
 		main->nb_cmd = 0;
 	}
-	else if (cmd_tokens->args || cmd_tokens->heredoc_eof)
+	else if (main->cmd_tokens->args || main->cmd_tokens->heredoc_eof)
 		main->last_exit_code = no_cmd(main);
 	return (1);
 }

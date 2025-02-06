@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 06:39:39 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 14:03:20 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_cmd(char *s, char *path)
 	char	*tmp;
 	char	**split;
 
-	i = 0;
+	i = -1;
 	tmp = NULL;
 	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
 		return (0);
@@ -46,13 +46,12 @@ int	is_cmd(char *s, char *path)
 	split = ft_split(path, ':');
 	if (check_builtin(s))
 		return (free_split(split), free(s1), 1);
-	while (split[i])
+	while (split[++i])
 	{
 		tmp = ft_strjoin(split[i], s1);
 		if (access(tmp, F_OK) == 0)
 			return (free(tmp), free_split(split), free(s1), 1);
 		free(tmp);
-		i++;
 	}
 	return (free_split(split), free(s1), 0);
 }
@@ -69,10 +68,11 @@ int	is_sc(char *s)
 		return (2);
 	return (0);
 }
+
 int	check_global_syntax(char *arg, t_main *main)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	while (arg[i])
@@ -82,7 +82,7 @@ int	check_global_syntax(char *arg, t_main *main)
 			|| ft_strncmp(&arg[i], "<>", 2) == 0)
 		{
 			j = i + skip_char(&arg[i + 2], ' ', 0) + 2;
-			printf("arg la i %d j %d %s\n", i , j, &arg[j]);
+			//printf("arg la i %d j %d %s\n", i , j, &arg[j]);
 			if (i != j)
 			{
 				if (ft_strncmp(&arg[j], "<<", 2) == 0)
@@ -112,7 +112,7 @@ int	check_global_syntax(char *arg, t_main *main)
 			|| ft_strncmp(&arg[i], ">", 1) == 0)
 		{
 			j = i + skip_char(&arg[i + 1], ' ', 0) + 1;
-			printf("arg la i %d j %d %s\n", i , j, &arg[j]);
+			//printf("arg la i %d j %d %s\n", i , j, &arg[j]);
 			if (i != j)
 			{
 				if (ft_strncmp(&arg[j], "<<", 2) == 0)
@@ -135,6 +135,6 @@ int	check_global_syntax(char *arg, t_main *main)
 			break ;
 		i++;
 	}
-	printf("u token %s\n", main->u_token);
+	//printf("u token %s\n", main->u_token);
 	return (main->u_token == NULL);
 }

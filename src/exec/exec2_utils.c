@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 08:57:01 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 14:52:41 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*rm_redirections(t_cmd *token, char *cmd, int builtin)
 		return (NULL);
 	while (i < (int)ft_strlen(token->args))
 	{
+		
 		i += skip_files(&token->args[i], '>', '<');
 		if (token->args[i] == '<')
 			i += skip_infiles(&token->args[i], '<', '>');

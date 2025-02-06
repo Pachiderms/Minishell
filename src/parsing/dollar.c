@@ -14,7 +14,7 @@
 
 void	arg_replace(char **arg_dup, char *final_tmp)
 {
-	printf("arg : %s | final_tmp : %s\n", *arg_dup, final_tmp);
+	//printf("arg : %s | final_tmp : %s\n", *arg_dup, final_tmp);
 	free(*arg_dup);
 	*arg_dup = NULL;
 	*arg_dup = ft_strdup(final_tmp);

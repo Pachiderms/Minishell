@@ -18,7 +18,7 @@ int	ft_echo(t_main *main)
 	char		*nl;
 
 	nl = find_newline(main->cmd_tokens->args);
-	printf("<%s> nl : <%s>\n", main->cmd_tokens->args, nl);
+	//printf("<%s> nl : <%s>\n", main->cmd_tokens->args, nl);
 	fd = main->cmd_tokens->outfile;
 	if (fd == -1)
 		fd = 1;

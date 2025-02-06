@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 08:22:28 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 19:22:51 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	init_main(t_main *main, char **env)
 				main->env, main->env_len, "export PATH=")];
 	else
 		return (free_all_data(main), 0);
-	main->current_path =  env[check_var_exists(
-				main->env, main->env_len, "export PATH=")];
+	main->current_path = env[check_var_exists(
+			main->env, main->env_len, "export PATH=")];
 	return (1);
 }

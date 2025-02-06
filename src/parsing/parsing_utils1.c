@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 08:22:53 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 16:42:01 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int	get_arg_len(char *arg)
 		return (0);
 	if (ft_strlen(arg) == 1 && !ft_isspace(arg[0]))
 		return (1);
-	while (i < (int)ft_strlen(arg) - 1)
+	while (i < (int)ft_strlen(arg))
 	{
-		while (i < (int)ft_strlen(arg) - 1)
+		while (i < (int)ft_strlen(arg))
 		{
 			if (ft_isspace(arg[i]))
 				break ;
@@ -81,7 +81,7 @@ int	get_arg_len(char *arg)
 		}
 		if (!ft_isspace(arg[i - 1]))
 		{
-			printf("%d %s\n", i, &arg[i]);
+			//printf("%d %s\n", i, &arg[i]);
 			words++;
 		}
 		i++;
@@ -114,8 +114,7 @@ t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 	}
 	return (cmd_tokens);
 }
-// quotes dolqlr
-//split kqs qvec pipe
+
 int	order(char *_s, t_main *main)
 {
 	char	*s;
@@ -123,14 +122,13 @@ int	order(char *_s, t_main *main)
 
 	(void)main;
 	s = get_rid_of_spaces(_s);
-	printf("order 0 '%s'\n", s);
 	if (!s || s[0] == '\0')
 		return (0);
+	if (check_open_quotes(s, main) == 0)
+		return (free(s), 0);
+	get_close_quotes(s, main);
 	pipes = ft_split_k_q_s(main, s, '|');
-	for (int i=0;pipes[i];i++)
-		printf("pipe %d '%s'\n", i, pipes[i]);
 	main->cmd_tokens = init_cmd_tokens(pipes, main);
-	// main->arg[main->total_len - 1] = NULL;
 	print_t_cmd(main->cmd_tokens);
 	return (free(s), free_split(pipes), 1);
 }

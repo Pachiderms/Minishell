@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 08:22:03 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 18:11:18 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,9 @@
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
 
+extern int	g_cat;
+
 enum e_type {command, argument, sc};
-
-# ifdef DEFINE_I
-
-int			cat = 0;
-# else
-
-extern int	cat;
-# endif
 
 typedef struct s_cmd
 {
@@ -90,7 +84,7 @@ typedef struct s_main
 	char		*u_token;
 	char		*last_ofile;
 	char		*cmd_no_quotes;
-    char		*cmd_quotes;
+	char		*cmd_quotes;
 }	t_main;
 
 // LIBFT
@@ -114,6 +108,7 @@ void	ft_putchar_fd(char c, int fd);
 int		ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_itoa(int n);
+int		ft_isalpha(int c);
 
 // MINISHELL
 
@@ -140,6 +135,31 @@ void	ft_lstadd_front(t_cmd **lst, t_cmd *new);
 t_cmd	*ft_lstlast(t_cmd *lst);
 void	print_t_cmd(t_cmd *cmd);//a supr a la fin
 
+/// DOLLAR
+char	*replace_dollar(char *arg, t_main *main);
+void	update_index(t_main *main);
+void	end_things(t_main *main);
+void	begin_things(t_main *main, char *arg);
+void	arg_replace(char **arg_dup, char *final_tmp);
+int		begin_verif(char c, char cpl1, t_main *main);
+void	clear_dollar(t_main *main);
+void	free_tmps(t_main *main);
+char	*create_end_str(t_main *main, char *arg_dup);
+int		big_while(char c, int which);
+void	create_and_replace_tmp2(t_main *main);
+void	search_sollar(t_main *main, char *arg_dup);
+void	del_backslash(char **final_tmp);
+char	*fill_test(char *tmp, int size);
+int		in_dquote(t_main *main, char *arg_dup, int j);
+int		in_squote(t_main *main, char *arg_dup, int j);
+char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3);
+void	replace(t_main *main, char **tmp2);
+void	replace_existing(t_main *main, char **tmp2);
+void	replace_minus2(t_main *main, char **tmp2);
+void	update_dq_pos(t_main *main, int r, int r1, int diff);
+void	update_sq_pos(t_main *main, int r, int r1, int diff);
+char	*cut_str(char *str, char *cut);
+
 //HERE_DOC
 int		ft_heredoc(t_cmd *token, int builtin, t_main *main);
 
@@ -154,7 +174,7 @@ void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
 int		prep_unset(t_main *main);
 /// EXPORT
-void	export(t_main *main, char *cmd);
+int		export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
 void	fill_export(t_main *main, char *cmd);
 void	fill_env_export(t_main *main, char *cmd);
@@ -168,7 +188,6 @@ void	remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
 int		ft_echo(t_main *main);
 char	*find_newline(char *s);
-int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd, t_main *main);
 /// CD
 int		is_special_case(char *actual_arg);
@@ -224,31 +243,6 @@ int		exec(t_main *main);
 char	*rm_redirections(t_cmd *token, char *cmd, int builtin);
 char	*cook_cmd(char *s);
 
-/// DOLLAR
-char	*replace_dollar(char *arg, t_main *main);
-void	update_index(t_main *main);
-void	end_things(t_main *main);
-void	begin_things(t_main *main, char *arg);
-void	arg_replace(char **arg_dup, char *final_tmp);
-int		begin_verif(char c, char cpl1, t_main *main);
-void	clear_dollar(t_main *main);
-void	free_tmps(t_main *main);
-char	*create_end_str(t_main *main, char *arg_dup);
-int		big_while(char c, int which);
-void	create_and_replace_tmp2(t_main *main);
-void	search_sollar(t_main *main, char *arg_dup);
-void	del_backslash(char **final_tmp);
-char	*fill_test(char *tmp, int size);
-int		in_dquote(t_main *main, char *arg_dup, int j);
-int		in_squote(t_main *main, char *arg_dup, int j);
-char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3);
-void	replace(t_main *main, char **tmp2);
-void	replace_existing(t_main *main, char **tmp2);
-void	replace_minus2(t_main *main, char **tmp2);
-void	update_dq_pos(t_main *main, int r, int r1, int diff);
-void	update_sq_pos(t_main *main, int r, int r1, int diff);
-char	*cut_str(char *str, char *cut);
-
 /// FREE
 void	free_all_data(t_main *main);
 void	free_process(t_main *main, int exit_code);
@@ -269,5 +263,10 @@ char	*add_char_to_str(char *s, char c, int _free);
 
 char	*handle_sc_c(char *arg, t_main *main);
 void	get_close_quotes(char const *s, t_main *main);
-
+int		ft_error(char *type, char *msg);
+int		ft_error_unset(char *type, char *msg);
+int		ft_error_export(char *type, char *msg);
+int		ft_error_cd(char *type, char *msg);
+int		ft_error_pwd(char *type, char *msg);
+int		ft_exit(t_main *main);
 #endif

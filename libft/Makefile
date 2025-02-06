@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+         #
+#    By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 14:24:43 by zamgar            #+#    #+#              #
-#    Updated: 2024/11/18 16:28:25 by tzizi            ###   ########.fr        #
+#    Updated: 2025/02/05 18:10:47 by zamgar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC =	ft_atoi.c \
 	ft_strrchr.c \
 	ft_strnstr.c \
 	ft_putnbr_fd.c \
-	ft_itoa.c
+	ft_itoa.c \
+	ft_isalpha.c
 
 BFILES =	ft_atoi.o \
 		ft_calloc.o	\
@@ -48,7 +49,8 @@ BFILES =	ft_atoi.o \
 		ft_strrchr.o \
 		ft_strnstr.o \
 		ft_putnbr_fd.o \
-		ft_itoa.o
+		ft_itoa.o \
+		ft_isalpha.o
 
 OBJS = ${SRC:.c=.o}
 
