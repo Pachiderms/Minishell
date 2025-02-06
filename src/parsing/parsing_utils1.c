@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 19:36:32 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 10:59:23 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ int	order(char *_s, t_main *main)
 	main->cmd_tokens = init_cmd_tokens(pipes, main);
 	if (!main->cmd_tokens)
 		return (free(s), free_split(pipes), 0);
+	if (!check_global_syntax(s, main))
+		return (free_split(pipes), free(s), 0);
 	print_t_cmd(main->cmd_tokens);
 	return (free(s), free_split(pipes), 1);
 }

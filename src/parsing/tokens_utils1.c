@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/05 17:06:09 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 10:54:13 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	s_len(char *s)
 			}
 			i++;
 		}
-		if (s[i] == '\0')
+		if (i > (int)ft_strlen(s))
 			break ;
 		if (s[i] != 34 && s[i] != 39)
 			len++;
@@ -57,7 +57,7 @@ char	*get_rid_of_quotes(char *s)
 	if (!dest)
 		return (free(s), NULL);
 	len = 0;
-	while (s[i])
+	while (i < (int)ft_strlen(s))
 	{
 		if (s[i] == 34 || s[i] == 39)
 		{
@@ -66,7 +66,7 @@ char	*get_rid_of_quotes(char *s)
 				dest[len++] = s[i++];
 			i++;
 		}
-		if (s[i] == '\0')
+		if (i > (int)ft_strlen(s))
 			break ;
 		if (s[i] != 34 && s[i] != 39)
 			dest[len++] = s[i];

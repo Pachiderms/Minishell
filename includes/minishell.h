@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 19:06:10 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 10:58:46 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ char	*find_cmd(char *s, t_main *main);
 char	*find_args(char *_s, t_main *main, char *cmd);
 char	*find_heredoc_eof(char *_s, t_main *main);
 char	*get_next(char **cmd, char *tf);
-
+int		was_in_quotes(char *s, t_main *main);
+int		u_ttoken(t_main *main);
 //t_cmd utils
 void	ft_lstclear(t_cmd **lst);
 void	ft_lstdelone(t_cmd *lst);

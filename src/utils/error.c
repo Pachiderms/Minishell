@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:34:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 20:35:50 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 10:56:59 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	ft_error(char *type, char *msg)
 	else if (!ft_strcmp(type, "serr"))
 	{
 		printf("minishell: syntax error near unexpected token `%s'\n", msg);
-		return (1);
+		return (2);
 	}
 	else if (!ft_strcmp(type, "evnf"))
 	{

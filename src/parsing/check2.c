@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/05 17:07:00 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 10:40:26 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,13 @@ int	check_global_syntax(char *arg, t_main *main)
 	int	j;
 
 	i = 0;
-	while (arg[i])
+	if (!arg)
+		return (1);
+	while (i < (int)ft_strlen(arg))
 	{
+		i += was_in_quotes(&arg[i], main);
+		if (i > (int)ft_strlen(arg))
+			break ;
 		if (ft_strncmp(&arg[i], "<<", 2) == 0
 			|| ft_strncmp(&arg[i], ">>", 2) == 0
 			|| ft_strncmp(&arg[i], "<>", 2) == 0)

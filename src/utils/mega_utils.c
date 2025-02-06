@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:01:27 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/05 15:54:10 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 10:58:25 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ void	free_string(char *s)
 {
 	if (s)
 		free(s);
+}
+
+int	u_ttoken(t_main *main)
+{
+	if (main->last_ofile)
+		unlink(main->last_ofile);
+	return (ft_error("serr", main->u_token));
 }
 
 int	skip_char(char *s, int c, int diff)
@@ -53,8 +60,6 @@ char	*handle_sc_c(char *arg, t_main *main)
 	arg_without_quotes = NULL;
 	if (arg == NULL)
 		return (NULL);
-	if (check_global_syntax(arg, main) == 0)
-		return (arg);
 	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
 	{
 		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)

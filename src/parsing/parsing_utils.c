@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/05 19:03:01 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 10:55:34 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ int	get_dchar_len(char **split)
 	while (split[i])
 		i++;
 	return (i);
+}
+
+void	find_args_res(char **res, char **arg)
+{
+	*res = ft_strjoin_free(*res, *arg, 0);
+	if (*(arg + 1))
+		*res = ft_strjoin_free(*res, " ", 0);
 }
 
 char	*find_args(char *_s, t_main *main, char *cmd)
@@ -41,13 +48,12 @@ char	*find_args(char *_s, t_main *main, char *cmd)
 		return (NULL);
 	while (s[++i])
 	{
-		if ((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)
-			&& !ft_strnstr(s[i], "<<", ft_strlen(s[i]))
-			&& ft_strcmp(previous, "<<") != 0)
+		if (((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)
+				&& !ft_strnstr(s[i], "<<", ft_strlen(s[i]))
+				&& ft_strcmp(previous, "<<") != 0)
+			|| (was_in_quotes(s[i], main) && !is_cmd(s[i], main->path)))
 		{
-			res = ft_strjoin_free(res, s[i], 0);
-			if (s[i + 1])
-				res = ft_strjoin_free(res, " ", 0);
+			find_args_res(&res, &s[i]);
 		}
 		previous = s[i];
 	}
