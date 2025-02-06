@@ -6,13 +6,13 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 10:59:48 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 16:19:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_cat;
+int	g_cat = 0;
 
 int	only_space_line(char *cmd)
 {
@@ -44,6 +44,8 @@ void	sub_process(t_main *main, char *cmd)
 		{
 			if (main->u_token)
 				main->last_exit_code = u_ttoken(main);
+			else if (main->noFile)
+				main->last_exit_code = ft_error("nosfod", main->noFile);
 			free_end_cmd(main);
 		}
 		else
@@ -62,11 +64,9 @@ int	main(int argc, char **argv, char **env)
 {
 	static t_main	main;
 	char			*cmd;
-	static int		i;
 
 	(void)argc;
 	(void)argv;
-	g_cat = 0;
 	if (!init_main(&main, env))
 		return (0);
 	init_signals();
@@ -80,7 +80,6 @@ int	main(int argc, char **argv, char **env)
 		}
 		sub_process(&main, cmd);
 		g_cat = 0;
-		i++;
 	}
 	free_all_data(&main);
 	rl_clear_history();

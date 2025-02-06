@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 16:22:03 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 15:02:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@ void	set_null_main(t_main *main)
 	main->path = NULL;
 	main->current_path = NULL;
 	main->cmd_tokens = NULL;
+	main->lastcmd = -1;
 	main->u_token = NULL;
+	main->noFile = NULL;
 	main->last_ofile = NULL;
+	main->last_exit_code = 0;
 	main->cmd_quotes = NULL;
 	main->dollars.i = 0;
 	main->dollars.j = 0;

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 21:08:42 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/05 19:41:09 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 16:16:55 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,25 @@ void	wait_all(t_main *main)
 			close(token->infile);
 		token = token->next;
 	}
+}
+
+void	wait_solo(t_main *main)
+{
+	int		status;
+	int		pid;
+	t_cmd	*token;
+
+	token = main->cmd_tokens;
+	pid = waitpid(0, &status, 0);
+	if (pid == g_signal_pid)
+	{
+		if (WIFEXITED(status))
+			main->last_exit_code = WEXITSTATUS(status);
+	}
+	if (token->outfile >= 0)
+		close(token->outfile);
+	if (token->infile >= 0)
+		close(token->infile);
 }
 
 void	redirect_in_out(t_cmd *token)

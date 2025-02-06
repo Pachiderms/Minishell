@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 13:01:01 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 13:28:33 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*find_args(char *_s, t_main *main, char *cmd)
 	s = ft_split_k_q_s(main, _s, ' ', 1);
 	if (!s)
 		return (NULL);
+	get_fd_in(s, main);
 	while (s[++i])
 	{
 		if (((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)

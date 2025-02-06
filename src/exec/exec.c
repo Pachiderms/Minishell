@@ -54,15 +54,18 @@ int	no_cmd(t_main *main)
 {
 	t_cmd	*token;
 	int		error;
+	int		i;
 
 	token = main->cmd_tokens;
 	error = 0;
+	i = 0;
 	while (token)
 	{
+		i++;
 		if (!token->cmd)
 		{
-			if (main->cmd_tokens->heredoc_eof)
-				ft_heredoc(main->cmd_tokens, 1, main);
+			if (token->heredoc_eof)
+				ft_heredoc(token, 1, main);
 			else if (ft_strchr(token->args, '/'))
 			{
 				if (chdir(token->args) == 0)
@@ -83,6 +86,8 @@ int	no_cmd(t_main *main)
 				error = 1;
 			}
 		}
+		else
+			main->lastcmd = i;
 		token = token->next;
 	}
 	return (error);
@@ -90,21 +95,11 @@ int	no_cmd(t_main *main)
 
 int	ft_process(t_main *main)
 {
-	if (no_cmd(main))
-	{
-		t_cmd *token;
-		t_cmd *last_cmd_token;
-		token = main->cmd_tokens;
-		while (token)
-		{
-			if (token->cmd)
-				last_cmd_token = token;
-			token = token->next;
-		}
-		if (last_cmd_token)
-			exec(main);
-		return (1);	
-	}
+	int	no;
+
+	no = no_cmd(main);
+	if (no)
+		return (exec(main, 1));
 	if (!main->current_path && main->cmd_tokens->cmd
 		&& !check_builtin(main->cmd_tokens->cmd))
 		return (ft_error("nsfod", main->cmd_tokens->cmd));
@@ -121,7 +116,7 @@ int	ft_process(t_main *main)
 				return (1);
 			}
 		}
-		exec(main);
+		exec(main, 0);
 		main->nb_cmd = 0;
 	}
 	return (1);

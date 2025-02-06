@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 13:12:19 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 13:58:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	wiq2(char *s, t_main *main, int *i, int *j)
 
 int	was_in_quotes(char *_s, t_main *main, char *base)
 {
-	int	i;
-	int	j;
-	int	wq2;
+	int		i;
+	int		j;
+	char	*s;
+	int		wq2;
 
 	i = 0;
 	j = 0;
-	(void)base;
-	char *s = get_rid_of_quotes(_s);
+	s = get_rid_of_quotes(_s);
 	if (ft_strcmp(base, s) != 0)
 	{
 		free(s);
@@ -53,11 +53,11 @@ int	was_in_quotes(char *_s, t_main *main, char *base)
 		{
 			wq2 = wiq2(s, main, &i, &j);
 			if (wq2 > 0)
-				return (free(s), wq2);
+				return (free(s), free(base), wq2);
 		}
 		i = j;
 	}
-	return (free(s), 0);
+	return (free(s), free(base), 0);
 }
 
 int	skip_files(char *s, char r, char **res, t_main *main)

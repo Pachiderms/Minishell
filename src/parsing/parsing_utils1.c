@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 12:12:41 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 16:27:56 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,6 @@ char	*add_char_to_str(char *s, char c, int _free)
 	if (_free)
 		free(s);
 	return (res);
-}
-
-char	*cmd_separate(char *s)
-{
-	char	*res;
-	int		i;
-
-	i = 0;
-	res = NULL;
-	while (s[i])
-	{
-		if (s[i + 1] == '>' || s[i + 1] == '|')
-		{
-			if (!ft_isspace(s[i]))
-				res = add_char_to_str(res, s[i], 1);
-			res = add_char_to_str(res, ' ', 1);
-			i++;
-		}
-		res = add_char_to_str(res, s[i], 1);
-		if ((s[i] == '>' || s[i] == '|')
-			&& s[i + 1] != s[i])
-			res = add_char_to_str(res, ' ', 1);
-		i++;
-	}
-	return (free(s), res);
 }
 
 int	get_arg_len(char *arg)
@@ -131,5 +106,7 @@ int	order(char *_s, t_main *main)
 		return (free(s), free_split(pipes), 0);
 	if (!check_global_syntax(s, main))
 		return (free_split(pipes), free(s), 0);
+	if (main->noFile)
+		return (0);
 	return (free(s), free_split(pipes), 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:34:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 11:24:25 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 13:30:06 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	ft_error(char *type, char *msg)
 	else if (!ft_strcmp(type, "nosfod"))
 	{
 		printf(GREY"minishell: %s: No such file or directory\n"RESET, msg);
-		return (127);
+		return (1);
 	}
 	else if (!ft_strcmp(type, "cnf"))
 	{

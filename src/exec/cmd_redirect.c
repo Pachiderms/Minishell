@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/05 17:46:22 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 15:55:59 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,22 +79,35 @@ char	*get_next(char **cmd, char *tf)
 			return (*(cmd + 1));
 	}
 	else if (ft_strnstr(*cmd, tf, ft_strlen(*cmd)))
-	{
 		return (&ft_strrchr(*cmd, tf[0])[1]);
-	}
-	if (!ft_strcmp(tf, "<"))
-		return (*cmd);
 	return (NULL);
 }
 
-void	update_lastofile(t_main *main, char *s)
+void	update_lastofile(t_main *main, char *s, int fd, int ignore)
 {
-	if (main->last_ofile)
+	if (fd > 1 && s && ignore)
 	{
-		free(main->last_ofile);
-		main->last_ofile = NULL;
+		if (main->last_ofile)
+		{
+			free(main->last_ofile);
+			main->last_ofile = NULL;
+		}
+		main->last_ofile = ft_strdup(s);
 	}
-	main->last_ofile = ft_strdup(s);
+	else if (fd == -2 && s && !ignore)
+	{
+		if (main->noFile)
+		{
+			free(main->noFile);
+			main->noFile = NULL;
+		}
+		main->noFile = ft_strdup(s);
+		if (fd > 0)
+		{
+			close(fd);
+			unlink(s);
+		}
+	}
 }
 
 int	get_fd_out(char **cmd, t_main *main)
@@ -113,15 +126,37 @@ int	get_fd_out(char **cmd, t_main *main)
 			if (get_next(&cmd[i], ">>"))
 			{
 				fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
-				if (fd > 1)
-					update_lastofile(main, get_next(&cmd[i], ">>"));
+				update_lastofile(main, get_next(&cmd[i], ">>"), fd, 1);
 			}
 			else if (get_next(&cmd[i], ">"))
 			{
 				fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
-				if (fd > 1)
-					update_lastofile(main, get_next(&cmd[i], ">"));
+				update_lastofile(main, get_next(&cmd[i], ">"), fd, 1);
 			}
+		}
+		i++;
+	}
+	return (fd);
+}
+
+int	get_fd_in(char **cmd, t_main *main)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	fd = 0;
+	if (cmd == NULL)
+		return (fd);
+	while (cmd[i])
+	{
+		if (get_next(&cmd[i], "<"))
+		{
+			if (fd > 0)
+				close (fd);
+			fd = handle_opening_infile(get_next(&cmd[i], "<"), 0);
+			if (fd == -2)
+				update_lastofile(main, get_next(&cmd[i], "<"), fd, 0);
 		}
 		i++;
 	}
