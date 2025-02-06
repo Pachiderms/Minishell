@@ -1,56 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prep_pipex.c                                       :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2024/12/23 14:09:26 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/06 15:49:55 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	sigint(int sig)
 {
 	(void)sig;
 	printf("\n");
-	//printf("cat signal : %d\n", cat);
-	if (cat == 0)
-		rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
-	return ;
-}
-
-void	sigquit(int sig)
-{
-	(void)sig;
-	if (cat == 1)
-		printf("Quit (core dumped)\n");
-	if (cat == 0)
-		rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	printf("\033[K");
-	return ;
-}
-
-void	sigtstp(int sig)
-{
-	(void)sig;
 	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	printf("\033[K");
+	if (g_signal_pid == 0)
+		rl_redisplay();
 	return ;
+}
+
+void	init_signals2(void)
+{
+	signal(SIGQUIT, SIG_DFL);
 }
 
 void	init_signals(void)
 {
 	signal(SIGINT, sigint);
-	signal(SIGQUIT, sigquit);
-	signal(SIGTSTP, sigtstp);
+	signal(SIGQUIT, SIG_IGN);
 	return ;
 }

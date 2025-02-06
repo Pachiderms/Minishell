@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 19:21:41 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 16:42:09 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	handle_opening_outfile(char *file, int append)
 {
 	int		fd;
 
-	fd = -1;
 	if (append)
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
@@ -47,7 +46,7 @@ int	handle_opening_infile(char *file, int heredoc)
 	int		fd;
 
 	fd = -1;
-	if (heredoc) // heredoc
+	if (heredoc)
 	{
 		fd = open("heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
 		if (fd < 0)
@@ -70,45 +69,77 @@ int	handle_opening_infile(char *file, int heredoc)
 
 char	*get_next(char **cmd, char *tf)
 {
+	if (!cmd)
+		return (NULL);
+	if (!*cmd)
+		return (NULL);
 	if (ft_strcmp(*cmd, tf) == 0)
 	{
 		if (*(cmd + 1))
 			return (*(cmd + 1));
 	}
 	else if (ft_strnstr(*cmd, tf, ft_strlen(*cmd)))
-	{
 		return (&ft_strrchr(*cmd, tf[0])[1]);
-	}
-	if (!ft_strcmp(tf, "<"))
-		return (*cmd);
 	return (NULL);
 }
 
-int	get_fd_out(char **cmd)
+void	update_lastofile(t_main *main, char *s, int fd, int ignore)
+{
+	if (fd > 1 && s && ignore)
+	{
+		if (main->last_ofile)
+		{
+			free(main->last_ofile);
+			main->last_ofile = NULL;
+		}
+		main->last_ofile = ft_strdup(s);
+	}
+	else if (fd == -2 && s && !ignore)
+	{
+		if (main->noFile)
+		{
+			free(main->noFile);
+			main->noFile = NULL;
+		}
+		main->noFile = ft_strdup(s);
+		if (fd > 0)
+		{
+			close(fd);
+			unlink(s);
+		}
+	}
+}
+
+int	get_fd_out(char **cmd, t_main *main)
 {
 	int	i;
 	int	fd;
 
 	i = 0;
-	fd = 1;
-	if (cmd == NULL)
+	fd = -1;
+	if (cmd == NULL || !cmd[1])
 		return (fd);
-	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
+	while (cmd[i])
 	{
-		if (get_next(&cmd[i], ">>"))
+		if (main->in_quotes[i] != 1)
 		{
-			fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
-		}
-		else if (get_next(&cmd[i], ">"))
-		{
-			fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
+			if (get_next(&cmd[i], ">>"))
+			{
+				fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
+				update_lastofile(main, get_next(&cmd[i], ">>"), fd, 1);
+			}
+			else if (get_next(&cmd[i], ">"))
+			{
+				fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
+				update_lastofile(main, get_next(&cmd[i], ">"), fd, 1);
+			}
 		}
 		i++;
 	}
 	return (fd);
 }
 
-int	get_fd_in(char **cmd)
+int	get_fd_in(char **cmd, t_main *main)
 {
 	int	i;
 	int	fd;
@@ -117,13 +148,15 @@ int	get_fd_in(char **cmd)
 	fd = 0;
 	if (cmd == NULL)
 		return (fd);
-	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
+	while (cmd[i])
 	{
 		if (get_next(&cmd[i], "<"))
 		{
 			if (fd > 0)
 				close (fd);
 			fd = handle_opening_infile(get_next(&cmd[i], "<"), 0);
+			if (fd == -2)
+				update_lastofile(main, get_next(&cmd[i], "<"), fd, 0);
 		}
 		i++;
 	}

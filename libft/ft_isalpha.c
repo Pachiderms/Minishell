@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 15:28:59 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 02:51:02 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/27 16:09:23 by zamgar            #+#    #+#             */
+/*   Updated: 2025/02/05 18:10:30 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+//#include <stdio.h>
 
-char	*ft_strrchr(const char *s, int c)
+int	ft_isalpha(int c)
 {
-	int				i;
-	unsigned char	*_s;
-
-	if (!s)
-		return (NULL);
-	i = ft_strlen(s);
-	_s = (unsigned char *)s;
-	while (i >= 0)
-	{
-		if (_s[i] == (unsigned char)c)
-			return ((char *)(_s + i));
-		i--;
-	}
-	return (NULL);
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
 }
+
+/*int	main()
+{
+	int i;
+	i = 0;
+   	while (i <= 47)
+    	{
+        	printf("%d", ft_isalpha(i));
+        	i++;
+    	}
+    	printf("\n");
+	return (0);
+}*/

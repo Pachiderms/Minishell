@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   export1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 15:08:45 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 19:38:19 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,15 @@ char	*create_replace_pos(char *cmd)
 
 	if (ft_strchr(cmd, '='))
 	{
-		temp = ft_strjoin_free(ft_strjoin("\"", &ft_strchr(cmd, '=')[1]), "\"", 0); // ft_strdup enleve norme
-		save_value = ft_strjoin_free("export ", ft_strjoin_free(get_var_name(cmd), temp, 0), 1);
+		temp = ft_strjoin_free(ft_strjoin("\"",
+					&ft_strchr(cmd, '=')[1]), "\"", 0);
+		save_value = ft_strjoin_free("export ",
+				ft_strjoin_free(get_var_name(cmd), temp, 0), 1);
 		return (free(temp), save_value);
 	}
 	else
 		return (ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
 }
-
 
 void	add_pos(t_main *main, char *cmd, int i, int which)
 {
@@ -94,10 +95,11 @@ void	fill_env_export(t_main *main, char *cmd)
 		if (i == replace_pos)
 			i++;
 	}
-	main->env[i] = NULL;
 	free_env(tmp, main->env_len);
 	if (replace_pos == -1)
 		add_pos(main, cmd, i, 0);
+	if (replace_pos == -1)
+		main->env[i + 1] = NULL;
 	fill_export(main, cmd);
 }
 

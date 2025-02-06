@@ -12,14 +12,16 @@
 
 #include "../includes/minishell.h"
 
-int	builtin(t_main *main)
+void	builtin(t_main *main)
 {
 	char	*command;
 
 	main->nb_cmd = 0;
 	if (main->cmd_tokens->heredoc_eof)
-			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1);
+			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1, main);
 	command = get_cmd(main->cmd_tokens->cmd);
+	main->cmd_tokens->args = rm_redirections(main->cmd_tokens,
+			main->cmd_tokens->cmd, 1, main);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -27,7 +29,7 @@ int	builtin(t_main *main)
 	if (ft_strcmp(command, "unset") == 0)
 		main->last_exit_code = prep_unset(main);
 	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = prep_echo(main, main->cmd_tokens->args);
+		main->last_exit_code = ft_echo(main);
 	if (ft_strcmp(command, "cd") == 0)
 		main->last_exit_code = cd(main);
 	if (ft_strcmp(command, "pwd") == 0)
@@ -35,53 +37,91 @@ int	builtin(t_main *main)
 	if (ft_strcmp(command, "exit") == 0)
 	{
 		printf("exit\n");
-		free_process(main, -42);
+		if (main->cmd_tokens->args && ft_strcmp(main->cmd_tokens->args, "exit") != 0)
+		{
+			main->last_exit_code = ft_exit(main);
+			if (main->last_exit_code >= 0 && main->last_exit_code <= 255)
+				free_process(main, main->last_exit_code);
+			else if (main->last_exit_code == -1)
+				main->last_exit_code = 1;
+		}
+		else
+			free_process(main, -42);
 	}
-	return (1);
 }
 
 int	no_cmd(t_main *main)
 {
-	if (ft_strchr(main->cmd_tokens->args, '/'))
+	t_cmd	*token;
+	int		error;
+	int		i;
+
+	token = main->cmd_tokens;
+	error = 0;
+	i = 0;
+	while (token)
 	{
-		if (chdir(main->cmd_tokens->args) == 0)
+		i++;
+		if (!token->cmd)
 		{
-			printf(GREY"minishell: %s: Is a directory\n"RESET,
-				main->cmd_tokens->args);
-			return_to_pwd(main);
-			return (126);
+			if (token->heredoc_eof)
+				ft_heredoc(token, 1, main);
+			else if (ft_strchr(token->args, '/'))
+			{
+				if (chdir(token->args) == 0)
+				{
+					return_to_pwd(main);
+					main->last_exit_code = ft_error("dir", token->args);
+					error = 1;
+				}
+				else
+				{
+					main->last_exit_code = ft_error("nosfod", token->args);
+					error = 1;
+				}
+			}
+			else
+			{
+				main->last_exit_code = ft_error("cnf", token->args);
+				error = 1;
+			}
 		}
 		else
-			printf(GREY"minishell: %s: No such file or directory\n"RESET,
-				main->cmd_tokens->args);
+			main->lastcmd = i;
+		token = token->next;
 	}
-	else
-		printf(GREY"minishell: %s: command not found\n"RESET,
-			main->cmd_tokens->args);
-	return (127);
+	return (error);
 }
 
 int	ft_process(t_main *main)
 {
-	t_cmd	*cmd_tokens;
+	int	no;
 
-	// if (main->unexpected_token)
-	
-	printf("nb cmd %d\n", main->nb_cmd);
-	cmd_tokens = main->cmd_tokens;
-	if (!ft_strcmp(cmd_tokens->cmd, "cat") || !ft_strcmp(cmd_tokens->cmd, "sleep"))
-		cat = 1;
+	no = no_cmd(main);
+	if (no)
+		return (exec(main, 1));
+	if (!main->current_path && main->cmd_tokens->cmd
+		&& !check_builtin(main->cmd_tokens->cmd))
+		return (ft_error("nsfod", main->cmd_tokens->cmd));
+	if (!ft_strcmp(main->cmd_tokens->cmd, "cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "grep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/grep"))
+		g_signal_pid = 1;
 	if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)
 		{
-			if (check_builtin(cmd_tokens->cmd))
-				return (builtin(main));
+			if (check_builtin(main->cmd_tokens->cmd))
+			{
+				builtin(main);
+				return (1);
+			}
 		}
-		main->last_exit_code = exec(main);
+		exec(main, 0);
 		main->nb_cmd = 0;
 	}
-	else if (cmd_tokens->args)
-		main->last_exit_code = no_cmd(main);
 	return (1);
 }

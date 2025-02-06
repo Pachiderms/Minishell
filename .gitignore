@@ -3,5 +3,5 @@
 *.a
 *.txt
 .vscode/
+minishell_tester/
 minishell
-objs/

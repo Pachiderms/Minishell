@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/02 13:44:15 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 14:00:11 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	s_len(char *s)
 {
-	int i;
-	int len;
-	char q;
+	int		i;
+	int		len;
+	char	q;
 
 	i = 0;
 	len = 0;
@@ -32,7 +32,7 @@ int	s_len(char *s)
 			}
 			i++;
 		}
-		if (s[i] == '\0')
+		if (i > (int)ft_strlen(s))
 			break ;
 		if (s[i] != 34 && s[i] != 39)
 			len++;
@@ -47,7 +47,7 @@ char	*get_rid_of_quotes(char *s)
 	int		i;
 	int		len;
 	char	*dest;
-	char 	q;
+	char	q;
 
 	i = 0;
 	if (!s)
@@ -57,7 +57,7 @@ char	*get_rid_of_quotes(char *s)
 	if (!dest)
 		return (free(s), NULL);
 	len = 0;
-	while (s[i])
+	while (i < (int)ft_strlen(s))
 	{
 		if (s[i] == 34 || s[i] == 39)
 		{
@@ -66,7 +66,7 @@ char	*get_rid_of_quotes(char *s)
 				dest[len++] = s[i++];
 			i++;
 		}
-		if (s[i] == '\0')
+		if (i > (int)ft_strlen(s))
 			break ;
 		if (s[i] != 34 && s[i] != 39)
 			dest[len++] = s[i];
@@ -74,7 +74,7 @@ char	*get_rid_of_quotes(char *s)
 			i++;
 	}
 	dest[len] = '\0';
-	return (free(s), dest);
+	return (dest);
 }
 
 char	*get_rid_of(char *s, char c)
@@ -85,6 +85,8 @@ char	*get_rid_of(char *s, char c)
 
 	i = -1;
 	len = 0;
+	if (!s)
+		return (NULL);
 	while (s[++i])
 	{
 		if (s[i] != c)
@@ -106,10 +108,15 @@ char	*get_rid_of(char *s, char c)
 
 char	*get_cmd(char *path)
 {
-	if (!ft_strncmp(path, "/bin/", 5))
-		return (&path[5]);
-	else if (!ft_strncmp(path, "/usr/bin/", 8))
-		return (&path[8]);
-	else
-		return (path);
+	if (ft_strlen(path) >= 5)
+	{
+		if (!ft_strncmp(path, "/bin/", 5))
+			return (&path[5]);
+	}
+	else if (ft_strlen(path) >= 8)
+	{
+		if (!ft_strncmp(path, "/usr/bin/", 8))
+			return (&path[8]);
+	}
+	return (path);
 }

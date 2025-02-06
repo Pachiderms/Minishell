@@ -45,8 +45,7 @@ int	check_ko_export(char *arg)
 	while (arg[i++])
 	{
 		if (arg[i] == '!' && arg[i + 1] != '=')
-			return (printf("minishell: %s: event not found\n", ft_strchr(arg, '!'))
-				, 0);
+			return (ft_error("evnf", ft_strchr(arg, '!')));
 	}
 	i = 0;
 	while (arg[i] != '=' && arg[i])
@@ -57,8 +56,7 @@ int	check_ko_export(char *arg)
 			|| arg[i] == '*' || arg[i] == '#'
 			|| (arg[i] == '+' && arg[i + 1] != '=')
 			|| arg[i] == ' ' || arg[i] == '!')
-			return (printf("minishell: export: ‘%s’: not a valid identifier\n", arg)
-				, 0);
+			return (ft_error_export("nvid", arg));
 		i++;
 	}
 	return (1);
@@ -70,6 +68,8 @@ int	check_syntax_export(char *cmd)
 	char	*arg;
 
 	i = 0;
+	if (!cmd)
+		return (0);
 	arg = &ft_strchr(cmd, ' ')[1];
 	if (check_ko_export(arg) == 0)
 		return (0);
@@ -82,7 +82,7 @@ int	check_syntax_export(char *cmd)
 	return (2);
 }
 
-void	export(t_main *main, char *cmd)
+int	export(t_main *main, char *cmd)
 {
 	int		syntax;
 	int		plus;
@@ -90,7 +90,7 @@ void	export(t_main *main, char *cmd)
 
 	syntax = check_syntax_export(cmd);
 	if (syntax == 0)
-		return ;
+		return (1);
 	else if (syntax == 1)
 	{
 		plus = check_plus(cmd);
@@ -101,25 +101,33 @@ void	export(t_main *main, char *cmd)
 		}
 		else
 			fill_env_export(main, cmd);
-		printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	}
 	else if (syntax == 2)
 	{
 		fill_export(main, cmd);
-		printf("Export Len : %d\n", main->export_len);
 	}
-	return ;
+	return (0);
 }
 
 int	prep_export(t_main *main)
 {
 	char	*cmd;
+	char	**to_export;
+	int		i;
+	int		exit_code;
 
-	cmd = main->cmd_tokens->args;
-	if (get_arg_len(&ft_strchr(main->cmd_tokens->args, '=')[1]) > 1)
-		cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
-	cmd = ft_strjoin("export ", cmd);
-	export(main, cmd);
-	free(cmd);
-	return (0);
+	exit_code = 0;
+	if (!main->cmd_tokens->args)
+		return (print_env(main, 1), 0);
+	to_export = ft_split_k_q_s(main, main->cmd_quotes, ' ', 1);
+	i = 1;
+	while (to_export[i])
+	{
+		cmd = ft_strjoin("export ", to_export[i]);
+		if (export(main, cmd) == 1)
+			exit_code = 1;
+		free(cmd);
+		i++;
+	}
+	return (free_split(to_export), exit_code);
 }

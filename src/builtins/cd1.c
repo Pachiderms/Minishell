@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd1.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 14:21:07 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/06 16:24:59 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,28 +54,28 @@ void	fill_actual_arg(char *actual_arg, char *arg)
 	actual_arg[i] = '\0';
 }
 
-void	*handle_home_case(t_main *main, char *actual_arg)
+void	*handle_home_case(t_main *main, char **actual_arg)
 {
 	int	home_pos;
 
-	if (ft_strcmp(actual_arg, "--") == 0)
+	if (ft_strcmp(*actual_arg, "--") == 0)
 	{
-		free(actual_arg);
-		actual_arg = NULL;
+		free(*actual_arg);
+		*actual_arg = NULL;
 		home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
 		if (home_pos == -1)
 		{
-			printf("minishell: cd: HOME not set\n");
+			ft_error_cd("home", NULL);
 			return (NULL);
 		}
-		actual_arg = ft_strdup(&ft_strchr(main->env[home_pos], '=')[1]);
+		*actual_arg = &ft_strchr(main->env[home_pos], '=')[1];
 	}
-	else if (ft_strcmp(actual_arg, "~") == 0
-		|| ft_strcmp(actual_arg, "~/") == 0)
+	else if (ft_strcmp(*actual_arg, "~") == 0
+		|| ft_strcmp(*actual_arg, "~/") == 0)
 	{
-		free(actual_arg);
-		actual_arg = NULL;
-		actual_arg = ft_strdup("/home/zamgar");
+		free(*actual_arg);
+		*actual_arg = NULL;
+		*actual_arg = "/home/zamgar";
 	}
 	return ("not null");
 }
@@ -94,9 +94,8 @@ char	*get_actual_arg(t_main *main, char *arg)
 		oldpwd_pos = check_var_exists(main->env, main->env_len,
 				"export OLDPWD=");
 		actual_arg = &ft_strchr(main->env[oldpwd_pos], '=')[1];
-		printf("%s\n", actual_arg);
 	}
-	if (handle_home_case(main, actual_arg) == NULL)
+	if (handle_home_case(main, &actual_arg) == NULL)
 		return (NULL);
 	return (actual_arg);
 }

@@ -6,120 +6,112 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/03 19:25:57 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 19:01:35 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**ft_free_split_k_q_s(char **d, int start)
+char	*cook_nospace(t_main *main, char const *s)
 {
-	start--;
-	while (start >= 0)
-	{
-		free(d[start]);
-		start--;
-	}
-	free(d);
-	return (0);
+	char	*no_space;
+	char	*tmp;
+
+	no_space = get_rid_of_spaces(s);
+	no_space = replace_dollar(no_space, main);
+	if (!no_space)
+		return (NULL);
+	no_space = handle_sc_c(no_space, main);
+	if (!main->cmd_quotes)
+		main->cmd_quotes = ft_strdup(no_space);
+	tmp = get_rid_of_spaces(no_space);
+	free(no_space);
+	return (tmp);
 }
 
-int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s) // trop de lignes
-{
-	int	j;
-
-	j = 0;
-	if (diff == 1)
-	{
-		while (_s[i] != _c && _s[i])
-		{
-			j = i + 1;
-			if (_s[i] == 34 || _s[i] == 39)
-			{
-				while (_s[j] != _s[i] && _s[j])
-					j++;
-				i = j + 1;
-			}
-			else
-				i++;
-		}
-	}
-	else if (diff == 0)
-	{
-		while (_s[i] == _c && _s[i])
-			i++;
-	}
-	return (i);
-}
-
-int	count_words(char *no_space)
-{
-	int	i;
-	int	word;
-
-	i = 0;
-	word = 0;
-	while (no_space[i])
-	{
-		if (ft_isspace(no_space[i]) == 1)
-		{
-			word++;
-			i++;
-		}
-		if (no_space[i] == 34 || no_space[i] == 39)
-		{
-			i++;
-			while (no_space[i] && (no_space[i] != 34 && no_space[i] != 39))
-				i++;
-			word++;
-		}
-		i++;
-	}
-	if (ft_strcmp(no_space, "") == 0)
-		return (0);
-	return (word + 1);
-}
-
-char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
+char	**fill_dest(char **dest, char *no_space, char c, t_main *main)
 {
 	int		i;
 	int		j;
 	int		x;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	x = 0;
+	while (no_space[i])
+	{
+		i = ft_calc_k_q_s(i, 0, c, no_space);
+		j = ft_calc_k_q_s(i, 1, c, no_space);
+		tmp = ft_substr(no_space, i, j - i);
+		main->in_quotes[x] = 0;
+		if (ft_strchr(tmp, 34) || ft_strchr(tmp, 39))
+			main->in_quotes[x] = 1;
+		dest[x] = get_rid_of_quotes(tmp);
+		free(tmp);
+		if (dest[x++] == NULL || j < 0)
+			return (free(no_space), ft_free_split_k_q_s(dest, x), NULL);
+		main->in_quotes[x] = -1;
+		i += (j - i);
+	}
+	dest[x] = 0;
+	return (free(no_space), dest);
+}
+
+char	*cook_nospace2(t_main *main, char const *s)
+{
+	char	*no_space;
+	char	*tmp;
+
+	no_space = get_rid_of_spaces(s);
+	no_space = handle_sc_c(no_space, main);
+	tmp = get_rid_of_spaces(no_space);
+	free(no_space);
+	return (tmp);
+}
+
+char	**fill_dest2(char **dest, char *no_space, char c, t_main *main)
+{
+	int	i;
+	int	j;
+	int	x;
+
+	i = 0;
+	j = 0;
+	x = 0;
+	while (no_space[i])
+	{
+		i = ft_calc_k_q_s(i, 0, c, no_space);
+		j = ft_calc_k_q_s(i, 1, c, no_space);
+		main->in_quotes[x] = 0;
+		dest[x] = ft_substr(no_space, i, j - i);
+		if (dest[x++] == NULL || j < 0)
+			return (free(no_space), ft_free_split_k_q_s(dest, x), NULL);
+		i += (j - i);
+	}
+	dest[x] = 0;
+	return (free(no_space), dest);
+}
+
+char	**ft_split_k_q_s(t_main *main, char const *s, char c, int rmquotes)
+{
 	char	**dest;
 	char	*no_space;
 	int		size;
 
-	i = 0;
-	x = 0;
-	j = 0;
-	no_space = get_rid_of_spaces(s);
-	if (check_open_quotes(no_space, main) == 0)
-		return (NULL);
-	printf("no space before dollar : <%s>\n", no_space);
-	get_close_quotes(no_space, main);
-	no_space = replace_dollar(no_space, main);
-	printf("no space after dollar : <%s>\n\n", no_space);
-	no_space = handle_sc_c(no_space, main);
-	char *tmp = get_rid_of_spaces(no_space);
-	free(no_space);
-	printf("no space : %s\n", tmp);
-	size = count_words(tmp);
+	dest = NULL;
+	if (c != '|')
+		no_space = cook_nospace(main, s);
+	else
+		no_space = cook_nospace2(main, s);
+	size = count_words(no_space);
 	if (size <= 0)
 		return (NULL);
 	dest = malloc((size + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (free(no_space), NULL);
-	while (tmp[i])
-	{
-		i = ft_calc_k_q_s(i, 0, c, tmp);
-		j = ft_calc_k_q_s(i, 1, c, tmp);
-		dest[x] = get_rid_of_quotes(ft_substr(tmp, i, j - i));
-		printf("no_space[%d] adter rid quotes : <%s>\n", x, dest[x]);
-		if (dest[x++] == NULL || j < 0)
-			return (free(tmp), ft_free_split_k_q_s(dest, x));
-		i += (j - i);
-	}
-	printf("\n");
-	dest[x] = 0;
-	return (free(tmp), dest);
+	if (rmquotes)
+		return (fill_dest(dest, no_space, c, main));
+	else
+		return (fill_dest2(dest, no_space, c, main));
 }

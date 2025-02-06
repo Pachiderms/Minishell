@@ -28,13 +28,12 @@ int	handle_chdir(t_main *main, char *actual_arg, int chdir_value)
 	{
 		if (return_to_pwd(main) == 0)
 			return (0);
-		return (printf("minishell: cd: %s: No such file or directory\n"
-				, actual_arg), 0);
+		return (ft_error_cd("nsfod", actual_arg));
 	}
 	return (1);
 }
 
-int	check_syntax_cd(t_main *main, char *arg) // trop de lignes
+int	check_syntax_cd(t_main *main, char *arg)
 {
 	int		i;
 	int		chdir_value;
@@ -43,7 +42,7 @@ int	check_syntax_cd(t_main *main, char *arg) // trop de lignes
 
 	i = 0;
 	if (arg[0] == '-' && arg[1] && ft_strcmp(arg, "--") != 0)
-		return (printf("minishell: cd: -%c: invalid option\n", arg[1]), free(arg), 0);
+		return (free(arg), ft_error_cd("io", &arg[1]));
 	while (arg[i])
 	{
 		actual_arg = get_actual_arg(main, &arg[i]);
@@ -52,7 +51,7 @@ int	check_syntax_cd(t_main *main, char *arg) // trop de lignes
 		special_case = is_special_case(&arg[i]);
 		chdir_value = chdir(actual_arg);
 		if (handle_chdir(main, actual_arg, chdir_value) == 0)
-			return (0);
+			return (free(actual_arg), 0);
 		if (special_case == 1)
 			return (1);
 		i = actualise_index(arg, actual_arg, i);
@@ -69,10 +68,7 @@ int	print_home_pwd(t_main *main)
 	home_pos = 0;
 	home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
 	if (home_pos == -1)
-	{
-		printf("minishell: cd: HOME not set\n");
-		return (0);
-	}
+		return (ft_error_cd("home", NULL));
 	chdir_value = chdir(&ft_strchr(main->env[home_pos], '=')[1]);
 	if (chdir_value == -1)
 		return (0);
@@ -88,21 +84,41 @@ int	cd(t_main *main)
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
-	if (get_arg_len(main->cmd_tokens->args) > 2)
-		return (printf("minishell: cd: too many arguments\n")
-			, free(dir), 0);
+	if (get_arg_len(main->cmd_tokens->args) >= 2)
+			return (free(dir), ft_error_cd("tma", NULL));
 	if (!main->cmd_tokens->args)
 	{
 		if (print_home_pwd(main) == 1)
-			return (free(dir), 1);
+			return (free(dir), 0);
 	}
 	else
 	{
 		if (check_syntax_cd(main, main->cmd_tokens->args) == 1)
 		{
 			update_oldpwd_pwd(main);
-			return (free(dir), 1);
+			return (free(dir), 0);
 		}
 	}
-	return (free(dir), 0);
+	return (free(dir), 1);
 }
+
+// int	cd(t_main *main)
+// {
+// 	char	*dir;
+// 	int		res;
+
+// 	dir = getcwd(NULL, 0);
+// 	if (!dir)
+// 		return (perror("getcwd"), free(dir), 1);
+// 	free(dir);
+// 	if (get_arg_len(main->cmd_tokens->args) >= 2)
+// 			return (ft_error_cd("tma", NULL));
+// 	res = chdir(main->cmd_tokens->args);
+// 	if (res == 0)
+// 		update_oldpwd_pwd(main);
+// 	if (res == -1)
+// 		res *= -1;
+// 	if (res == 1)
+// 		perror(main->cmd_tokens->args);
+// 	return (res);
+// }
