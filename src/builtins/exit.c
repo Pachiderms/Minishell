@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:10:51 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 12:09:01 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 13:14:02 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_exit(t_main *main)
 	while (i < (int)ft_strlen(split_exit[1]))
 	{
 		if (ft_isalpha(split_exit[1][i]))
-			return (printf("bash: exit: %s: numeric argument required\n",
+			return (printf("minishell: exit: %s: numeric argument required\n",
 					split_exit[1]), free_split(split_exit), 2);
 		i++;
 	}

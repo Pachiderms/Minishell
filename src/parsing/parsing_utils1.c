@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 11:22:22 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 12:12:41 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,5 @@ int	order(char *_s, t_main *main)
 		return (free(s), free_split(pipes), 0);
 	if (!check_global_syntax(s, main))
 		return (free_split(pipes), free(s), 0);
-	print_t_cmd(main->cmd_tokens);
 	return (free(s), free_split(pipes), 1);
 }

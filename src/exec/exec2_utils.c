@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 10:38:03 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 13:12:19 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ int	wiq2(char *s, t_main *main, int *i, int *j)
 		return (0) ;
 	if (ft_strncmp(s, &main->cmd_quotes[*i + 1],
 			*j - *i - 1) == 0)
+	{
 		return (*j - *i);
+	}
 	return (0);
 }
 
-int	was_in_quotes(char *_s, t_main *main)
+int	was_in_quotes(char *_s, t_main *main, char *base)
 {
 	int	i;
 	int	j;
@@ -37,7 +39,13 @@ int	was_in_quotes(char *_s, t_main *main)
 
 	i = 0;
 	j = 0;
+	(void)base;
 	char *s = get_rid_of_quotes(_s);
+	if (ft_strcmp(base, s) != 0)
+	{
+		free(s);
+		s = ft_strdup(_s);
+	}
 	while (i < (int)ft_strlen(main->cmd_quotes))
 	{
 		j = i + 1;
@@ -59,7 +67,7 @@ int	skip_files(char *s, char r, char **res, t_main *main)
 
 	if (!s)
 		return (0);
-	i = was_in_quotes(s, main);
+	i = was_in_quotes(s, main, ft_substr(s, 0, ft_strlen(s)));
 	if (i > 0)
 	{
 		*res = ft_strjoin_free(*res, s, 0);
@@ -90,7 +98,7 @@ int	skip_infiles(char *s, int r, char **res, t_main *main)
 
 	if (!s)
 		return (0);
-	i = was_in_quotes(s, main);
+	i = was_in_quotes(s, main, ft_substr(s, 0, ft_strlen(s)));
 	if (i > 0)
 	{
 		*res = ft_strjoin_free(*res, s, 0);
@@ -118,13 +126,10 @@ char	*rm_redirections(t_cmd *token, char *cmd, int builtin, t_main *main)
 		return (NULL);
 	while (i < (int)ft_strlen(token->args))
 	{
-		printf("arg[%d] %s\n", i, &token->args[i]);
 		i += skip_files(&token->args[i], '>', &tmp, main);
 		i += skip_infiles(&token->args[i], '<', &tmp, main);
 		i += skip_files(&token->args[i], '<', &tmp, main);
-		printf("i skip %d\n", i);
 		tmp = add_char_to_str(tmp, token->args[i], 1);
-		printf("tmp %s\n", tmp);
 		i++;
 	}
 	if (!builtin)
@@ -133,7 +138,6 @@ char	*rm_redirections(t_cmd *token, char *cmd, int builtin, t_main *main)
 		res = ft_strjoin_free(res, tmp, 0);
 	free(token->args);
 	token->args = NULL;
-	printf("rm redir res %s\n", res);
 	return (free(tmp), res);
 }
 
