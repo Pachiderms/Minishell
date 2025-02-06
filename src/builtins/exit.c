@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:10:51 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 19:03:17 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 12:09:01 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ int	ft_exit(t_main *main)
 	returned_value = 0;
 	cmd = main->cmd_tokens->args;
 	split_exit = ft_split(cmd, ' ');
-	while (split_exit[0][i])
+	while (i < (int)ft_strlen(split_exit[1]))
 	{
-		if (ft_isalpha(split_exit[0][i]))
+		if (ft_isalpha(split_exit[1][i]))
 			return (printf("bash: exit: %s: numeric argument required\n",
-					split_exit[0]), free_split(split_exit), 2);
+					split_exit[1]), free_split(split_exit), 2);
 		i++;
 	}
-	if (split_exit[1] != NULL)
+	if (3 <= get_dchar_len(split_exit))
 		return (printf("minishell: exit: too many arguments\n"),
 			free_split(split_exit), -1);
-	returned_value = ft_atoi(split_exit[0]);
+	returned_value = ft_atoi(split_exit[1]);
 	return (free_split(split_exit), returned_value);
 }
