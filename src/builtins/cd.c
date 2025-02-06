@@ -84,20 +84,20 @@ int	cd(t_main *main)
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
-	if (get_arg_len(main->cmd_tokens->args) > 2)
-		return (free(dir), ft_error_cd("tma", NULL));
+	if (get_arg_len(main->cmd_tokens->args) >= 2)
+			return (free(dir), ft_error_cd("tma", NULL));
 	if (!main->cmd_tokens->args)
 	{
 		if (print_home_pwd(main) == 1)
-			return (free(dir), 1);
+			return (free(dir), 0);
 	}
 	else
 	{
 		if (check_syntax_cd(main, main->cmd_tokens->args) == 1)
 		{
 			update_oldpwd_pwd(main);
-			return (free(dir), 1);
+			return (free(dir), 0);
 		}
 	}
-	return (free(dir), 0);
+	return (free(dir), 1);
 }

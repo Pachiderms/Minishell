@@ -37,7 +37,16 @@ void	builtin(t_main *main)
 	if (ft_strcmp(command, "exit") == 0)
 	{
 		printf("exit\n");
-		free_process(main, -42);
+		if (main->cmd_tokens->args)
+		{
+			main->last_exit_code = ft_exit(main);
+			if (main->last_exit_code >= 0 && main->last_exit_code <= 255)
+				free_process(main, main->last_exit_code);
+			else if (main->last_exit_code == -1)
+				main->last_exit_code = 1;
+		}
+		else
+			free_process(main, -42);
 	}
 }
 

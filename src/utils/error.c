@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:34:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 10:56:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 11:24:25 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ int	ft_error_cd(char *type, char *msg)
 	if (!ft_strcmp(type, "tma"))
 	{
 		printf("minishell: cd: too many arguments\n");
-		return (0);
+		return (1);
 	}
-	else if (ft_strcmp(type, "home"))
+	if (!ft_strcmp(type, "home"))
 	{
 		printf("minishell: cd: HOME not set\n");
 		return (0);
 	}
-	else if (!ft_strcmp(type, "nosfod"))
+	if (!ft_strcmp(type, "nsfod"))
 	{
 		printf(GREY"minishell: cd: %s: No such file or directory\n"RESET, msg);
 		return (0);

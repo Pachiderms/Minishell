@@ -37,7 +37,7 @@ void	child_process(t_main *main, t_cmd *token)
 	redirect_in_out(token);
 	rl_clear_history();
 	init_signals();
-	execve(cmd, split_args, main->env);
+	execve(cmd, split_args, main->env); // leak cd
 	free(cmd);
 	free_split(split_args);
 	perror("execve");

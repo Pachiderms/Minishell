@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 10:58:46 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 11:12:58 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	ft_putchar_fd(char c, int fd);
 int		ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_itoa(int n);
+int		ft_isalpha(int c);
 
 // MINISHELL
 
@@ -175,7 +176,7 @@ void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
 int		prep_unset(t_main *main);
 /// EXPORT
-void	export(t_main *main, char *cmd);
+int		export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
 void	fill_export(t_main *main, char *cmd);
 void	fill_env_export(t_main *main, char *cmd);
@@ -269,6 +270,6 @@ int		ft_error_unset(char *type, char *msg);
 int		ft_error_export(char *type, char *msg);
 int		ft_error_cd(char *type, char *msg);
 int		ft_error_pwd(char *type, char *msg);
-
+int		ft_exit(t_main *main);
 void	free_string(char *s);
 #endif
