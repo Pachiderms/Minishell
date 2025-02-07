@@ -85,7 +85,6 @@ int	check_syntax_env(char *cmd)
 			else
 			{
 				msg = split[i];
-				printf("error\n");
 				ft_error_export("env", msg);
 				return (free_split(split), 0);
 			}
