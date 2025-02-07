@@ -59,14 +59,14 @@ void	builtin(t_main *main, t_cmd *token)
 		printf("exit\n");
 		if (token->args && ft_strcmp(token->args, "exit") != 0)
 		{
-			main->last_exit_code = ft_exit(main);
+			main->last_exit_code = ft_exit(main, token);
 			if (main->last_exit_code >= 0 && main->last_exit_code <= 255)
 				free_process(main, main->last_exit_code);
 			else if (main->last_exit_code == -1)
 				main->last_exit_code = 1;
 		}
 		else
-			free_process(main, -42);
+			free_process(main, 0);
 	}
 }
 

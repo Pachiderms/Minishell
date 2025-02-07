@@ -6,13 +6,13 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:10:51 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 13:19:26 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:03:48 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_exit(t_main *main)
+int	ft_exit(t_main *main, t_cmd *token)
 {
 	int				i;
 	unsigned char	returned_value;
@@ -21,7 +21,8 @@ int	ft_exit(t_main *main)
 
 	i = 0;
 	returned_value = 0;
-	cmd = main->cmd_tokens->args;
+	(void)main;
+	cmd = token->args;
 	split_exit = ft_split(cmd, ' ');
 	while (i < (int)ft_strlen(split_exit[1]))
 	{

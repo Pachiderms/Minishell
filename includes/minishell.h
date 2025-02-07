@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 18:51:13 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:45:55 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ int		ft_error_unset(char *type, char *msg);
 int		ft_error_export(char *type, char *msg);
 int		ft_error_cd(char *type, char *msg);
 int		ft_error_pwd(char *type, char *msg);
-int		ft_exit(t_main *main);
+int		ft_exit(t_main *main, t_cmd *token);
 void	free_string(char *s);
 void	update_gpid(t_main *main);
 int		in_quotes_skip(char *s, t_main *main, int i, char **tmp);
@@ -292,5 +292,6 @@ void	do_single_redirection(char *arg, t_main *main, int i, int *j);
 int		check_global_syntax_pipe(char *arg, t_main *main);
 void	do_double_pipe(char *arg, t_main *main, int i, int *j);
 void	do_single_pipe(char *arg, t_main *main, int i, int *j);
+int		check_no_path(char *s, t_main *main);
 
 #endif

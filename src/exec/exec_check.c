@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:56:04 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 19:49:51 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:37:14 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	nocmd_error(t_main *main, t_cmd *token)
 	}
 	else if (ft_strchr(token->args, '/'))
 		return (dir_or_file(main, token));
-	else
+	else if (!token->heredoc_eof)
 	{
 		main->last_exit_code = ft_error("cnf", token->args);
 		return (1);

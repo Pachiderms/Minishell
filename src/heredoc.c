@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 17:31:41 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:34:03 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	write_in_here_doc(int here_doc, char *eof)
 			break ;
 		res = ft_strjoin_free(res, tmp, 0);
 		res = ft_strjoin_free(res, "\n", 0);
-		add_history(tmp);
 		free(tmp);
 	}
 	free(tmp);

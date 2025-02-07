@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 18:16:08 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:45:32 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,13 @@ int	check_global_syntax(char *arg, t_main *main)
 		i++;
 	}
 	return (main->u_token == NULL);
+}
+
+int	check_no_path(char *s, t_main *main)
+{
+	if (!s || s[0] == '\0'
+		|| (((ft_strcmp(main->current_path, main->path) != 0))
+			&& !check_builtin(s)))
+		return (1);
+	return (0);
 }
