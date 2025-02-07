@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 11:31:41 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 14:36:52 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,40 @@ int	check_builtin(char *_s)
 	return (0);
 }
 
-int	is_cmd(char *s, char *path)
+int	check_first_cmd(char *s, t_main *main)
+{
+	int	dir;
+	int	check;
+	int	check2;
+
+	dir = chdir(s);
+	check = (dir == 0);
+	check2 = 0;
+	if (dir == 0)
+		return_to_pwd(main);
+	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
+		check2 = 0;
+	if (!ft_strncmp(&s[0], "./", 2)
+		&& access(&ft_strchr(s, '/')[1], F_OK) == 0)
+		check2 = 1;
+	if (!ft_strncmp(&s[0], "./", 2)
+		&& access(&ft_strchr(s, '/')[1], X_OK) == -1)
+	{
+		main->noFile = ft_strdup(s);
+		check2 = -1;
+	}
+	if (!check && check2 == -1)
+		return (0);
+	if (check && check2)
+		return (0);
+	if (check && !check2)
+		return (0);
+	if (!check && check2)
+		return (1);
+	return (-1);
+}
+
+int	is_cmd(char *s, t_main *main)
 {
 	int		i;
 	char	*s1;
@@ -40,14 +73,12 @@ int	is_cmd(char *s, char *path)
 	tmp = NULL;
 	if (!s)
 		return (0);
-	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
-		return (0);
-	if (!ft_strncmp(&s[0], "./", 2))
+	if (check_first_cmd(s, main) == 1)
 		return (1);
-	if (ft_strchr(s, '/') && !ft_strnstr(s, "/bin/", ft_strlen(s)))
+	if (check_first_cmd(s, main) == 0)
 		return (0);
 	s1 = ft_strjoin("/", get_cmd(s));
-	split = ft_split(path, ':');
+	split = ft_split(main->path, ':');
 	if (check_builtin(s))
 		return (free_split(split), free(s1), 1);
 	while (split[++i])

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 11:31:49 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 13:58:59 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ char	*find_args(char *_s, t_main *main, char *cmd, t_cmd *token)
 	get_fd_in(s, main, token);
 	while (s[++i])
 	{
-		if (((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)
+		if (((!is_cmd(s[i], main) || ft_strcmp(s[i], cmd) != 0)
 				&& !ft_strnstr(s[i], "<<", ft_strlen(s[i]))
 				&& ft_strcmp(previous, "<<") != 0)
-			|| (was_in_quotes(s[i], main, ft_substr(s[i], 0, ft_strlen(s[i]))) && !is_cmd(s[i], main->path))
+			|| (was_in_quotes(s[i], main, ft_substr(s[i], 0, ft_strlen(s[i]))) && !is_cmd(s[i], main))
 			|| (!ft_strcmp(s[i], cmd) && !ft_strcmp(cmd, "exit")))
 			find_args_res(&res, &s[i]);
 		previous = s[i];
@@ -79,7 +79,7 @@ char	*find_cmd(char *_s, t_main *main)
 	{
 		if (get_next(&s[i], "<<") && eof != 1)
 			eof = i;
-		if (is_cmd(s[i], main->path) && !cmd && eof != (i - 1))
+		if (is_cmd(s[i], main) && !cmd && eof != (i - 1))
 		{
 			eof = 0;
 			cmd = ft_strdup(s[i]);

@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:34:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 12:21:05 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 14:40:20 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,11 @@ int	ft_nosfod(char *type, char *msg)
 	}
 	else if (!ft_strcmp(type, "file"))
 	{
+		if (access(msg, X_OK) == -1)
+		{
+			printf("minishell: %s: Permission denied\n", msg);
+			return (126);
+		}
 		printf("minishell: %s: No such file or directory\n", msg);
 		return (1);
 	}

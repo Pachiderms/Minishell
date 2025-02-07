@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 12:16:41 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 13:58:30 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ int		skip_char(char *s, int c, int diff);
 int		check_global_syntax(char *arg, t_main *main);
 
 /// TOKENS
-int		is_cmd(char *s, char *path);
+int		is_cmd(char *s, t_main *main);
 int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);

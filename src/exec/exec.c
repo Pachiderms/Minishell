@@ -71,8 +71,16 @@ int	no_cmd(t_main *main)
 		{
 			if (token->heredoc_eof)
 				ft_heredoc(token, 1);
+			if (main->noFile)
+			{
+				main->last_exit_code = ft_nosfod("file", main->noFile);
+				error = 1;
+			}
 			else if (token->no_file)
+			{
 				main->last_exit_code = ft_nosfod("file", token->no_file);
+				error = 1;
+			}
 			else if (ft_strchr(token->args, '/'))
 			{
 				if (chdir(token->args) == 0)
