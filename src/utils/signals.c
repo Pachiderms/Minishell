@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:50:19 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 14:46:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 16:37:51 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	sigint(int sig)
 		rl_redisplay();
 	return ;
 }
-
 
 void	init_signals2(void)
 {

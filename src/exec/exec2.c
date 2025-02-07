@@ -66,7 +66,7 @@ int	exec_solo(t_main *main)
 
 	token = main->cmd_tokens;
 	if (main->lastcmd < 0)
-			return (1);
+		return (1);
 	while (token && main->lastcmd > 1)
 	{
 		main->lastcmd--;

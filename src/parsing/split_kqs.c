@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/07 12:04:57 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 18:33:35 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c, int rmquotes)
 	else
 		no_space = cook_nospace2(main, s);
 	size = count_words(no_space);
+	if (size <= 0 && no_space)
+		free(no_space);
 	if (size <= 0)
 		return (NULL);
 	dest = malloc((size + 1) * sizeof(char *));

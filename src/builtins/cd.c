@@ -59,7 +59,7 @@ int	check_syntax_cd(t_main *main, char *arg)
 	return (1);
 }
 
-int	print_home_pwd(t_main *main, t_cmd *token)
+int	print_home_pwd(t_main *main)
 {
 	int	chdir_value;
 	int	home_pos;
@@ -73,7 +73,7 @@ int	print_home_pwd(t_main *main, t_cmd *token)
 	if (chdir_value == -1)
 		return (0);
 	if (chdir_value == 0)
-		return (update_oldpwd_pwd(main, token), 1);
+		return (update_oldpwd_pwd(main), 1);
 	return (0);
 }
 
@@ -86,16 +86,16 @@ int	cd(t_main *main, t_cmd *token)
 		return (perror("getcwd"), free(dir), 1);
 	if (get_arg_len(token->args) >= 2)
 			return (free(dir), ft_error_cd("tma", NULL));
-	if (!main->cmd_tokens->args)
+	if (!token->args)
 	{
-		if (print_home_pwd(main, token) == 1)
+		if (print_home_pwd(main) == 1)
 			return (free(dir), 0);
 	}
 	else
 	{
-		if (check_syntax_cd(main, main->cmd_tokens->args) == 1)
+		if (check_syntax_cd(main, token->args) == 1)
 		{
-			update_oldpwd_pwd(main, token);
+			update_oldpwd_pwd(main);
 			return (free(dir), 0);
 		}
 	}

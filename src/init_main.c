@@ -6,11 +6,28 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 14:51:58 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 16:42:44 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	init_dollar(t_main *main)
+{
+	main->dollars_ok = 0;
+	main->dollars.i = 0;
+	main->dollars.j = 0;
+	main->dollars.end = 0;
+	main->dollars.r = 0;
+	main->dollars.r1 = 0;
+	main->dollars.rep_pos = 0;
+	main->dollars.check = 0;
+	main->dollars.arg_dup = NULL;
+	main->dollars.tmp = NULL;
+	main->dollars.tmp2 = NULL;
+	main->dollars.tmp3 = NULL;
+	main->dollars.final_tmp = NULL;
+}
 
 void	set_null_main(t_main *main)
 {
@@ -25,52 +42,13 @@ void	set_null_main(t_main *main)
 	main->u_token = NULL;
 	main->last_ofile = NULL;
 	main->cmd_quotes = NULL;
-	main->dollars_ok = 0;
-	main->dollars.i = 0;
-	main->dollars.j = 0;
-	main->dollars.end = 0;
-	main->dollars.r = 0;
-	main->dollars.r1 = 0;
 	main->last_exit_code = 0;
 	main->noFile = NULL;
 	main->lastcmd = -1;
-	main->dollars.rep_pos = 0;
-	main->dollars.check = 0;
-	main->dollars.arg_dup = NULL;
-	main->dollars.tmp = NULL;
-	main->dollars.tmp2 = NULL;
-	main->dollars.tmp3 = NULL;
-	main->dollars.final_tmp = NULL;
+	init_dollar(main);
 	g_signal_pid = 0;
 }
 
-char	*get_var_name(char *cmd)
-{
-	int		i;
-	int		j;
-	char	*var_name;
-
-	i = 0;
-	j = 0;
-	if (ft_strncmp(cmd, "export ", 7) == 0)
-		i = 7;
-	while (cmd[i++] != '=')
-		j++;
-	var_name = (char *)malloc(sizeof(char) * (j + 2));
-	i = 0;
-	j = 0;
-	if (ft_strncmp(cmd, "export ", 7) == 0)
-		i = 7;
-	while (cmd[i] != '=')
-	{
-		var_name[j] = cmd[i];
-		j++;
-		i++;
-	}
-	var_name[j] = cmd[i];
-	var_name[j + 1] = '\0';
-	return (var_name);
-}
 
 void	set_env(t_main *main, char **env)
 {

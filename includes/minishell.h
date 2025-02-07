@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 15:48:38 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 16:56:19 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ char	*find_heredoc_eof(char *_s, t_main *main);
 char	*get_next(char **cmd, char *tf);
 int		was_in_quotes(char *_s, t_main *main, char *base);
 int		u_ttoken(t_main *main);
+int		no_cmd(t_main *main);
 //t_cmd utils
 void	ft_lstclear(t_cmd **lst);
 void	ft_lstdelone(t_cmd *lst);
@@ -204,7 +205,7 @@ char	*get_actual_arg(t_main *main, char *arg);
 int		cd(t_main *main, t_cmd *token);
 /// PWD
 int		return_to_pwd(t_main *main);
-void	update_oldpwd_pwd(t_main *main, t_cmd *token);
+void	update_oldpwd_pwd(t_main *main);
 int		pwd(t_main *main, t_cmd *token);
 /// UTILS BUILTINS
 int		basic_verif(char *arg, int which);
@@ -282,4 +283,6 @@ int		ft_error_cd(char *type, char *msg);
 int		ft_error_pwd(char *type, char *msg);
 int		ft_exit(t_main *main);
 void	free_string(char *s);
+void	update_gpid(t_main *main);
+int		in_quotes_skip(char *s, t_main *main, int i, char **tmp);
 #endif

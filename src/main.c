@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 14:54:26 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 17:04:52 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,31 @@ int	only_space_line(char *cmd)
 
 void	sub_process(t_main *main, char *cmd)
 {
-	if (only_space_line(cmd) == 0 && cmd)
+	if (only_space_line(cmd) || !cmd)
+		return ;
+	if (check_var_exists(main->env, main->env_len, "export PATH=") != -1)
+		main->current_path = main->env[check_var_exists(main->env,
+				main->env_len, "export PATH=")];
+	else
+		main->current_path = NULL;
+	add_history(cmd);
+	if (!order(cmd, main))
 	{
-		if (check_var_exists(main->env, main->env_len, "export PATH=") != -1)
-			main->current_path = main->env[check_var_exists(main->env,
-					main->env_len, "export PATH=")];
+		if (main->u_token)
+			main->last_exit_code = u_ttoken(main);
 		else
-			main->current_path = NULL;
-		add_history(cmd);
-		if (!order(cmd, main))
-		{
-			if (main->u_token)
-				main->last_exit_code = u_ttoken(main);
-			else
-				main->last_exit_code = 0;
-			free_end_cmd(main);
-		}
-		else
-		{
-			ft_process(main);
-			free_end_cmd(main);
-		}
-		free(cmd);
-		if (main->cmd_quotes)
-			free(main->cmd_quotes);
-		main->cmd_quotes = NULL;
+			main->last_exit_code = 0;
+		free_end_cmd(main);
 	}
+	else
+	{
+		ft_process(main);
+		free_end_cmd(main);
+	}
+	free(cmd);
+	if (main->cmd_quotes)
+		free(main->cmd_quotes);
+	main->cmd_quotes = NULL;
 }
 
 int	main(int argc, char **argv, char **env)

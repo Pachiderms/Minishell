@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 18:28:21 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 17:15:39 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,6 @@ int	handle_opening_infile(char *file, int heredoc)
 		}
 	}
 	return (fd);
-}
-
-char	*get_next(char **cmd, char *tf)
-{
-	if (!cmd)
-		return (NULL);
-	if (!*cmd)
-		return (NULL);
-	if (ft_strcmp(*cmd, tf) == 0)
-	{
-		if (*(cmd + 1))
-			return (*(cmd + 1));
-	}
-	else if (ft_strnstr(*cmd, tf, ft_strlen(*cmd)))
-		return (&ft_strrchr(*cmd, tf[0])[1]);
-	return (NULL);
 }
 
 void	update_lastofile(t_main *main, char *s, int fd, t_cmd *token)

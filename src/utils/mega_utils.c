@@ -6,16 +6,37 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:01:27 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 12:01:55 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 16:31:34 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_string(char *s)
+char	*get_next(char **cmd, char *tf)
 {
-	if (s)
-		free(s);
+	if (!cmd)
+		return (NULL);
+	if (!*cmd)
+		return (NULL);
+	if (ft_strcmp(*cmd, tf) == 0)
+	{
+		if (*(cmd + 1))
+			return (*(cmd + 1));
+	}
+	else if (ft_strnstr(*cmd, tf, ft_strlen(*cmd)))
+		return (&ft_strrchr(*cmd, tf[0])[1]);
+	return (NULL);
+}
+
+void	update_gpid(t_main *main)
+{
+	if (!ft_strcmp(main->cmd_tokens->cmd, "cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "grep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/grep"))
+		g_signal_pid = 1;
 }
 
 int	u_ttoken(t_main *main)

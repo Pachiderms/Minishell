@@ -3,77 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 15:57:02 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/06 14:00:11 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 18:21:28 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	s_len(char *s)
-{
-	int		i;
-	int		len;
-	char	q;
-
-	i = 0;
-	len = 0;
-	while (s[i])
-	{
-		if (s[i] == 34 || s[i] == 39)
-		{
-			q = s[i++];
-			while (s[i] != q && s[i])
-			{
-				len++;
-				i++;
-			}
-			i++;
-		}
-		if (i > (int)ft_strlen(s))
-			break ;
-		if (s[i] != 34 && s[i] != 39)
-			len++;
-		if (s[i] && s[i] != '\'' && s[i] != '"')
-			i++;
-	}
-	return (len);
-}
-
 char	*get_rid_of_quotes(char *s)
 {
 	int		i;
-	int		len;
 	char	*dest;
 	char	q;
 
 	i = 0;
 	if (!s)
 		return (NULL);
-	len = s_len(s);
-	dest = malloc(len * sizeof(char) + 1);
-	if (!dest)
-		return (free(s), NULL);
-	len = 0;
+	dest = NULL;
 	while (i < (int)ft_strlen(s))
 	{
 		if (s[i] == 34 || s[i] == 39)
 		{
 			q = s[i++];
 			while (s[i] != q && s[i])
-				dest[len++] = s[i++];
+				dest = add_char_to_str(dest, s[i++], 1);
 			i++;
 		}
 		if (i > (int)ft_strlen(s))
 			break ;
 		if (s[i] != 34 && s[i] != 39)
-			dest[len++] = s[i];
+			dest = add_char_to_str(dest, s[i], 1);
 		if (s[i] && s[i] != '\'' && s[i] != '"')
 			i++;
 	}
-	dest[len] = '\0';
 	return (dest);
 }
 
