@@ -6,35 +6,55 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 16:56:51 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 18:43:30 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*add_char_to_str(char *s, char c, int _free)
+int	in_quotes_skip2(char *s, t_main *main, int i, char **tmp)
 {
 	char	*res;
-	int		len;
+	int		j;
+
+	res = NULL;
+	j = i + was_in_quotes(&s[i], main,
+			ft_substr(&s[i], 0,
+				ft_strlen(&s[i])));
+	if (j > i)
+	{
+		res = ft_substr(s, i, j - i);
+		*tmp = ft_strjoin_free(*tmp, res, 0);
+		free(res);
+		res = NULL;
+	}
+	return (j);
+}
+
+char	*cmd_separate(char *s, t_main *main)
+{
+	char	*res;
 	int		i;
 
-	if (!c)
-		return (s);
-	len = ft_strlen(s);
-	res = malloc((len + 2) * sizeof(char));
-	if (!res)
-		return (NULL);
 	i = 0;
-	while (i < len)
+	res = NULL;
+	while (i < (int)ft_strlen(s))
 	{
-		res[i] = s[i];
+		i = in_quotes_skip2(s, main, i, &res);
+		if (i > (int)ft_strlen(s))
+			break ;
+		if (s[i] == '>' || s[i] == '|'
+			|| s[i] == '<')
+		{
+			res = add_char_to_str(res, s[i], 1);
+			if (s[i] != s[i + 1] && s[i + 1])
+				res = add_char_to_str(res, ' ', 1);
+		}
+		else
+			res = add_char_to_str(res, s[i], 1);
 		i++;
 	}
-	res[i++] = c;
-	res[i++] = '\0';
-	if (_free)
-		free(s);
-	return (res);
+	return (free(s), res);
 }
 
 int	get_arg_len(char *arg)
@@ -91,10 +111,13 @@ t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 int	order(char *_s, t_main *main)
 {
 	char	*s;
+	char	*no_space;
 	char	**pipes;
 
-	(void)main;
-	s = get_rid_of_spaces(_s);
+	no_space = get_rid_of_spaces(_s);
+	if (!main->cmd_quotes)
+		main->cmd_quotes = ft_strdup(no_space);
+	s = cmd_separate(no_space, main);
 	if (!s || s[0] == '\0')
 		return (0);
 	if (check_open_quotes(s, main) == 0)
@@ -106,7 +129,7 @@ int	order(char *_s, t_main *main)
 		return (free(s), free_split(pipes), 0);
 	if (!check_global_syntax(s, main))
 		return (free_split(pipes), free(s), 0);
-	if (main->noFile)
-		return (0);
-	return (free(s), free_split(pipes), 1);
+	if (!check_global_syntax_pipe(s, main))
+		return (free_split(pipes), free(s), 0);
+	return (free(s), free_split(pipes), 1 && !main->u_token);
 }

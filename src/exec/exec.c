@@ -12,32 +12,52 @@
 
 #include "../includes/minishell.h"
 
-void	builtin(t_main *main)
+int	nof_builtin(t_main *main, t_cmd *token)
+{
+	if (token->no_file)
+	{
+		if (was_in_quotes(token->args, main, ft_strdup(token->args)) > 0)
+			return (0);
+		main->last_exit_code = ft_nosfod("file", token->no_file);
+		return (1);
+	}
+	return (0);
+}
+
+int	exit_code(t_main *main, t_cmd *token, char *command)
+{
+	if (ft_strcmp(command, "env") == 0)
+		return (print_env(main, 0, token));
+	if (ft_strcmp(command, "export") == 0)
+		return (prep_export(main, token));
+	if (ft_strcmp(command, "unset") == 0)
+		return (prep_unset(main));
+	if (ft_strcmp(command, "echo") == 0)
+		return (ft_echo(main, token));
+	if (ft_strcmp(command, "cd") == 0)
+		return (cd(main, token));
+	if (ft_strcmp(command, "pwd") == 0)
+		return (pwd(main, token));
+	return (1);
+}
+
+void	builtin(t_main *main, t_cmd *token)
 {
 	char	*command;
 
-	main->nb_cmd = 0;
-	if (main->cmd_tokens->heredoc_eof)
-			main->cmd_tokens->infile = ft_heredoc(main->cmd_tokens, 1, main);
-	command = get_cmd(main->cmd_tokens->cmd);
-	main->cmd_tokens->args = rm_redirections(main->cmd_tokens,
-			main->cmd_tokens->cmd, 1, main);
-	if (ft_strcmp(command, "env") == 0)
-		main->last_exit_code = print_env(main, 0);
-	if (ft_strcmp(command, "export") == 0)
-		main->last_exit_code = prep_export(main);
-	if (ft_strcmp(command, "unset") == 0)
-		main->last_exit_code = prep_unset(main);
-	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = ft_echo(main);
-	if (ft_strcmp(command, "cd") == 0)
-		main->last_exit_code = cd(main);
-	if (ft_strcmp(command, "pwd") == 0)
-		main->last_exit_code = pwd(main);
+	main->nb_cmd--;
+	if (token->heredoc_eof)
+			token->infile = ft_heredoc(token, 1);
+	if (nof_builtin(main, token))
+		return ;
+	command = get_cmd(token->cmd);
+	token->args = rm_redirections(token,
+			token->cmd, 1, main);
+	main->last_exit_code = exit_code(main, token, command);
 	if (ft_strcmp(command, "exit") == 0)
 	{
 		printf("exit\n");
-		if (main->cmd_tokens->args && ft_strcmp(main->cmd_tokens->args, "exit") != 0)
+		if (token->args && ft_strcmp(token->args, "exit") != 0)
 		{
 			main->last_exit_code = ft_exit(main);
 			if (main->last_exit_code >= 0 && main->last_exit_code <= 255)
@@ -50,49 +70,6 @@ void	builtin(t_main *main)
 	}
 }
 
-int	no_cmd(t_main *main)
-{
-	t_cmd	*token;
-	int		error;
-	int		i;
-
-	token = main->cmd_tokens;
-	error = 0;
-	i = 0;
-	while (token)
-	{
-		i++;
-		if (!token->cmd)
-		{
-			if (token->heredoc_eof)
-				ft_heredoc(token, 1, main);
-			else if (ft_strchr(token->args, '/'))
-			{
-				if (chdir(token->args) == 0)
-				{
-					return_to_pwd(main);
-					main->last_exit_code = ft_error("dir", token->args);
-					error = 1;
-				}
-				else
-				{
-					main->last_exit_code = ft_error("nosfod", token->args);
-					error = 1;
-				}
-			}
-			else
-			{
-				main->last_exit_code = ft_error("cnf", token->args);
-				error = 1;
-			}
-		}
-		else
-			main->lastcmd = i;
-		token = token->next;
-	}
-	return (error);
-}
-
 int	ft_process(t_main *main)
 {
 	int	no;
@@ -103,20 +80,14 @@ int	ft_process(t_main *main)
 	if (!main->current_path && main->cmd_tokens->cmd
 		&& !check_builtin(main->cmd_tokens->cmd))
 		return (ft_error("nsfod", main->cmd_tokens->cmd));
-	if (!ft_strcmp(main->cmd_tokens->cmd, "cat")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/cat")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/sleep")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "grep")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/grep"))
-		g_signal_pid = 1;
+	update_gpid(main);
 	if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)
 		{
 			if (check_builtin(main->cmd_tokens->cmd))
 			{
-				builtin(main);
+				builtin(main, main->cmd_tokens);
 				return (1);
 			}
 		}

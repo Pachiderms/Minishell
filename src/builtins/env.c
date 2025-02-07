@@ -70,6 +70,7 @@ int	check_syntax_env(char *cmd)
 {
 	int		i;
 	char	**split;
+	char	*msg;
 
 	split = ft_split(cmd, ' ');
 	i = 1;
@@ -82,18 +83,23 @@ int	check_syntax_env(char *cmd)
 			if (ft_strcmp(split[i], "env") == 0)
 				i++;
 			else
-				return (free_split(split), ft_error_export("env", split[i]));
+			{
+				msg = split[i];
+				printf("error\n");
+				ft_error_export("env", msg);
+				return (free_split(split), 0);
+			}
 		}
 	}
 	return (free_split(split), 1);
 }
 
-int	print_env(t_main *main, int check)
+int	print_env(t_main *main, int check, t_cmd *token)
 {
 	int		i;
 	char	*cmd;
 
-	cmd = main->cmd_tokens->args;
+	cmd = token->args;
 	cmd = cut_str(cmd, ft_strchr(cmd, ' '));
 	cmd = ft_strjoin("env ", cmd);
 	i = 0;

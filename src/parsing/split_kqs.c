@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_kqs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/05 19:01:35 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 18:49:47 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ char	*cook_nospace(t_main *main, char const *s)
 
 	no_space = get_rid_of_spaces(s);
 	no_space = replace_dollar(no_space, main);
+	main->dollars_ok = 1;
 	if (!no_space)
 		return (NULL);
 	no_space = handle_sc_c(no_space, main);
-	if (!main->cmd_quotes)
-		main->cmd_quotes = ft_strdup(no_space);
+	free(main->cmd_quotes);
+	main->cmd_quotes = NULL;
+	main->cmd_quotes = ft_strdup(no_space);
 	tmp = get_rid_of_spaces(no_space);
 	free(no_space);
 	return (tmp);
@@ -100,11 +102,13 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c, int rmquotes)
 	int		size;
 
 	dest = NULL;
-	if (c != '|')
+	if (!main->dollars_ok)
 		no_space = cook_nospace(main, s);
 	else
 		no_space = cook_nospace2(main, s);
 	size = count_words(no_space);
+	if (size <= 0 && no_space)
+		free(no_space);
 	if (size <= 0)
 		return (NULL);
 	dest = malloc((size + 1) * sizeof(char *));

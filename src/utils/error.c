@@ -3,108 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:34:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 16:58:46 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 18:33:17 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_error_export(char *type, char *msg)
+int	ft_nosfod(char *type, char *msg)
 {
-	if (!ft_strcmp(type, "nvid"))
+	if (!ft_strcmp(type, "dir"))
 	{
-		printf("minishell: export: ‘%s’: not a valid identifier\n", msg);
-		return (0);
+		printf("minishell: %s: No such file or directory\n", msg);
+		return (127);
 	}
-	else if (!ft_strcmp(type, "env"))
+	else if (!ft_strcmp(type, "file"))
 	{
-		printf(GREY"env: ‘%s’: No such file or directory\n"RESET, msg);
-		return (0);
-	}
-	else if (!ft_strcmp(type, "io"))
-	{
-		printf("minishell: export: -%c: invalid option\n", msg[0]);
-		return (0);
-	}
-	return (0);
-}
-
-int	ft_error_unset(char *type, char *msg)
-{
-	if (!ft_strcmp(type, "nvid"))
-	{
-		printf("minishell: unset: ‘%s’: not a valid identifier\n", msg);
-		return (0);
-	}
-	else if (!ft_strcmp(type, "io"))
-	{
-		printf("minishell: unset: -%c: invalid option\n",
-			msg[0]);
-		return (0);
-	}
-	return (0);
-}
-
-int	ft_error_cd(char *type, char *msg)
-{
-	if (!ft_strcmp(type, "io"))
-	{
-		printf("minishell: cd: -%c: invalid option\n", msg[0]);
-		return (0);
-	}
-	if (!ft_strcmp(type, "tma"))
-	{
-		printf("minishell: cd: too many arguments\n");
+		if (access(msg, X_OK) == -1)
+		{
+			printf("minishell: %s: Permission denied\n", msg);
+			return (126);
+		}
+		printf("minishell: %s: No such file or directory\n", msg);
 		return (1);
 	}
-	if (!ft_strcmp(type, "home"))
-	{
-		printf("minishell: cd: HOME not set\n");
-		return (0);
-	}
-	if (!ft_strcmp(type, "nsfod"))
-	{
-		printf(GREY"minishell: cd: %s: No such file or directory\n"RESET, msg);
-		return (0);
-	}
-	return (0);
-}
-
-int	ft_error_pwd(char *type, char *msg)
-{
-	if (!ft_strcmp(type, "big"))
-	{
-		printf("pwd: error retrieving current directory: getcwd ");
-		printf("cannot access parent directories: ");
-		printf("No such file or directory\n");
-		return (0);
-	}
-	else if (!ft_strcmp(type, "io"))
-	{
-		printf("minishell: pwd: -%c: invalid option\n", msg[0]);
-		return (0);
-	}
-	return (0);
+	return (1);
 }
 
 int	ft_error(char *type, char *msg)
 {
 	if (!ft_strcmp(type, "dir"))
 	{
-		printf(GREY"minishell: %s: Is a directory\n"RESET, msg);
+		printf("minishell: %s: Is a directory\n", msg);
 		return (126);
-	}
-	else if (!ft_strcmp(type, "nosfod"))
-	{
-		printf(GREY"minishell: %s: No such file or directory\n"RESET, msg);
-		return (1);
 	}
 	else if (!ft_strcmp(type, "cnf"))
 	{
-		printf(GREY"minishell: %s: command not found\n"RESET, msg);
+		if (msg)
+			printf("minishell: %s: command not found\n", msg);
+		else
+			printf("minishell: : command not found\n");
 		return (127);
 	}
 	else if (!ft_strcmp(type, "serr"))

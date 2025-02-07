@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 16:49:02 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 17:31:41 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ int	write_in_here_doc(int here_doc, char *eof)
 	return (free(res), 1);
 }
 
-int	ft_heredoc(t_cmd *token, int builtin, t_main *main)
+int	ft_heredoc(t_cmd *token, int builtin)
 {
 	int	here_doc;
 
-	(void)main;
 	if (!token->heredoc_eof)
 		return (token->infile);
 	here_doc = open("heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0777);

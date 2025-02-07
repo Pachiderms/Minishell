@@ -1,16 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   unset1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:04:53 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/18 15:04:55 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 16:38:59 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	unset_var(t_main *main, char *cmd)
+{
+	char	*_cmd;
+	char	*tmp2;
+
+	_cmd = ft_strdup(cmd);
+	tmp2 = cut_str(&ft_strchr(_cmd, ' ')[1], ft_strchr(cmd, '='));
+	tmp2 = ft_strjoin("unset ", tmp2);
+	free(_cmd);
+	unset(main, tmp2);
+	free(tmp2);
+	return (-1);
+}
 
 void	ok(char *arg)
 {

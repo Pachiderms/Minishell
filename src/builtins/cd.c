@@ -77,15 +77,15 @@ int	print_home_pwd(t_main *main)
 	return (0);
 }
 
-int	cd(t_main *main)
+int	cd(t_main *main, t_cmd *token)
 {
 	char	*dir;
 
 	dir = getcwd(NULL, 0);
 	if (!dir)
 		return (perror("getcwd"), free(dir), 1);
-	if (get_arg_len(main->cmd_tokens->args) >= 2)
-			return (free(dir), ft_error_cd("tma", NULL));
+	if (get_arg_len(token->args) >= 2)
+		return (free(dir), ft_error_cd("tma", NULL));
 	if (!main->cmd_tokens->args)
 	{
 		if (print_home_pwd(main) == 1)
