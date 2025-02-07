@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:34:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 16:58:46 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 09:00:13 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_error_export(char *type, char *msg)
 	}
 	else if (!ft_strcmp(type, "env"))
 	{
-		printf(GREY"env: ‘%s’: No such file or directory\n"RESET, msg);
+		printf("env: ‘%s’: No such file or directory\n", msg);
 		return (0);
 	}
 	else if (!ft_strcmp(type, "io"))
@@ -94,17 +94,17 @@ int	ft_error(char *type, char *msg)
 {
 	if (!ft_strcmp(type, "dir"))
 	{
-		printf(GREY"minishell: %s: Is a directory\n"RESET, msg);
+		printf("minishell: %s: Is a directory\n", msg);
 		return (126);
 	}
 	else if (!ft_strcmp(type, "nosfod"))
 	{
-		printf(GREY"minishell: %s: No such file or directory\n"RESET, msg);
+		printf("minishell: %s: No such file or directory\n", msg);
 		return (1);
 	}
 	else if (!ft_strcmp(type, "cnf"))
 	{
-		printf(GREY"minishell: %s: command not found\n"RESET, msg);
+		printf("minishell: %s: command not found\n", msg);
 		return (127);
 	}
 	else if (!ft_strcmp(type, "serr"))

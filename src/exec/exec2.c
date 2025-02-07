@@ -17,7 +17,7 @@ void	child_builtin(t_main *main, t_cmd *token)
 	redirect_in_out(token);
 	rl_clear_history();
 	init_signals();
-	builtin(main);
+	builtin(main, token);
 	free_process(main, main->last_exit_code);
 }
 
@@ -35,17 +35,14 @@ void	child_process(t_main *main, t_cmd *token)
 		free_process(main, 2);
 	if (check_builtin(token->cmd))
 		child_builtin(main, token);
-	if (!ft_strncmp(token->cmd, "./", 2))
-		cmd = ft_strdup(token->cmd);
-	else
-		cmd = cook_cmd(token->cmd);
+	cmd = cook_cmd(token->cmd);
 	token->infile = ft_heredoc(token, 0);
 	token->args = rm_redirections(token, token->cmd, 0, main);
-	split_args = ft_split(token->args, ' ');
+	split_args = ft_split_k_q_s(main, token->args, ' ', 0);
 	redirect_in_out(token);
 	rl_clear_history();
 	init_signals2();
-	execve(cmd, split_args, main->env); // leak cd
+	execve(cmd, split_args, main->env);
 	free(cmd);
 	free_split(split_args);
 	perror("execve");

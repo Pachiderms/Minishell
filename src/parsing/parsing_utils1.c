@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 18:17:12 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 12:08:48 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,38 @@ char	*add_char_to_str(char *s, char c, int _free)
 
 char    *cmd_separate(char *s, t_main *main)
 {
-        char    *res;
-        int             i;
-		int		j;
+	char	*res;
+	char	*tmp;
+	int		i;
+	int		j;
 
-        i = 0;
-        res = NULL;
-        while (s[i])
-        {
-			j = i;
-			i += was_in_quotes(&s[i], main, ft_substr(&s[i], 0, ft_strlen(&s[i])));
-			if (j != i)
-				printf("j %d\n", j);
-                if (s[i + 1] == '>' || s[i + 1] == '|')
-                {
-                        if (!ft_isspace(s[i]))
-                                res = add_char_to_str(res, s[i], 1);
-                        i++;
-                }               
-                res = add_char_to_str(res, s[i], 1);
-                i++;
-        }
-        return (free(s), res);
+	i = 0;
+	j = 0;
+	res = NULL;
+	while (i < (int)ft_strlen(s))
+	{
+		j = i + was_in_quotes(&s[i], main, ft_substr(&s[i], 0, ft_strlen(&s[i])));
+		if (j > i)
+		{
+			tmp = ft_substr(s, i, j - i);
+			res = ft_strjoin_free(res, tmp, 0);
+			free(tmp);
+		}
+		i = j;
+		if (i > (int)ft_strlen(s))
+			break ;
+		if (s[i] == '>' || s[i] == '|'
+			|| s[i] == '<')
+		{
+			res = add_char_to_str(res, s[i], 1);
+			if (s[i] != s[i + 1])
+				res = add_char_to_str(res, ' ', 1);
+		}
+		else       
+			res = add_char_to_str(res, s[i], 1);
+		i++;
+	}
+	return (free(s), res);
 }
 
 int	get_arg_len(char *arg)
@@ -117,9 +127,13 @@ t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 int	order(char *_s, t_main *main)
 {
 	char	*s;
+	char	*no_space;
 	char	**pipes;
 
-	s = cmd_separate(get_rid_of_spaces(_s), main);
+	no_space = get_rid_of_spaces(_s);
+	if (!main->cmd_quotes)
+		main->cmd_quotes = ft_strdup(no_space);
+	s = cmd_separate(no_space, main);
 	if (!s || s[0] == '\0')
 		return (0);
 	if (check_open_quotes(s, main) == 0)
@@ -131,7 +145,5 @@ int	order(char *_s, t_main *main)
 		return (free(s), free_split(pipes), 0);
 	if (!check_global_syntax(s, main))
 		return (free_split(pipes), free(s), 0);
-	if (main->noFile)
-		return (0);
 	return (free(s), free_split(pipes), 1);
 }

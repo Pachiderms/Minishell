@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 16:49:46 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:28:57 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	set_null_main(t_main *main)
 	main->u_token = NULL;
 	main->last_ofile = NULL;
 	main->cmd_quotes = NULL;
+	main->dollars_ok = 0;
 	main->dollars.i = 0;
 	main->dollars.j = 0;
 	main->dollars.end = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 16:59:27 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:29:23 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	free_end_cmd(t_main *main)
 		free(main->last_ofile);
 	main->last_ofile = NULL;
 	main->nb_cmd = 0;
+	main->dollars_ok = 0;
 	free_split(main->cmdnf);
 }
 
