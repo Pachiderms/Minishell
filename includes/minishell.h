@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 11:28:39 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 12:16:41 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,7 @@ char	*add_char_to_str(char *s, char c, int _free);
 char	*handle_sc_c(char *arg, t_main *main);
 void	get_close_quotes(char const *s, t_main *main);
 int		ft_error(char *type, char *msg);
+int		ft_nosfod(char *type, char *msg);
 int		ft_error_unset(char *type, char *msg);
 int		ft_error_export(char *type, char *msg);
 int		ft_error_cd(char *type, char *msg);

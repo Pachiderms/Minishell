@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 19:38:19 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 13:26:56 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	remake_env(char	**tmp, t_main *main, int which, int replace_pos)
 		if (replace_pos != -3)
 			free_env(main->env, main->env_len);
 		if (replace_pos >= 0)
-			main->env = malloc(sizeof(char *) * ((main->env_len) + 1));
+			main->env = malloc(sizeof(char *) *((main->env_len) + 1));
 		else if (replace_pos == -1)
 			main->env = malloc(sizeof(char *) * ((main->env_len + 1) + 1));
 		else if (replace_pos == -2)
@@ -82,6 +82,18 @@ void	fill_env_export(t_main *main, char *cmd)
 
 	i = 0;
 	replace_pos = check_var_exists(main->env, main->env_len, cmd);
+	if (replace_pos >= 0)
+	{
+		char *_cmd;
+		char	*tmp2;
+		_cmd = ft_strdup(cmd);
+		tmp2 = cut_str(&ft_strchr(_cmd, ' ')[1], ft_strchr(cmd, '='));
+		tmp2 = ft_strjoin("unset ", tmp2);
+		free(_cmd);
+		unset(main, tmp2);
+		replace_pos = -1;
+		free(tmp2);
+	}
 	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
 	remake_env(tmp, main, 0, replace_pos);
 	if (replace_pos >= 0)

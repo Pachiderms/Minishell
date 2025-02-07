@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:34:46 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 09:00:13 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 12:21:05 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ int	ft_error_cd(char *type, char *msg)
 	}
 	if (!ft_strcmp(type, "nsfod"))
 	{
-		printf(GREY"minishell: cd: %s: No such file or directory\n"RESET, msg);
-		return (0);
+		printf("minishell: cd: %s: No such file or directory\n", msg);
+		return (1);
 	}
 	return (0);
 }
@@ -90,17 +90,27 @@ int	ft_error_pwd(char *type, char *msg)
 	return (0);
 }
 
+int	ft_nosfod(char *type, char *msg)
+{
+	if (!ft_strcmp(type, "dir"))
+	{
+		printf("minishell: %s: No such file or directory\n", msg);
+		return (127);
+	}
+	else if (!ft_strcmp(type, "file"))
+	{
+		printf("minishell: %s: No such file or directory\n", msg);
+		return (1);
+	}
+	return (1);
+}
+
 int	ft_error(char *type, char *msg)
 {
 	if (!ft_strcmp(type, "dir"))
 	{
 		printf("minishell: %s: Is a directory\n", msg);
 		return (126);
-	}
-	else if (!ft_strcmp(type, "nosfod"))
-	{
-		printf("minishell: %s: No such file or directory\n", msg);
-		return (1);
 	}
 	else if (!ft_strcmp(type, "cnf"))
 	{

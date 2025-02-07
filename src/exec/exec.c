@@ -21,14 +21,12 @@ void	builtin(t_main *main, t_cmd *token)
 			token->infile = ft_heredoc(token, 1);
 	if (token->no_file)
 	{
-		main->last_exit_code = ft_error("nosfod", token->no_file);
+		main->last_exit_code = ft_nosfod("file", token->no_file);;
 		return ;
 	}
 	command = get_cmd(token->cmd);
 	token->args = rm_redirections(token,
 			token->cmd, 1, main);
-	if (token->no_file)
-		main->last_exit_code = ft_error("nosfod", token->no_file);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -74,7 +72,7 @@ int	no_cmd(t_main *main)
 			if (token->heredoc_eof)
 				ft_heredoc(token, 1);
 			else if (token->no_file)
-				main->last_exit_code = ft_error("nosfod", token->no_file);
+				main->last_exit_code = ft_nosfod("file", token->no_file);
 			else if (ft_strchr(token->args, '/'))
 			{
 				if (chdir(token->args) == 0)
@@ -85,7 +83,7 @@ int	no_cmd(t_main *main)
 				}
 				else
 				{
-					main->last_exit_code = ft_error("nosfod", token->args);
+					main->last_exit_code = ft_nosfod("dir", token->args);
 					error = 1;
 				}
 			}
