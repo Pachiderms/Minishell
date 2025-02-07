@@ -26,7 +26,7 @@ int	return_to_pwd(t_main *main)
 	return (1);
 }
 
-void	update_oldpwd_pwd(t_main *main)
+void	update_oldpwd_pwd(t_main *main, t_cmd *token)
 {
 	int		pwd_line;
 	char	*pwd;
@@ -34,10 +34,10 @@ void	update_oldpwd_pwd(t_main *main)
 
 	pwd_line = check_var_exists(main->env, main->env_len, "export PWD=");
 	pwd = ft_strjoin("export OLDPWD=", &ft_strchr(main->env[pwd_line], '=')[1]);
-	export(main, pwd);
+	export(main, pwd, token);
 	free(pwd);
 	newpwd = ft_strjoin_free("export PWD=", getcwd(NULL, 0), 1);
-	export(main, newpwd);
+	export(main, newpwd, token);
 	free(newpwd);
 }
 
@@ -48,13 +48,14 @@ int	check_syntax_pwd(char *cmd)
 	return (1);
 }
 
-int	pwd(t_main *main)
+int	pwd(t_main *main, t_cmd *token)
 {
 	char	*pwd;
 
-	if (main->cmd_tokens->args)
+	(void)main;
+	if (token)
 	{
-		if (check_syntax_pwd(main->cmd_tokens->args) == 0)
+		if (check_syntax_pwd(token->args) == 0)
 			return (1);
 	}
 	pwd = getcwd(NULL, 0);

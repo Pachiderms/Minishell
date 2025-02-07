@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 13:58:30 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 15:48:38 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int		ft_heredoc(t_cmd *token, int builtin);
 /// ENV
 int		init_env(char **env, t_main *main);
 int		check_syntax_env(char *cmd);
-int		print_env(t_main *main, int check);
+int		print_env(t_main *main, int check, t_cmd *token);
 /// UNSET
 void	unset_env(t_main *main, char *cmd);
 void	unset_export(t_main *main, char *cmd);
@@ -187,25 +187,25 @@ int		check_syntax_export(char *cmd);
 void	fill_export(t_main *main, char *cmd);
 void	fill_env_export(t_main *main, char *cmd);
 void	print_ascii_order(t_main *main);
-int		prep_export(t_main *main);
+int		prep_export(t_main *main, t_cmd *token);
 char	*get_var_name(char *cmd);
 int		check_plus(char *cmd);
 char	*get_without_plus(char *cmd);
 char	*get_plus_str(t_main *main, char *cmd);
 void	remake_env_fill(char **tmp, t_main *main, int which);
 /// ECHO
-int		ft_echo(t_main *main);
+int		ft_echo(t_main *main, t_cmd *token);
 char	*find_newline(char *s);
 int		get_fd_out(char **cmd, t_main *main);
 int		get_fd_in(char **cmd, t_main *main, t_cmd *token);
 /// CD
 int		is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
-int		cd(t_main *main);
+int		cd(t_main *main, t_cmd *token);
 /// PWD
 int		return_to_pwd(t_main *main);
-void	update_oldpwd_pwd(t_main *main);
-int		pwd(t_main *main);
+void	update_oldpwd_pwd(t_main *main, t_cmd *token);
+int		pwd(t_main *main, t_cmd *token);
 /// UTILS BUILTINS
 int		basic_verif(char *arg, int which);
 int		check_var_exists(char **env, int len, char *cmd);

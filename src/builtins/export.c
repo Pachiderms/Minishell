@@ -109,7 +109,7 @@ int	export(t_main *main, char *cmd)
 	return (0);
 }
 
-int	prep_export(t_main *main)
+int	prep_export(t_main *main, t_cmd *token)
 {
 	char	*cmd;
 	char	**to_export;
@@ -118,7 +118,7 @@ int	prep_export(t_main *main)
 
 	exit_code = 0;
 	if (!main->cmd_tokens->args)
-		return (print_env(main, 1), 0);
+		return (print_env(main, 1, token), 0);
 	to_export = ft_split_k_q_s(main, main->cmd_quotes, ' ', 1);
 	i = 1;
 	while (to_export[i])

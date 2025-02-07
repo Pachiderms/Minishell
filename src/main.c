@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 13:37:51 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 14:54:26 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int	main(int argc, char **argv, char **env)
 		sub_process(&main, cmd);
 		g_signal_pid = 0;
 	}
+	if (cmd)
+		free(cmd);
 	free_all_data(&main);
 	rl_clear_history();
 	return (0);

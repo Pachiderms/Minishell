@@ -28,17 +28,17 @@ void	builtin(t_main *main, t_cmd *token)
 	token->args = rm_redirections(token,
 			token->cmd, 1, main);
 	if (ft_strcmp(command, "env") == 0)
-		main->last_exit_code = print_env(main, 0);
+		main->last_exit_code = print_env(main, 0, token);
 	if (ft_strcmp(command, "export") == 0)
-		main->last_exit_code = prep_export(main);
+		main->last_exit_code = prep_export(main, token);
 	if (ft_strcmp(command, "unset") == 0)
 		main->last_exit_code = prep_unset(main);
 	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = ft_echo(main);
+		main->last_exit_code = ft_echo(main, token);
 	if (ft_strcmp(command, "cd") == 0)
-		main->last_exit_code = cd(main);
+		main->last_exit_code = cd(main, token);
 	if (ft_strcmp(command, "pwd") == 0)
-		main->last_exit_code = pwd(main);
+		main->last_exit_code = pwd(main, token);
 	if (ft_strcmp(command, "exit") == 0)
 	{
 		printf("exit\n");
