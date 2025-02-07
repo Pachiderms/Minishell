@@ -73,7 +73,6 @@ int	exec_solo(t_main *main)
 		token = token->next;
 	}
 	ft_lstclear(&token->next);
-	print_t_cmd(token);
 	if (!token)
 		return (1);
 	if (pipe(token->pip) == -1)

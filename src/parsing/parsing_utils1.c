@@ -6,30 +6,11 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 18:43:30 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 20:08:01 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	in_quotes_skip2(char *s, t_main *main, int i, char **tmp)
-{
-	char	*res;
-	int		j;
-
-	res = NULL;
-	j = i + was_in_quotes(&s[i], main,
-			ft_substr(&s[i], 0,
-				ft_strlen(&s[i])));
-	if (j > i)
-	{
-		res = ft_substr(s, i, j - i);
-		*tmp = ft_strjoin_free(*tmp, res, 0);
-		free(res);
-		res = NULL;
-	}
-	return (j);
-}
 
 char	*cmd_separate(char *s, t_main *main)
 {
@@ -40,7 +21,7 @@ char	*cmd_separate(char *s, t_main *main)
 	res = NULL;
 	while (i < (int)ft_strlen(s))
 	{
-		i = in_quotes_skip2(s, main, i, &res);
+		i = in_quotes_skip(s, main, i, &res);
 		if (i > (int)ft_strlen(s))
 			break ;
 		if (s[i] == '>' || s[i] == '|'

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mega_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:41:20 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 16:57:15 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 20:07:38 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ char	*add_char_to_str(char *s, char c, int _free)
 	int		len;
 	int		i;
 
-	if (!c)
-		return (s);
 	len = ft_strlen(s);
 	res = malloc((len + 2) * sizeof(char));
 	if (!res)
@@ -88,7 +86,7 @@ int	in_quotes_skip(char *s, t_main *main, int i, char **tmp)
 				ft_strlen(&s[i])));
 	if (j > i)
 	{
-		res = ft_substr(s, i, j - i - 1);
+		res = ft_substr(s, i, j - i);
 		*tmp = ft_strjoin_free(*tmp, res, 0);
 		free(res);
 		res = NULL;

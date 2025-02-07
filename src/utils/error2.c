@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:51:57 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 16:51:59 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 20:31:19 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_error_cd(char *type, char *msg)
 	if (!ft_strcmp(type, "nsfod"))
 	{
 		printf("minishell: cd: %s: No such file or directory\n", msg);
-		return (1);
+		return (0);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/07 16:38:45 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 20:40:10 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ void	fill_env_export(t_main *main, char *cmd)
 
 	i = 0;
 	replace_pos = check_var_exists(main->env, main->env_len, cmd);
-	if (replace_pos >= 0)
-		replace_pos = unset_var(main, cmd);
 	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
 	remake_env(tmp, main, 0, replace_pos);
 	if (replace_pos >= 0)
@@ -99,6 +97,7 @@ void	fill_env_export(t_main *main, char *cmd)
 		if (i == replace_pos)
 			i++;
 	}
+	main->env[i] = NULL;
 	free_env(tmp, main->env_len);
 	if (replace_pos == -1)
 		add_pos(main, cmd, i, 0);
@@ -126,6 +125,7 @@ void	fill_export(t_main *main, char *cmd)
 		if (i == replace_pos)
 			i++;
 	}
+	main->export[i] = NULL;
 	free_env(tmp, main->export_len);
 	if (replace_pos == -1)
 		add_pos(main, cmd, i, 1);
