@@ -6,7 +6,7 @@
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 14:36:52 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 14:50:31 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ int	check_first_cmd(char *s, t_main *main)
 	if (!ft_strncmp(&s[0], "./", 2)
 		&& access(&ft_strchr(s, '/')[1], X_OK) == -1)
 	{
+		if (main->noFile)
+			free(main->noFile);
+		main->noFile = NULL;
 		main->noFile = ft_strdup(s);
 		check2 = -1;
 	}
